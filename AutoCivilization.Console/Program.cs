@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoCivilization.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
@@ -20,6 +21,10 @@ namespace AutoCivilization.Console
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<AutoCivService>();
+                    services.AddSingleton<IBotGameStateService, BotGameStateService>();
+                    services.AddTransient<IFocusCardDeckInitialiser, FocusCardDeckInitialiser>();
+                    services.AddTransient<IFocusBarInitialiser, FocusBarInitialiser>();
+                    services.AddTransient<ILeaderCardInitialiser, LeaderCardInitialiser>();
                 });
     }
 }
