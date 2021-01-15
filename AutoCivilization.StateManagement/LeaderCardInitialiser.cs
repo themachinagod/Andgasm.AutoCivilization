@@ -33,7 +33,7 @@ namespace AutoCivilization.Console
         private Stream ReadDataFromResource()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "AutoCivilization.Console.LeaderCards.json";
+            var resourceName = "AutoCivilization.Data.LeaderCards.json";
             return assembly.GetManifestResourceStream(resourceName);
         }
 

@@ -5,14 +5,18 @@ namespace AutoCivilization.Abstractions
 {
     public enum OperationType
     { 
-        Instruction,
+        ActionRequest,
         InformationRequest
     }
 
     public class FocusCardActionModel
     {
+        public FocusType FocusType { get; set; }
+        public FocusLevel FocusLevel { get; set; }
+        public int StepIndex { get; set; }
         public OperationType OperationType { get; set; }
         public string Message { get; set; }
         public IReadOnlyCollection<string> ResponseOptions { get; set; }
+        public string ResponseResult { get; set; }
     }
 }

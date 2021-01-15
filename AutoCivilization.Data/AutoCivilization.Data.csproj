@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="FocusCards.json" />
+    <None Remove="LeaderCards.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="FocusCards.json" />
+    <EmbeddedResource Include="LeaderCards.json" />
+  </ItemGroup>
+
+</Project>

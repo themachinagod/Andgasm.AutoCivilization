@@ -8,16 +8,18 @@ namespace AutoCivilization.Console
 {
     public class FocusCardResolverFactory : IFocusCardResolverFactory
     {
-        private readonly IBotGameStateService _botGameStateService;
         private readonly List<IFocusCardResolver> _resolvers;
 
-        public FocusCardResolverFactory(IBotGameStateService botGameStateService,
-                                        ICultureLevel1FocusCardResolver cultureLevel1FocusCardResolver)
+        public FocusCardResolverFactory(ICultureLevel1FocusCardResolver cultureLevel1FocusCardResolver,
+                                        ICultureLevel2FocusCardResolver cultureLevel2FocusCardResolver,
+                                        ICultureLevel3FocusCardResolver cultureLevel3FocusCardResolver,
+                                        ICultureLevel4FocusCardResolver cultureLevel4FocusCardResolver)
         {
-            _botGameStateService = botGameStateService;
-
             _resolvers = new List<IFocusCardResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
+            _resolvers.Add(cultureLevel2FocusCardResolver);
+            _resolvers.Add(cultureLevel3FocusCardResolver);
+            _resolvers.Add(cultureLevel4FocusCardResolver);
         }
 
         public IFocusCardResolver GetFocusCardResolverForFocusCard(FocusCardModel activeFocusCard)

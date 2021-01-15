@@ -48,28 +48,28 @@ namespace AutoCivilization.Console
 
             // execute turn
             var activeFocusCard = _botGameStateService.ActiveFocusBar.FocusSlot5;
+            var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
 
-            var focusCardResolver = _focusCardResolverFactory.GetResolverForFocusCard(activeFocusCard);
-            foreach (var activeStep in focusCardActions)
+            do
             {
-                if (activeStep.ShouldExecute())
+                var stepAction = focusCardResolver.GetNextStep();
+                if (stepAction.ShouldExecuteAction())
                 {
-                    // write message to screen
-                    // print step.Message
+                    var actionData = stepAction.ExecuteAction();
+                    System.Console.WriteLine(actionData.Message);
 
-                    // write response options to screen & read user selection if required
-                    // var informationResult = null
-                    // if (step.ResponseOptions.Count > 0)
-                    // {
-                    //  foreach var(option in step.ResponseOptions) 
-                    //  {
-                    //      print option.Value
-                    //  }
-                    //  step.InformationResult = readln
-                    // }
+                    if (stepAction.OperationType == OperationType.InformationRequest)
+                    {
+                        foreach(var o in actionData.ResponseOptions) { System.Console.WriteLine(o); }
+                        var response = System.Console.ReadLine();
+                        stepAction.ProcessActionResponse(response);
+                    }
+
                     focusCardResolver.Resolve();
                 }
-            }
+            } while (focusCardResolver.HasMoreSteps);
+
+            // TODO: update focus bar - shift cards up by 1...
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

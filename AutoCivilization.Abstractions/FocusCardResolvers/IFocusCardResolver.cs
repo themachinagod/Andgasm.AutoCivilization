@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoCivilization.Abstractions.ActionSteps;
 
 namespace AutoCivilization.Abstractions
 {
     public interface IFocusCardResolver
     {
-        FocusType FocusType { get; }
-        FocusLevel FocusLevel { get; }
+        FocusType FocusType { get; set; }
+        FocusLevel FocusLevel { get; set; }
+        bool HasMoreSteps { get; }
 
+        IStepAction GetNextStep();
         void Resolve();
     }
 }

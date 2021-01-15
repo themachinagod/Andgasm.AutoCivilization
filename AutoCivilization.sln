@@ -3,14 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.Console", "AutoCivilization.Console\AutoCivilization.Console.csproj", "{BE90E32E-D50B-4F93-BE26-BCCC406F4919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCivilization.Console", "AutoCivilization.Console\AutoCivilization.Console.csproj", "{BE90E32E-D50B-4F93-BE26-BCCC406F4919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.Abstractions", "AutoCivilization.Abstractions\AutoCivilization.Abstractions.csproj", "{E821CF3C-80DC-41D7-9490-8CE1C11E9883}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCivilization.Abstractions", "AutoCivilization.Abstractions\AutoCivilization.Abstractions.csproj", "{E821CF3C-80DC-41D7-9490-8CE1C11E9883}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DED182F-4385-4F6C-8005-9BBCF63EB8DE}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.FocusCardResolvers", "AutoCivilization.FocusCardResolvers\AutoCivilization.FocusCardResolvers.csproj", "{2876C69A-4C4A-498F-B223-13A5C55DD106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.ActionSteps", "AutoCivilization.ActionSteps\AutoCivilization.ActionSteps.csproj", "{3D08E655-CE40-4874-88BD-5CCFA2522875}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.StateManagement", "AutoCivilization.StateManagement\AutoCivilization.StateManagement.csproj", "{DFDBDB68-657D-461B-9636-F009118C55F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.Data", "AutoCivilization.Data\AutoCivilization.Data.csproj", "{04177FB1-A283-4064-BC21-DA33E9E68C5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +34,22 @@ Global
 		{E821CF3C-80DC-41D7-9490-8CE1C11E9883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E821CF3C-80DC-41D7-9490-8CE1C11E9883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E821CF3C-80DC-41D7-9490-8CE1C11E9883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2876C69A-4C4A-498F-B223-13A5C55DD106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2876C69A-4C4A-498F-B223-13A5C55DD106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2876C69A-4C4A-498F-B223-13A5C55DD106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2876C69A-4C4A-498F-B223-13A5C55DD106}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D08E655-CE40-4874-88BD-5CCFA2522875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D08E655-CE40-4874-88BD-5CCFA2522875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D08E655-CE40-4874-88BD-5CCFA2522875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D08E655-CE40-4874-88BD-5CCFA2522875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDBDB68-657D-461B-9636-F009118C55F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDBDB68-657D-461B-9636-F009118C55F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDBDB68-657D-461B-9636-F009118C55F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDBDB68-657D-461B-9636-F009118C55F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
