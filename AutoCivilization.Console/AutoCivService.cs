@@ -47,7 +47,7 @@ namespace AutoCivilization.Console
             _focusBarInitialiser.InitialiseFocusBarForBot();
 
             // execute turn
-            var activeFocusCard = _botGameStateService.ActiveFocusBar.FocusSlot5;
+            var activeFocusCard = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
             var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
 
             do
