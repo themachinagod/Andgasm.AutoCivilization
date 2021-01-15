@@ -40,19 +40,23 @@ namespace AutoCivilization.Console
             //       player count (2)
             //       active city states (brussels, carthage, buenos ares)
 
+            WriteConsoleHeader();
+
             // initialise game state
             // TODO: wonder card deck for bot
+            await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
+            _focusBarInitialiser.InitialiseFocusBarForBot();
+            WriteConsoleInitialiseComplete();
+
+            await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
+            _focusBarInitialiser.InitialiseFocusBarForBot();
+            WriteConsoleGameStart();
             do
             {
-                await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
-                await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
-                _focusBarInitialiser.InitialiseFocusBarForBot();
-
                 // execute turn
+                WriteConsoleRoundHeader();
                 var activeFocusCard = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
                 var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
-
-                focusCardResolver.InitialiseMoveState();
                 do
                 {
                     var stepAction = focusCardResolver.GetNextStep();
@@ -77,13 +81,63 @@ namespace AutoCivilization.Console
                 } while (focusCardResolver.HasMoreSteps);
 
                 focusCardResolver.Resolve();
-
                 // TODO: update focus bar - shift cards up by 1...
 
-                System.Console.WriteLine();
-                System.Console.WriteLine("Now you guys go on ahead and take your shot, press any key when its time for me to move...");
-                System.Console.ReadKey();
+                WriteConsoleAwaitingNextTurn();
+                _botGameStateService.CurrentRoundNumber++;
             } while (true);
+        }
+
+        private static void WriteConsoleAwaitingNextTurn()
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine("Now you guys go on ahead and take your shot, press any key when its time for me to move...");
+            System.Console.ReadKey();
+        }
+
+        private void WriteConsoleGameStart()
+        {
+            System.Console.WriteLine($"Leader Selected: {_botGameStateService.ChosenLeaderCard.Name} : {_botGameStateService.ChosenLeaderCard.Nation}");
+            System.Console.WriteLine($"Focus Bar Slot 1: {_botGameStateService.ActiveFocusBar.FocusSlot1.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 2: {_botGameStateService.ActiveFocusBar.FocusSlot2.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 3: {_botGameStateService.ActiveFocusBar.FocusSlot3.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 4: {_botGameStateService.ActiveFocusBar.FocusSlot4.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 5: {_botGameStateService.ActiveFocusBar.FocusSlot5.Name}");
+            System.Console.WriteLine();
+            System.Console.WriteLine("Please go ahead and select leaders for all human players and setup the physical game board as normal.");
+            System.Console.WriteLine("No need to deal me in, I will manage my own focus cards, focus bar and wonder decks.");
+            System.Console.WriteLine("If I need any physical interaction with the board, I will ask you to do this for me.");
+            System.Console.WriteLine("If I need any information about moves that were made I will ask you some simple questions.");
+            System.Console.WriteLine("All you need to do just now is pick a color for me, place my captial city on the board and set aside my other peices.");
+            System.Console.WriteLine("When everything is setup and you are happy to start the game, press any key and I will make the first move.");
+            System.Console.ReadKey();
+        }
+
+        private void WriteConsoleRoundHeader()
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine($"# Game {_botGameStateService.GameId}                 #");
+            System.Console.WriteLine($"# Round {_botGameStateService.CurrentRoundNumber}                   #");
+            System.Console.WriteLine("#############################");
+        }
+
+        private void WriteConsoleHeader()
+        {
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine("#   AutoCivilization v1.0   #");
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine();
+        }
+
+        private static void WriteConsoleInitialiseComplete()
+        {
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine("#  Focus Deck Initialised   #");
+            System.Console.WriteLine("#  Wonder Deck Initialised  #");
+            System.Console.WriteLine("#  Focus Bar Initialised    #");
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine();
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

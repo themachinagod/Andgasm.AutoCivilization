@@ -26,12 +26,15 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(5, resourcesControlledInformationRequest);
         }
 
-        public override void InitialiseMoveState()
+        public override IStepAction GetNextStep()
         {
-            _currentStep = -1;
-            _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-            _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
-            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
+            if (_currentStep == -1)
+            {
+                _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
+                _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
+                _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
+            }
+            return base.GetNextStep();
         }
 
         public override void Resolve()
@@ -44,6 +47,8 @@ namespace AutoCivilization.FocusCardResolvers
             _botGameStateService.ControlledResources += _botMoveStateService.NaturalResourceTokensControlled;
             _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
             _botGameStateService.CultureTradeTokens += cultureTokensIncrement;
+
+            _currentStep = -1;
         }
     }
 }

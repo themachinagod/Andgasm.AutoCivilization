@@ -23,12 +23,15 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(3, resourcesControlledInformationRequest);
         }
 
-        public override void InitialiseMoveState()
+        public override IStepAction GetNextStep()
         {
-            _currentStep = -1;
-            _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-            _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
-            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
+            if (_currentStep == -1)
+            {
+                _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
+                _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
+                _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
+            }
+            return base.GetNextStep();
         }
 
         public override void Resolve()

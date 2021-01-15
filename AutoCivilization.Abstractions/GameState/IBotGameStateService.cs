@@ -5,7 +5,9 @@ namespace AutoCivilization.Abstractions
 {
     public interface IBotGameStateService
     {
+        int GameId { get; set; }
         LeaderCardModel ChosenLeaderCard { get; set; }
+        int CurrentRoundNumber { get; set; }
 
         IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; }
         FocusBarModel ActiveFocusBar { get; set; }
