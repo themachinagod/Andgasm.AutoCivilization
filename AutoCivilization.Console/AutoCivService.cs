@@ -42,35 +42,48 @@ namespace AutoCivilization.Console
 
             // initialise game state
             // TODO: wonder card deck for bot
-            await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
-            await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
-            _focusBarInitialiser.InitialiseFocusBarForBot();
-
-            // execute turn
-            var activeFocusCard = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
-            var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
-
-            focusCardResolver.InitialiseMoveState();
             do
             {
-                var stepAction = focusCardResolver.GetNextStep();
-                if (stepAction.ShouldExecuteAction())
+                await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
+                await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
+                _focusBarInitialiser.InitialiseFocusBarForBot();
+
+                // execute turn
+                var activeFocusCard = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
+                var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
+
+                focusCardResolver.InitialiseMoveState();
+                do
                 {
-                    var actionData = stepAction.ExecuteAction();
-                    System.Console.WriteLine(actionData.Message);
-
-                    if (stepAction.OperationType == OperationType.InformationRequest)
+                    var stepAction = focusCardResolver.GetNextStep();
+                    if (stepAction.ShouldExecuteAction())
                     {
-                        foreach(var o in actionData.ResponseOptions) { System.Console.WriteLine(o); }
-                        var response = System.Console.ReadLine();
-                        stepAction.ProcessActionResponse(response);
+                        var actionData = stepAction.ExecuteAction();
+                        System.Console.WriteLine();
+                        System.Console.WriteLine(actionData.Message);
+
+                        if (stepAction.OperationType == OperationType.InformationRequest)
+                        {
+                            foreach (var o in actionData.ResponseOptions) { System.Console.WriteLine(o); }
+                            var response = System.Console.ReadLine();
+                            stepAction.ProcessActionResponse(response);
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("Press any key when you have done this...");
+                            System.Console.ReadKey();
+                        }
                     }
-                }
-            } while (focusCardResolver.HasMoreSteps);
+                } while (focusCardResolver.HasMoreSteps);
 
-            focusCardResolver.Resolve();
+                focusCardResolver.Resolve();
 
-            // TODO: update focus bar - shift cards up by 1...
+                // TODO: update focus bar - shift cards up by 1...
+
+                System.Console.WriteLine();
+                System.Console.WriteLine("Now you guys go on ahead and take your shot, press any key when its time for me to move...");
+                System.Console.ReadKey();
+            } while (true);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

@@ -24,6 +24,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void InitialiseMoveState()
         {
+            _currentStep = -1;
             _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
             _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
