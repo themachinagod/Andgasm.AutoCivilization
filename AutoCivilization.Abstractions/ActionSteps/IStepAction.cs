@@ -9,7 +9,6 @@ namespace AutoCivilization.Abstractions.ActionSteps
 
         bool ShouldExecuteAction();
         (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction();
-
         void ProcessActionResponse(string input);
     }
 }

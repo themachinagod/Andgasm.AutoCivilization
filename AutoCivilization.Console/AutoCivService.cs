@@ -50,6 +50,7 @@ namespace AutoCivilization.Console
             var activeFocusCard = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
             var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
 
+            focusCardResolver.InitialiseMoveState();
             do
             {
                 var stepAction = focusCardResolver.GetNextStep();

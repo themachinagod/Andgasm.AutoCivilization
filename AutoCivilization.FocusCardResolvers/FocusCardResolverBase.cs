@@ -32,6 +32,10 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps = new Dictionary<int, IStepAction>();
         }
 
+        public virtual void InitialiseMoveState()
+        {
+        }
+
         public virtual IStepAction GetNextStep()
         {
             _currentStep++;

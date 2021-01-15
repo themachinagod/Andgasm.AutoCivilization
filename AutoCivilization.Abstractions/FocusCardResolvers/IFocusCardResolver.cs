@@ -8,6 +8,7 @@ namespace AutoCivilization.Abstractions
         FocusLevel FocusLevel { get; set; }
         bool HasMoreSteps { get; }
 
+        void InitialiseMoveState();
         IStepAction GetNextStep();
         void Resolve();
     }

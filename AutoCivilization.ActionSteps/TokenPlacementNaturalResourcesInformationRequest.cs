@@ -32,7 +32,7 @@ namespace AutoCivilization.ActionSteps
 
         public override void ProcessActionResponse(string input)
         {
-            _botMoveStateService.NaturalWonderTokensControlled = Convert.ToInt32(input);
+            _botMoveStateService.NaturalResourceTokensControlled = Convert.ToInt32(input);
         }
     }
 }

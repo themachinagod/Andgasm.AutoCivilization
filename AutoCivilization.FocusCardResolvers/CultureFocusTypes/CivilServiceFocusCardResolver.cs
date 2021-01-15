@@ -18,16 +18,19 @@ namespace AutoCivilization.FocusCardResolvers
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl3;
 
-            _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-            _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
-            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
-
             _actionSteps.Add(0, placementCityInstructionRequest);
             _actionSteps.Add(1, placementTerritoryInstructionRequest);
             _actionSteps.Add(2, placedCityInformationRequest);
             _actionSteps.Add(3, placedTerritoryInformationRequest);
             _actionSteps.Add(4, wondersControlledInformationRequest);
             _actionSteps.Add(5, resourcesControlledInformationRequest);
+        }
+
+        public override void InitialiseMoveState()
+        {
+            _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
+            _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
+            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
         }
 
         public override void Resolve()
