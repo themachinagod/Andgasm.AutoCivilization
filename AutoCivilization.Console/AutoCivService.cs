@@ -1,5 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -68,15 +69,11 @@ namespace AutoCivilization.Console
 
                         if (stepAction.OperationType == OperationType.InformationRequest)
                         {
-                            foreach (var o in actionData.ResponseOptions) { System.Console.WriteLine(o); }
+                            WriteConsoleResponseOptions(actionData);
                             var response = System.Console.ReadLine();
                             stepAction.ProcessActionResponse(response);
                         }
-                        else
-                        {
-                            System.Console.WriteLine("Press any key when you have done this...");
-                            System.Console.ReadKey();
-                        }
+                        else { WriteConsoleAnyKeyContinue(); }
                     }
                 } while (focusCardResolver.HasMoreSteps);
 
@@ -88,11 +85,23 @@ namespace AutoCivilization.Console
             } while (true);
         }
 
+        private static void WriteConsoleResponseOptions((string Message, IReadOnlyCollection<string> ResponseOptions) actionData)
+        {
+            foreach (var o in actionData.ResponseOptions) { System.Console.WriteLine(o); }
+        }
+
+        private static void WriteConsoleAnyKeyContinue()
+        {
+            System.Console.WriteLine("Press any key when you have done this...");
+            System.Console.ReadKey();
+        }
+
         private static void WriteConsoleAwaitingNextTurn()
         {
             System.Console.WriteLine();
             System.Console.WriteLine("Now you guys go on ahead and take your shot, press any key when its time for me to move...");
             System.Console.ReadKey();
+            System.Console.Clear();
         }
 
         private void WriteConsoleGameStart()
@@ -136,6 +145,7 @@ namespace AutoCivilization.Console
             System.Console.WriteLine("#  Focus Deck Initialised   #");
             System.Console.WriteLine("#  Wonder Deck Initialised  #");
             System.Console.WriteLine("#  Focus Bar Initialised    #");
+            System.Console.WriteLine("#  Game State Initialised   #");
             System.Console.WriteLine("#############################");
             System.Console.WriteLine();
         }
