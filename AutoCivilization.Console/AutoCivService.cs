@@ -64,10 +64,10 @@ namespace AutoCivilization.Console
                         var response = System.Console.ReadLine();
                         stepAction.ProcessActionResponse(response);
                     }
-
-                    focusCardResolver.Resolve();
                 }
             } while (focusCardResolver.HasMoreSteps);
+
+            focusCardResolver.Resolve();
 
             // TODO: update focus bar - shift cards up by 1...
         }

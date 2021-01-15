@@ -26,7 +26,7 @@ namespace AutoCivilization.Console
         private Stream ReadDataFromResource()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "AutoCivilization.Data.FocusCards.json";
+            var resourceName = "AutoCivilization.StateManagement.Data.FocusCards.json";
             return assembly.GetManifestResourceStream(resourceName);
         }
 

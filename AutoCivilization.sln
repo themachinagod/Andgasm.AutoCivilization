@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.ActionStep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.StateManagement", "AutoCivilization.StateManagement\AutoCivilization.StateManagement.csproj", "{DFDBDB68-657D-461B-9636-F009118C55F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCivilization.Data", "AutoCivilization.Data\AutoCivilization.Data.csproj", "{04177FB1-A283-4064-BC21-DA33E9E68C5D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +44,6 @@ Global
 		{DFDBDB68-657D-461B-9636-F009118C55F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDBDB68-657D-461B-9636-F009118C55F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDBDB68-657D-461B-9636-F009118C55F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04177FB1-A283-4064-BC21-DA33E9E68C5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

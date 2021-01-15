@@ -1,11 +1,12 @@
 ﻿using AutoCivilization.Abstractions;
+using AutoCivilization.Abstractions.ActionSteps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenPlacementTerritoryAdjacentInformationRequest : StepActionBase
+    public class TokenPlacementTerritoryAdjacentInformationRequest : StepActionBase, ITokenPlacementTerritoryAdjacentInformationRequest
     {
         public TokenPlacementTerritoryAdjacentInformationRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
         {

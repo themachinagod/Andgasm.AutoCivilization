@@ -1,0 +1,102 @@
+[
+  {
+    "Name": "Early Empire",
+    "Type": "Culture",
+    "Level": "Lvl1"
+  },
+  {
+    "Name": "Foreign Trade",
+    "Type": "Economy",
+    "Level": "Lvl1"
+  },
+  {
+    "Name": "Pottery",
+    "Type": "Industry",
+    "Level": "Lvl1"
+  },
+  {
+    "Name": "Masonry",
+    "Type": "Military",
+    "Level": "Lvl1"
+  },
+  {
+    "Name": "Astrology",
+    "Type": "Science",
+    "Level": "Lvl1"
+  },
+  {
+    "Name": "Drama & Poetry",
+    "Type": "Culture",
+    "Level": "Lvl2"
+  },
+  {
+    "Name": "Currency",
+    "Type": "Economy",
+    "Level": "Lvl2"
+  },
+  {
+    "Name": "Animal Husbandry",
+    "Type": "Industry",
+    "Level": "Lvl2"
+  },
+  {
+    "Name": "Iron Working",
+    "Type": "Military",
+    "Level": "Lvl2"
+  },
+  {
+    "Name": "Mathematics",
+    "Type": "Science",
+    "Level": "Lvl2"
+  },
+  {
+    "Name": "Civil Service",
+    "Type": "Culture",
+    "Level": "Lvl3"
+  },
+  {
+    "Name": "Steam Power",
+    "Type": "Economy",
+    "Level": "Lvl3"
+  },
+  {
+    "Name": "Nationalism",
+    "Type": "Industry",
+    "Level": "Lvl3"
+  },
+  {
+    "Name": "Mass Production",
+    "Type": "Military",
+    "Level": "Lvl3"
+  },
+  {
+    "Name": "Repalceable Parts",
+    "Type": "Science",
+    "Level": "Lvl3"
+  },
+  {
+    "Name": "Mass Media",
+    "Type": "Culture",
+    "Level": "Lvl4"
+  },
+  {
+    "Name": "Capitalism",
+    "Type": "Economy",
+    "Level": "Lvl4"
+  },
+  {
+    "Name": "Urbanization",
+    "Type": "Industry",
+    "Level": "Lvl4"
+  },
+  {
+    "Name": "Flight",
+    "Type": "Military",
+    "Level": "Lvl4"
+  },
+  {
+    "Name": "Nuclear Power",
+    "Type": "Science",
+    "Level": "Lvl4"
+  }
+]
