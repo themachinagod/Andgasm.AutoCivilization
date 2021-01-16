@@ -12,6 +12,8 @@ namespace AutoCivilization.Abstractions
         IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; }
         FocusBarModel ActiveFocusBar { get; set; }
 
+        int TechnologyLevel { get; set; }
+
         int ControlledSpaces { get; set; }
         int ControlledResources { get; set; }
         int ControlledWonders { get; set; }

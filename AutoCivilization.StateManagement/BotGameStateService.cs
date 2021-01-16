@@ -5,11 +5,12 @@ namespace AutoCivilization.Console
 {
     public class BotGameStateService : IBotGameStateService
     {
+        public IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; } // same app wide
+
         public int GameId { get; set; } = 1001;
         public LeaderCardModel ChosenLeaderCard { get; set; }
         public int CurrentRoundNumber {get;set;}
 
-        public IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; }
         public FocusBarModel ActiveFocusBar { get; set; }
 
         public int TechnologyLevel { get; set; }

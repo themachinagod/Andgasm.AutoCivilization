@@ -41,6 +41,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<ITokenPlacementTerritoryAdjacentInformationRequest, TokenPlacementTerritoryAdjacentInformationRequest>();
                     services.AddTransient<ITokenPlacementNaturalWondersInformationRequest, TokenPlacementNaturalWondersInformationRequest>();
                     services.AddTransient<ITokenPlacementNaturalResourcesInformationRequest, TokenPlacementNaturalResourcesInformationRequest>();
+                    services.AddTransient<ITokenFlipEnemyActionRequest, TokenFlipEnemyActionRequest>();
 
                     // focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();

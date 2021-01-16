@@ -17,7 +17,7 @@ namespace AutoCivilization.ActionSteps
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
             return (totalTokensPlaced > 0) &&
-                   (_botMoveStateService.NaturalResourceTokensControlled < totalTokensPlaced);
+                   (_botMoveStateService.BaseTechnologyIncrease < totalTokensPlaced);
         }
 
         public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()

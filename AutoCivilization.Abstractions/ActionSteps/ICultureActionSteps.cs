@@ -7,4 +7,5 @@
     public interface ITokenPlacementTerritoryAdjacentInformationRequest : IStepAction { }
     public interface ITokenPlacementNaturalWondersInformationRequest : IStepAction { }
     public interface ITokenPlacementNaturalResourcesInformationRequest : IStepAction { }
+    public interface ITokenFlipEnemyActionRequest : IStepAction { }
 }

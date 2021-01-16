@@ -8,6 +8,7 @@ namespace AutoCivilization.FocusCardResolvers
     {
         public MassMediaFocusCardResolver(IBotGameStateService botGameStateService,
                                             IBotMoveStateService botMoveStateService,
+                                            ITokenFlipEnemyActionRequest tokenFlipEnemyActionRequest,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
@@ -16,11 +17,11 @@ namespace AutoCivilization.FocusCardResolvers
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl4;
 
-            // TODO: we need the flip action at index 1!
-            _actionSteps.Add(0, placementInstructionRequest);
-            _actionSteps.Add(1, placedInformationRequest);
-            _actionSteps.Add(2, wondersControlledInformationRequest);
-            _actionSteps.Add(3, resourcesControlledInformationRequest);
+            _actionSteps.Add(0, tokenFlipEnemyActionRequest);
+            _actionSteps.Add(1, placementInstructionRequest);
+            _actionSteps.Add(2, placedInformationRequest);
+            _actionSteps.Add(3, wondersControlledInformationRequest);
+            _actionSteps.Add(4, resourcesControlledInformationRequest);
         }
 
         public override IStepAction GetNextStep()
@@ -28,7 +29,7 @@ namespace AutoCivilization.FocusCardResolvers
             if (_currentStep == -1)
             {
                 _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-                _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
+                _botMoveStateService.BaseCityControlTokensToBePlaced = 4;
                 _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
             }
             return base.GetNextStep();
@@ -41,7 +42,7 @@ namespace AutoCivilization.FocusCardResolvers
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
 
             _botGameStateService.ControlledSpaces += totalTokensPlaced;
-            _botGameStateService.ControlledResources += _botMoveStateService.NaturalResourceTokensControlled;
+            _botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
             _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
             _botGameStateService.CultureTradeTokens += cultureTokensIncrement;
         }

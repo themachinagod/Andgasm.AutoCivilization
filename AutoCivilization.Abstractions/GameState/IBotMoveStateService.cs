@@ -8,6 +8,7 @@
         int CityControlTokensPlaced { get; set; }
         int TerritroyControlTokensPlaced { get; set; }
         int NaturalWonderTokensControlled { get; set; }
-        int NaturalResourceTokensControlled { get; set; }
+        int BaseTechnologyIncrease { get; set; }
+        int TechnologyLevelIncrease { get; set; }
     }
 }

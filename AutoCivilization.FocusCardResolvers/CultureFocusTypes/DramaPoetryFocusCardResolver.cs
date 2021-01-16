@@ -40,7 +40,7 @@ namespace AutoCivilization.FocusCardResolvers
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
 
             _botGameStateService.ControlledSpaces += totalTokensPlaced;
-            _botGameStateService.ControlledResources += _botMoveStateService.NaturalResourceTokensControlled;
+            _botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
             _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
             _botGameStateService.CultureTradeTokens += cultureTokensIncrement;
 

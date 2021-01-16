@@ -10,7 +10,8 @@ namespace AutoCivilization.Console
         public int CityControlTokensPlaced { get; set; }
         public int TerritroyControlTokensPlaced { get; set; }
         public int NaturalWonderTokensControlled { get; set; }
-        public int NaturalResourceTokensControlled { get; set; }
+        public int BaseTechnologyIncrease { get; set; }
         public int CultureTokensAvailable { get; set; }
+        public int TechnologyLevelIncrease { get; set; }
     }
 }
