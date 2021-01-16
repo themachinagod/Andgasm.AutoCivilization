@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TechnologyLevelIncreaseActionRequest : StepActionBase, ITokenFlipEnemyActionRequest
+    public class TechnologyLevelIncreaseActionRequest : StepActionBase, ITechnologyLevelIncreaseActionRequest
     {
         public TechnologyLevelIncreaseActionRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
         {

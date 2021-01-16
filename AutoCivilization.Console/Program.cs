@@ -45,12 +45,18 @@ namespace AutoCivilization.Console
                     services.AddTransient<ITokenPlacementNaturalResourcesInformationRequest, TokenPlacementNaturalResourcesInformationRequest>();
                     services.AddTransient<ITokenFlipEnemyActionRequest, TokenFlipEnemyActionRequest>();
 
-                    // focus card resolvers
+                    // science action steps
+                    services.AddTransient<ITechnologyLevelIncreaseActionRequest, TechnologyLevelIncreaseActionRequest>();
+                    services.AddTransient<INukePlayerCityFocusCardActionRequest, NukePlayerCityFocusCardActionRequest>();
+                    
+                    // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureLevel1FocusCardResolver, EarlyEmpireFocusCardResolver>();
                     services.AddTransient<ICultureLevel2FocusCardResolver, DramaPoetryFocusCardResolver>();
                     services.AddTransient<ICultureLevel3FocusCardResolver, CivilServiceFocusCardResolver>();
                     services.AddTransient<ICultureLevel4FocusCardResolver, MassMediaFocusCardResolver>();
+
+                    // science focus resolvers
                     services.AddTransient<IScienceLevel1FocusCardResolver, AstrologyFocusCardResolver>();
                     services.AddTransient<IScienceLevel2FocusCardResolver, MathematicsFocusCardResolver>();
                     services.AddTransient<IScienceLevel3FocusCardResolver, ReplaceablePartsCardResolver>();
