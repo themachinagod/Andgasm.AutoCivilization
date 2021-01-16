@@ -1,8 +1,10 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.TechnologyResolvers;
 using AutoCivilization.ActionSteps;
 using AutoCivilization.FocusCardResolvers;
+using AutoCivilization.TechnologyResolvers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -49,6 +51,15 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICultureLevel2FocusCardResolver, DramaPoetryFocusCardResolver>();
                     services.AddTransient<ICultureLevel3FocusCardResolver, CivilServiceFocusCardResolver>();
                     services.AddTransient<ICultureLevel4FocusCardResolver, MassMediaFocusCardResolver>();
+                    services.AddTransient<IScienceLevel1FocusCardResolver, AstrologyFocusCardResolver>();
+                    services.AddTransient<IScienceLevel2FocusCardResolver, MathematicsFocusCardResolver>();
+                    services.AddTransient<IScienceLevel3FocusCardResolver, ReplaceablePartsCardResolver>();
+                    services.AddTransient<IScienceLevel4FocusCardResolver, NuclearPowerFocusCardResolver>();
+
+                    // technology resolvers
+                    services.AddTransient<ITechnologyLevelModifier, TechnologyLevelModifier>();
+                    services.AddTransient<IFocusBarTechnologyUpgradeResolver, FocusBarTechnologyUpgradeResolver>();
+                    services.AddTransient<ITechnologyBreakthroughResolver, TechnologyBreakthroughResolver>();
                 });
     }
 }

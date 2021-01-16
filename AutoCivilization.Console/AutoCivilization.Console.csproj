@@ -14,6 +14,7 @@
     <ProjectReference Include="..\AutoCivilization.ActionSteps\AutoCivilization.ActionSteps.csproj" />
     <ProjectReference Include="..\AutoCivilization.FocusCardResolvers\AutoCivilization.FocusCardResolvers.csproj" />
     <ProjectReference Include="..\AutoCivilization.StateManagement\AutoCivilization.StateManagement.csproj" />
+    <ProjectReference Include="..\AutoCivilization.TechnologyResolvers\AutoCivilization.TechnologyResolvers.csproj" />
   </ItemGroup>
 
 </Project>
