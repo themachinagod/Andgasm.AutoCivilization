@@ -1,16 +1,22 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.TechnologyResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
     public class ReplaceablePartsCardResolver : FocusCardResolverBase, IScienceLevel3FocusCardResolver
     {
+        private readonly ITechnologyLevelModifier _technologyLevelModifier;
+
         public ReplaceablePartsCardResolver(IBotGameStateService botGameStateService,
                                              IBotMoveStateService botMoveStateService,
+                                             ITechnologyLevelModifier technologyLevelModifier,
                                              ITechnologyLevelIncreaseActionRequest technologyLevelIncreaseActionRequest,
                                              IUpgradeLowestFocusCardActionRequest upgradeLowestFocusCardActionRequest) : base(botGameStateService, botMoveStateService)
         {
+            _technologyLevelModifier = technologyLevelModifier;
+
             FocusType = FocusType.Science;
             FocusLevel = FocusLevel.Lvl3;
 
@@ -29,7 +35,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void Resolve()
         {
-            _botGameStateService.TechnologyLevel += _botMoveStateService.BaseTechnologyIncrease;
+            _technologyLevelModifier.IncrementTechnologyLevel(_botMoveStateService.BaseTechnologyIncrease);
             // TODO: upgrade the lowest tech level card on focus bar (use highest placed on tie)
             _currentStep = -1;
         }
