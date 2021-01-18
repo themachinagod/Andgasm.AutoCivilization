@@ -26,6 +26,8 @@ namespace AutoCivilization.Console
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<AutoCivService>();
+                    services.AddTransient<IAutoCivGameService, AutoCivGameService>();
+                    services.AddTransient<IAutoCivMoveService, AutoCivMoveService>();
                     
                     // state services
                     services.AddSingleton<IBotGameStateService, BotGameStateService>();
@@ -47,12 +49,13 @@ namespace AutoCivilization.Console
 
                     // science action steps
                     services.AddTransient<INukePlayerCityFocusCardActionRequest, NukePlayerCityFocusCardActionRequest>();
-                    
+                    services.AddTransient<INoActionRequest, NoActionRequest>();
+
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureLevel1FocusCardResolver, EarlyEmpireFocusCardResolver>();
                     services.AddTransient<ICultureLevel2FocusCardResolver, DramaPoetryFocusCardResolver>();
-                    services.AddTransient<ICultureLevel3FocusCardResolver, CivilServiceFocusCardResolver>();
+                    services.AddTransient<ICultureLevel3FocusCardMoveResolver, CivilServiceFocusCardMoveResolver>();
                     services.AddTransient<ICultureLevel4FocusCardResolver, MassMediaFocusCardResolver>();
 
                     // science focus resolvers

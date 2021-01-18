@@ -1,18 +1,18 @@
 ﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
-    public interface IMilitaryLevel1FocusCardResolver : IFocusCardResolver
+    public interface IMilitaryLevel1FocusCardResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel2FocusCardResolver : IFocusCardResolver
+    public interface IMilitaryLevel2FocusCardResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel3FocusCardResolver : IFocusCardResolver
+    public interface IMilitaryLevel3FocusCardResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel4FocusCardResolver : IFocusCardResolver
+    public interface IMilitaryLevel4FocusCardResolver : IFocusCardMoveResolver
     {
     }
 }

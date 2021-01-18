@@ -11,4 +11,8 @@ namespace AutoCivilization.Abstractions.ActionSteps
         (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction();
         void ProcessActionResponse(string input);
     }
+
+    public interface INoActionRequest : IStepAction 
+    {
+    }
 }

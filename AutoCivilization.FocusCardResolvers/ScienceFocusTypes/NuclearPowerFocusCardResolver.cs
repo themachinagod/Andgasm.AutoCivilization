@@ -9,29 +9,20 @@ namespace AutoCivilization.FocusCardResolvers
     {
         private readonly ITechnologyLevelModifier _technologyLevelModifier;
 
-        public NuclearPowerFocusCardResolver(IBotGameStateService botGameStateService,
-                                             IBotMoveStateService botMoveStateService,
+        public NuclearPowerFocusCardResolver(IBotMoveStateService botMoveStateService,
                                              ITechnologyLevelModifier technologyLevelModifier,
-                                             INukePlayerCityFocusCardActionRequest nukePlayerCityFocusCardActionRequest) : base(botGameStateService, botMoveStateService)
+                                             INoActionRequest noActionRequestActionRequest,
+                                             INukePlayerCityFocusCardActionRequest nukePlayerCityFocusCardActionRequest) : base(botMoveStateService)
         {
             _technologyLevelModifier = technologyLevelModifier;
 
+            _actionSteps.Add(0, noActionRequestActionRequest);
+
             FocusType = FocusType.Science;
             FocusLevel = FocusLevel.Lvl4;
-           
-            _actionSteps.Add(0, nukePlayerCityFocusCardActionRequest);
         }
 
-        public override IStepAction GetNextStep()
-        {
-            if (_currentStep == -1)
-            {
-                _botMoveStateService.BaseTechnologyIncrease = 5;
-            }
-            return base.GetNextStep();
-        }
-
-        public override string Resolve()
+        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
         {
             // TODO: potential bug here with reset of science tokens
             //       whereby the bot will use all available tokens on every science turn - when it hits max it wont use any
@@ -41,7 +32,7 @@ namespace AutoCivilization.FocusCardResolvers
             var techPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
             _botMoveStateService.ScienceTokensUsedThisTurn = _botMoveStateService.ScienceTokensAvailable;
             _technologyLevelModifier.IncrementTechnologyLevel(techPoints);
-            _botGameStateService.ScienceTradeTokens = 0;
+            botGameStateService.ScienceTradeTokens = 0;
             _currentStep = -1;
 
             return BuildMoveSummary();
@@ -50,13 +41,16 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary()
         {
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I incremented my technology points by {_botMoveStateService.BaseTechnologyIncrease} to {_botGameStateService.TechnologyLevel}\n";
+            summary += $"I updated my game state to show that I incremented my technology points by {_botMoveStateService.BaseTechnologyIncrease} to x\n";
             if (_botMoveStateService.ScienceTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensUsedThisTurn} culture trade tokens I had available to me to facilitate this move\n";
 
             if (_technologyLevelModifier.EncounteredBreakthrough)
             {
                 summary += $"As a result of my technology upgrade from x to y I had a technological breakthrough\n";
-                summary += $"This breakthrough resulted in my {_technologyLevelModifier.ReplacedFocusCard.Name} being replaced with {_technologyLevelModifier.UpgradedFocusCard.Name}\n";
+                foreach (var breakthrough in _technologyLevelModifier.BreakthroughsEncountered)
+                {
+                    summary += $"This breakthrough resulted in my {breakthrough.ReplacedFocusCard.Name} being replaced with {breakthrough.UpgradedFocusCard.Name}\n";
+                }
             }
 
             summary += "I had each player destroy one of their cities and its surrounding controlled territory via the use of a nuclear assault\n";

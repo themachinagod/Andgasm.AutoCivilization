@@ -6,13 +6,12 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class MassMediaFocusCardResolver : FocusCardResolverBase, ICultureLevel4FocusCardResolver
     {
-        public MassMediaFocusCardResolver(IBotGameStateService botGameStateService,
-                                            IBotMoveStateService botMoveStateService,
+        public MassMediaFocusCardResolver(IBotMoveStateService botMoveStateService,
                                             ITokenFlipEnemyActionRequest tokenFlipEnemyActionRequest,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botGameStateService, botMoveStateService)
+                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl4;
@@ -24,24 +23,20 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(4, resourcesControlledInformationRequest);
         }
 
-        public override IStepAction GetNextStep()
+        public override void PrimeMoveState(IBotGameStateService botGameStateService)
         {
-            if (_currentStep == -1)
-            {
-                _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-                _botMoveStateService.BaseCityControlTokensToBePlaced = 4;
-                _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
-            }
-            return base.GetNextStep();
+            _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
+            _botMoveStateService.BaseCityControlTokensToBePlaced = 4;
+            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
 
-        public override string Resolve()
+        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
-            _botGameStateService.ControlledSpaces += totalTokensPlaced;
-            _botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
-            _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            _botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
+            botGameStateService.ControlledSpaces += totalTokensPlaced;
+            botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
+            botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
+            botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
             _currentStep = -1;
 
             return BuildMoveSummary();

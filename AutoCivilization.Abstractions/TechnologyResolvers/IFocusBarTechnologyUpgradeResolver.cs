@@ -2,7 +2,7 @@
 {
     public interface IFocusBarTechnologyUpgradeResolver
     {
-        (FocusCardModel OldTech, FocusCardModel NewTech) UpgradeFocusBarsLowestTechLevel(FocusType focusType, FocusLevel levelBarrierHit);
+        (FocusCardModel OldTech, FocusCardModel NewTech) UpgradeFocusBarsLowestTechLevel(FocusLevel levelBarrierHit);
     }
 
 }

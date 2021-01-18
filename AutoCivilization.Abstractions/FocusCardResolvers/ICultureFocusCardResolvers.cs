@@ -1,18 +1,18 @@
 ﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
-    public interface ICultureLevel1FocusCardResolver : IFocusCardResolver
+    public interface ICultureLevel1FocusCardResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface ICultureLevel2FocusCardResolver : IFocusCardResolver
+    public interface ICultureLevel2FocusCardResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface ICultureLevel3FocusCardResolver : IFocusCardResolver
+    public interface ICultureLevel3FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface ICultureLevel4FocusCardResolver : IFocusCardResolver
+    public interface ICultureLevel4FocusCardResolver : IFocusCardMoveResolver
     {
     }
 }

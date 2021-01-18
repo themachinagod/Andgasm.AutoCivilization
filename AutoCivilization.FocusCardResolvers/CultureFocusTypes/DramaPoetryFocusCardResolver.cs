@@ -6,12 +6,11 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class DramaPoetryFocusCardResolver : FocusCardResolverBase, ICultureLevel2FocusCardResolver
     {
-        public DramaPoetryFocusCardResolver(IBotGameStateService botGameStateService,
-                                            IBotMoveStateService botMoveStateService,
+        public DramaPoetryFocusCardResolver(IBotMoveStateService botMoveStateService,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botGameStateService, botMoveStateService)
+                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl2;
@@ -22,25 +21,21 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(3, resourcesControlledInformationRequest);
         }
 
-        public override IStepAction GetNextStep()
+        public override void PrimeMoveState(IBotGameStateService botGameStateService)
         {
-            if (_currentStep == -1)
-            {
-                _botMoveStateService.CultureTokensAvailable = _botGameStateService.CultureTradeTokens;
-                _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
-                _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
-            }
-            return base.GetNextStep();
+            _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
+            _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
+            _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
 
-        public override string Resolve()
+        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
         {
             // TODO: this seems to be the same for all culture focus cards - review as this has a small smell to it
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
-            _botGameStateService.ControlledSpaces += totalTokensPlaced;
-            _botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
-            _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            _botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
+            botGameStateService.ControlledSpaces += totalTokensPlaced;
+            botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
+            botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
+            botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
             _currentStep = -1;
 
             return BuildMoveSummary();

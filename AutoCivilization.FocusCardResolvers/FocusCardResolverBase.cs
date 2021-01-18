@@ -5,9 +5,8 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public abstract class FocusCardResolverBase : IFocusCardResolver
+    public abstract class FocusCardResolverBase : IFocusCardMoveResolver
     {
-        internal readonly IBotGameStateService _botGameStateService;
         internal readonly IBotMoveStateService _botMoveStateService;
 
         internal Dictionary<int, IStepAction> _actionSteps { get; set; }
@@ -23,24 +22,42 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
-        public FocusCardResolverBase(IBotGameStateService botGameStateService,
-                                     IBotMoveStateService botMoveStateService)
+        public FocusCardResolverBase(IBotMoveStateService botMoveStateService)
         {
-            _botGameStateService = botGameStateService;
             _botMoveStateService = botMoveStateService;
             _currentStep = -1;
             _actionSteps = new Dictionary<int, IStepAction>();
         }
 
-        public virtual IStepAction GetNextStep()
+        public virtual void PrimeMoveState(IBotGameStateService botGameStateService)
+        {
+        }
+
+        public (string Message, IReadOnlyCollection<string> ResponseOptions) ProcessMoveStepRequest()
+        {
+            var stepAction = GetNextStep();
+            if (stepAction.ShouldExecuteAction())
+            {
+                return stepAction.ExecuteAction();
+            }
+            return (null, null);
+        }
+
+        public void ProcessMoveStepResponse(string response)
+        {
+            var stepAction = _actionSteps[_currentStep];
+            stepAction.ProcessActionResponse(response);
+        }
+
+        public virtual string UpdateGameStateForMove(IBotGameStateService botGameStateService = null)
+        {
+            return string.Empty;
+        }
+
+        private IStepAction GetNextStep()
         {
             _currentStep++;
             return _actionSteps[_currentStep];
-        }
-
-        public virtual string Resolve()
-        {
-            return string.Empty;
         }
     }
 }

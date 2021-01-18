@@ -1,8 +1,10 @@
-﻿namespace AutoCivilization.Abstractions.TechnologyResolvers
+﻿using System.Collections.Generic;
+
+namespace AutoCivilization.Abstractions.TechnologyResolvers
 {
     public interface ITechnologyBreakthroughResolver
     {
-        (bool HasBreakThrough, FocusType FocusType, FocusLevel FocusLevel) ResolveTechnologyBreakthrough(int techLevelIncrement);
+        IReadOnlyCollection<FocusLevel> ResolveTechnologyBreakthrough(int techLevelIncrement);
     }
 
 }

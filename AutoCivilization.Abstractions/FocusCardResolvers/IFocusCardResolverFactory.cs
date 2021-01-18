@@ -5,6 +5,6 @@ namespace AutoCivilization.Abstractions
 {
     public interface IFocusCardResolverFactory
     {
-        IFocusCardResolver GetFocusCardResolverForFocusCard(FocusCardModel activeFocusCard);
+        IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard);
     }
 }

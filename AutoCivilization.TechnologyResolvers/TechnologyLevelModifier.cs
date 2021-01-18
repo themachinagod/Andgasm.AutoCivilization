@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
+using AutoCivilization.Abstractions.Models;
 using AutoCivilization.Abstractions.TechnologyResolvers;
+using System.Collections.Generic;
 
 namespace AutoCivilization.TechnologyResolvers
 {
@@ -10,8 +12,7 @@ namespace AutoCivilization.TechnologyResolvers
         private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
         public bool EncounteredBreakthrough { get; set; }
-        public FocusCardModel ReplacedFocusCard { get; set; }
-        public FocusCardModel UpgradedFocusCard { get; set; }
+        public List<BreakthroughModel> BreakthroughsEncountered { get; set; } = new List<BreakthroughModel>();
 
         public TechnologyLevelModifier(IBotGameStateService botGameStateService,
                                        ITechnologyBreakthroughResolver technologyBreakthroughResolver,
@@ -24,14 +25,15 @@ namespace AutoCivilization.TechnologyResolvers
 
         public void IncrementTechnologyLevel(int techPoints)
         {
-            // TODO: need to handle max tech level...
             var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(techPoints);
-            if (breakThroughResponse.HasBreakThrough)
+            if (breakThroughResponse != null)
             {
-                EncounteredBreakthrough = true;
-                var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.UpgradeFocusBarsLowestTechLevel(breakThroughResponse.FocusType, breakThroughResponse.FocusLevel);
-                ReplacedFocusCard = techUpgradeResponse.OldTech;
-                UpgradedFocusCard = techUpgradeResponse.NewTech;
+                foreach (var breakthroughLevel in breakThroughResponse)
+                {
+                    EncounteredBreakthrough = true;
+                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.UpgradeFocusBarsLowestTechLevel(breakthroughLevel);
+                    BreakthroughsEncountered.Add(new BreakthroughModel() { ReplacedFocusCard = techUpgradeResponse.OldTech, UpgradedFocusCard = techUpgradeResponse.NewTech });
+                }
             }
             _botGameStateService.TechnologyLevel += techPoints;
             _botGameStateService.ScienceTradeTokens = _botGameStateService.ScienceTradeTokens;

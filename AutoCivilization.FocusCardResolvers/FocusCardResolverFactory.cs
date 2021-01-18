@@ -8,18 +8,18 @@ namespace AutoCivilization.Console
 {
     public class FocusCardResolverFactory : IFocusCardResolverFactory
     {
-        private readonly List<IFocusCardResolver> _resolvers;
+        private readonly List<IFocusCardMoveResolver> _resolvers;
 
         public FocusCardResolverFactory(ICultureLevel1FocusCardResolver cultureLevel1FocusCardResolver,
                                         ICultureLevel2FocusCardResolver cultureLevel2FocusCardResolver,
-                                        ICultureLevel3FocusCardResolver cultureLevel3FocusCardResolver,
+                                        ICultureLevel3FocusCardMoveResolver cultureLevel3FocusCardResolver,
                                         ICultureLevel4FocusCardResolver cultureLevel4FocusCardResolver,
                                         IScienceLevel1FocusCardResolver scienceLevel1FocusCardResolver,
                                         IScienceLevel2FocusCardResolver scienceLevel2FocusCardResolver,
                                         IScienceLevel3FocusCardResolver scienceLevel3FocusCardResolver,
                                         IScienceLevel4FocusCardResolver scienceLevel4FocusCardResolver)
         {
-            _resolvers = new List<IFocusCardResolver>();
+            _resolvers = new List<IFocusCardMoveResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
             _resolvers.Add(cultureLevel2FocusCardResolver);
             _resolvers.Add(cultureLevel3FocusCardResolver);
@@ -30,19 +30,19 @@ namespace AutoCivilization.Console
             _resolvers.Add(scienceLevel4FocusCardResolver);
         }
 
-        public IFocusCardResolver GetFocusCardResolverForFocusCard(FocusCardModel activeFocusCard)
+        public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
             var applicableTypeResolvers = ResolveForFocusType(FocusType.Culture); // activeFocusCard.Type);
             var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl3); // activeFocusCard.Level);
             return applicableResolver;
         }
 
-        private IReadOnlyCollection<IFocusCardResolver> ResolveForFocusType(FocusType focusType)
+        private IReadOnlyCollection<IFocusCardMoveResolver> ResolveForFocusType(FocusType focusType)
         {
             return _resolvers.Where(x => x.FocusType == focusType).ToList();
         }
 
-        private IFocusCardResolver ResolveForFocusLevel(IReadOnlyCollection<IFocusCardResolver> applicableTypeResolvers, FocusLevel focusLevel)
+        private IFocusCardMoveResolver ResolveForFocusLevel(IReadOnlyCollection<IFocusCardMoveResolver> applicableTypeResolvers, FocusLevel focusLevel)
         {
             return applicableTypeResolvers.Single(x => x.FocusLevel == focusLevel);
         }
