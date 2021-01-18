@@ -17,12 +17,14 @@ namespace AutoCivilization.ActionSteps
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
             return (totalTokensPlaced > 0) &&
-                   (_botMoveStateService.BaseTechnologyIncrease < totalTokensPlaced);
+                   (_botMoveStateService.NaturalResourceTokensControlled < totalTokensPlaced);
         }
 
         public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
         {
-            var maxTokensToBePlaced = _botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable;
+            var preplaced = _botMoveStateService.NaturalResourceTokensControlled + _botMoveStateService.NaturalWonderTokensControlled;
+            var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable) - preplaced;
+
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return ("How many natural wonders did I manage to take control of?",
                    options);

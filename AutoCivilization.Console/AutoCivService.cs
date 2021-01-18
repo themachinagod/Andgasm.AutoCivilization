@@ -60,6 +60,7 @@ namespace AutoCivilization.Console
                 var focusCardResolver = _focusCardResolverFactory.GetFocusCardResolverForFocusCard(activeFocusCard);
                 do
                 {
+                    // reset move state
                     var stepAction = focusCardResolver.GetNextStep();
                     if (stepAction.ShouldExecuteAction())
                     {
@@ -77,7 +78,9 @@ namespace AutoCivilization.Console
                     }
                 } while (focusCardResolver.HasMoreSteps);
 
-                focusCardResolver.Resolve();
+                var moveSummary = focusCardResolver.Resolve();
+                WriteConsoleMoveSummary(moveSummary);
+
                 // TODO: update focus bar - shift cards up by 1...
 
                 WriteConsoleAwaitingNextTurn();
@@ -94,6 +97,12 @@ namespace AutoCivilization.Console
         {
             System.Console.WriteLine("Press any key when you have done this...");
             System.Console.ReadKey();
+        }
+
+        private static void WriteConsoleMoveSummary(string summary)
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine(summary);
         }
 
         private static void WriteConsoleAwaitingNextTurn()

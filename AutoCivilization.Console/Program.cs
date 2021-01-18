@@ -46,7 +46,6 @@ namespace AutoCivilization.Console
                     services.AddTransient<ITokenFlipEnemyActionRequest, TokenFlipEnemyActionRequest>();
 
                     // science action steps
-                    services.AddTransient<ITechnologyLevelIncreaseActionRequest, TechnologyLevelIncreaseActionRequest>();
                     services.AddTransient<INukePlayerCityFocusCardActionRequest, NukePlayerCityFocusCardActionRequest>();
                     
                     // culture focus card resolvers

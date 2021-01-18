@@ -23,8 +23,9 @@ namespace AutoCivilization.ActionSteps
 
         public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
         {
-            // TODO: need to account for culture tokens bot has
-            var maxTokensToBePlaced = _botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable;
+            var preplaced = _botMoveStateService.NaturalResourceTokensControlled + _botMoveStateService.NaturalWonderTokensControlled;
+            var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable) - preplaced;
+
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return ("How many natural resources did I manage to take control of?",
                    options);
@@ -32,7 +33,7 @@ namespace AutoCivilization.ActionSteps
 
         public override void ProcessActionResponse(string input)
         {
-            _botMoveStateService.BaseTechnologyIncrease = Convert.ToInt32(input);
+            _botMoveStateService.NaturalResourceTokensControlled = Convert.ToInt32(input);
         }
     }
 }

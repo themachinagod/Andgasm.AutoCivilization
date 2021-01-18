@@ -35,16 +35,25 @@ namespace AutoCivilization.FocusCardResolvers
             return base.GetNextStep();
         }
 
-        public override void Resolve()
+        public override string Resolve()
         {
-            // TODO: this seems to be the same for all culture focus cards - review as this has a small smell to it
-            var cultureTokensIncrement = _botMoveStateService.BaseCityControlTokensToBePlaced - _botMoveStateService.CityControlTokensPlaced;
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
-
             _botGameStateService.ControlledSpaces += totalTokensPlaced;
             _botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
             _botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            _botGameStateService.CultureTradeTokens += cultureTokensIncrement;
+            _botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
+            _currentStep = -1;
+
+            return BuildMoveSummary();
+        }
+
+        private string BuildMoveSummary()
+        {
+            var summary = "To summarise my move I did the following;\n";
+            if (_botMoveStateService.CityControlTokensPlaced > 0) summary += $"I updated my game state to show that I placed {_botMoveStateService.CityControlTokensPlaced} controll tokens next to my cities on the board\n";
+            if (_botMoveStateService.NaturalWonderTokensControlled > 0) summary += $"I updated my game state to show that I controlled {_botMoveStateService.NaturalWonderTokensControlled} natural wonders\n";
+            if (_botMoveStateService.NaturalResourceTokensControlled > 0) summary += $"I updated my game state to show that I controlled {_botMoveStateService.NaturalResourceTokensControlled} natural resources\n";
+            return summary;
         }
     }
 }

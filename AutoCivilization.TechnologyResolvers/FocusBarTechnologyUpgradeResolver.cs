@@ -16,11 +16,12 @@ namespace AutoCivilization.TechnologyResolvers
             _botGameStateService = botGameStateService;
         }
 
-        public void UpgradeFocusBarsLowestTechLevel(FocusType focusType, FocusLevel levelBarrierHit)
+        public (FocusCardModel OldTech, FocusCardModel NewTech) UpgradeFocusBarsLowestTechLevel(FocusType focusType, FocusLevel levelBarrierHit)
         {
             var focusCardToUpgrade = GetFocusCardToUpgrade();
             var upgradeFocusCard = GetUpgradeFocusCard(focusCardToUpgrade.Value, levelBarrierHit);
             _botGameStateService.ActiveFocusBar.ActiveFocusSlots[focusCardToUpgrade.Key] = upgradeFocusCard;
+            return (focusCardToUpgrade.Value, upgradeFocusCard);
         }
 
         private KeyValuePair<int, FocusCardModel> GetFocusCardToUpgrade()

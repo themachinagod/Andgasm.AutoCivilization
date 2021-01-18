@@ -11,17 +11,15 @@ namespace AutoCivilization.FocusCardResolvers
 
         public AstrologyFocusCardResolver(IBotGameStateService botGameStateService,
                                              IBotMoveStateService botMoveStateService,
-                                             ITechnologyLevelModifier technologyLevelModifier,
-                                             ITechnologyLevelIncreaseActionRequest technologyLevelIncreaseActionRequest) : base(botGameStateService, botMoveStateService)
+                                             ITechnologyLevelModifier technologyLevelModifier) : base(botGameStateService, botMoveStateService)
         {
             _technologyLevelModifier = technologyLevelModifier;
 
             FocusType = FocusType.Science;
             FocusLevel = FocusLevel.Lvl1;
-
-            _actionSteps.Add(0, technologyLevelIncreaseActionRequest);
         }
-                public override IStepAction GetNextStep()
+
+        public override IStepAction GetNextStep()
         {
             if (_currentStep == -1)
             {
@@ -30,10 +28,25 @@ namespace AutoCivilization.FocusCardResolvers
             return base.GetNextStep();
         }
 
-        public override void Resolve()
+        public override string Resolve()
         {
             _technologyLevelModifier.IncrementTechnologyLevel(_botMoveStateService.BaseTechnologyIncrease);
             _currentStep = -1;
+
+            return BuildMoveSummary();
+        }
+
+        private string BuildMoveSummary()
+        {
+            var summary = "To summarise my move I did the following;\n";
+            summary += $"I updated my game state to show that I incremented my technology points by {_botMoveStateService.BaseTechnologyIncrease} to {_botGameStateService.TechnologyLevel}\n";
+
+            if (_technologyLevelModifier.EncounteredBreakthrough)
+            {
+                summary += $"As a result of my technology upgrade from x to y I had a technological breakthrough\n";
+                summary += $"This breakthrough resulted in my {_technologyLevelModifier.ReplacedFocusCard.Name} being replaced with {_technologyLevelModifier.UpgradedFocusCard.Name}\n";
+            }
+            return summary;
         }
     }
 }

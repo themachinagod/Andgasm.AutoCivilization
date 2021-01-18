@@ -38,8 +38,9 @@ namespace AutoCivilization.FocusCardResolvers
             return _actionSteps[_currentStep];
         }
 
-        public virtual void Resolve()
+        public virtual string Resolve()
         {
+            return string.Empty;
         }
     }
 }

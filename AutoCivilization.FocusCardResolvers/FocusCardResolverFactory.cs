@@ -13,13 +13,21 @@ namespace AutoCivilization.Console
         public FocusCardResolverFactory(ICultureLevel1FocusCardResolver cultureLevel1FocusCardResolver,
                                         ICultureLevel2FocusCardResolver cultureLevel2FocusCardResolver,
                                         ICultureLevel3FocusCardResolver cultureLevel3FocusCardResolver,
-                                        ICultureLevel4FocusCardResolver cultureLevel4FocusCardResolver)
+                                        ICultureLevel4FocusCardResolver cultureLevel4FocusCardResolver,
+                                        IScienceLevel1FocusCardResolver scienceLevel1FocusCardResolver,
+                                        IScienceLevel2FocusCardResolver scienceLevel2FocusCardResolver,
+                                        IScienceLevel3FocusCardResolver scienceLevel3FocusCardResolver,
+                                        IScienceLevel4FocusCardResolver scienceLevel4FocusCardResolver)
         {
             _resolvers = new List<IFocusCardResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
             _resolvers.Add(cultureLevel2FocusCardResolver);
             _resolvers.Add(cultureLevel3FocusCardResolver);
             _resolvers.Add(cultureLevel4FocusCardResolver);
+            _resolvers.Add(scienceLevel1FocusCardResolver);
+            _resolvers.Add(scienceLevel2FocusCardResolver);
+            _resolvers.Add(scienceLevel3FocusCardResolver);
+            _resolvers.Add(scienceLevel4FocusCardResolver);
         }
 
         public IFocusCardResolver GetFocusCardResolverForFocusCard(FocusCardModel activeFocusCard)

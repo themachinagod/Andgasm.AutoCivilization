@@ -9,6 +9,6 @@ namespace AutoCivilization.Abstractions
         bool HasMoreSteps { get; }
 
         IStepAction GetNextStep();
-        void Resolve();
+        string Resolve();
     }
 }
