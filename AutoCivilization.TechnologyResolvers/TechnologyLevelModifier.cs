@@ -34,6 +34,7 @@ namespace AutoCivilization.TechnologyResolvers
                 UpgradedFocusCard = techUpgradeResponse.NewTech;
             }
             _botGameStateService.TechnologyLevel += techPoints;
+            _botGameStateService.ScienceTradeTokens = _botGameStateService.ScienceTradeTokens;
         }
     }
 }

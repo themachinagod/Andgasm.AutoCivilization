@@ -19,5 +19,8 @@ namespace AutoCivilization.Console
 
         public int BaseTechnologyIncrease { get; set; }
         public int TechnologyLevelIncrease { get; set; }
+
+        public int ScienceTokensAvailable { get; set; }
+        public int ScienceTokensUsedThisTurn { get; set; }
     }
 }

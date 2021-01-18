@@ -5,6 +5,9 @@
         int CultureTokensAvailable { get; set; }
         int CultureTokensUsedThisTurn { get; set; }
 
+        int ScienceTokensAvailable { get; set; }
+        int ScienceTokensUsedThisTurn { get; set; }
+
         int BaseCityControlTokensToBePlaced { get; set; }
         int BaseTerritoryControlTokensToBePlaced { get; set; }
 
