@@ -5,9 +5,9 @@ using System;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class EarlyEmpireFocusCardResolver : FocusCardResolverBase, ICultureLevel1FocusCardResolver
+    public class EarlyEmpireFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel1FocusCardResolver
     {
-        public EarlyEmpireFocusCardResolver(IBotMoveStateService botMoveStateService,
+        public EarlyEmpireFocusCardResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
@@ -22,14 +22,14 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(3, resourcesControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
             _botMoveStateService.BaseCityControlTokensToBePlaced = 2;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             // TODO: this seems to be the same for all culture focus cards - review as this has a small smell to it
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;

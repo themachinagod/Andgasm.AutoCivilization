@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class CivilServiceFocusCardMoveResolver : FocusCardResolverBase, ICultureLevel3FocusCardMoveResolver
+    public class CivilServiceFocusCardMoveResolver : FocusCardMoveResolverBase, ICultureLevel3FocusCardMoveResolver
     {
-        public CivilServiceFocusCardMoveResolver(IBotMoveStateService botMoveStateService,
+        public CivilServiceFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                                  ITokenPlacementCityAdjacentActionRequest placementCityInstructionRequest,
                                                  ITokenPlacementTerritoryAdjacentActionRequest placementTerritoryInstructionRequest,
                                                  ITokenPlacementCityAdjacentInformationRequest placedCityInformationRequest,
@@ -27,14 +27,14 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(5, resourcesControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
             _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
             botGameStateService.ControlledSpaces += totalTokensPlaced;

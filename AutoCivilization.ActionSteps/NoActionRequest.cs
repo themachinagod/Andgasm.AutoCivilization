@@ -6,7 +6,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class NoActionRequest : StepActionBase, INoActionRequest
     {
-        public NoActionRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
+        public NoActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

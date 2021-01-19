@@ -4,7 +4,7 @@ namespace AutoCivilization.Abstractions.TechnologyResolvers
 {
     public interface ITechnologyBreakthroughResolver
     {
-        IReadOnlyCollection<FocusLevel> ResolveTechnologyBreakthrough(int techLevelIncrement);
+        IReadOnlyCollection<FocusLevel> ResolveTechnologyBreakthrough(int currentTechLevel, int techLevelIncrement);
     }
 
 }

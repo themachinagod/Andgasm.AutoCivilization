@@ -3,11 +3,22 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.Abstractions.TechnologyResolvers
 {
-    public interface ITechnologyLevelModifier
+    public interface ITechnologyUpgradeResolver
     {
-        bool EncounteredBreakthrough { get; set; }
-        List<BreakthroughModel> BreakthroughsEncountered { get; set; }
+        TechnologyUpgradeResponse ResolveTechnologyLevelUpdates(int currentTechLevel, int techLevelIncrement, FocusBarModel activeFocusBar);
+    }
 
-        void IncrementTechnologyLevel(int techPoints);
+    public class TechnologyUpgradeResponse
+    {
+        public int NewTechnologyLevelPoints { get; }
+        public FocusBarModel UpgradedFocusBar { get; }
+        public IReadOnlyCollection<BreakthroughModel> EncounteredBreakthroughs { get; }
+
+        public TechnologyUpgradeResponse(int newTechnologyLevel, FocusBarModel focusBarModel, IReadOnlyCollection<BreakthroughModel> encounteredBreakthroughs)
+        {
+            NewTechnologyLevelPoints = newTechnologyLevel;
+            UpgradedFocusBar = focusBarModel;
+            EncounteredBreakthroughs = encounteredBreakthroughs;
+        }
     }
 }

@@ -5,55 +5,59 @@ using AutoCivilization.Abstractions.TechnologyResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class NuclearPowerFocusCardResolver : FocusCardResolverBase, IScienceLevel4FocusCardResolver
+    public class NuclearPowerFocusCardResolver : FocusCardMoveResolverBase, IScienceLevel4FocusCardResolver
     {
-        private readonly ITechnologyLevelModifier _technologyLevelModifier;
+        private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
-        public NuclearPowerFocusCardResolver(IBotMoveStateService botMoveStateService,
-                                             ITechnologyLevelModifier technologyLevelModifier,
-                                             INoActionRequest noActionRequestActionRequest,
+        public NuclearPowerFocusCardResolver(IBotMoveStateCache botMoveStateService,
+                                             ITechnologyUpgradeResolver technologyUpgradeResolver,
                                              INukePlayerCityFocusCardActionRequest nukePlayerCityFocusCardActionRequest) : base(botMoveStateService)
         {
-            _technologyLevelModifier = technologyLevelModifier;
+            _technologyUpgradeResolver = technologyUpgradeResolver;
 
-            _actionSteps.Add(0, noActionRequestActionRequest);
+            _actionSteps.Add(0, nukePlayerCityFocusCardActionRequest);
 
             FocusType = FocusType.Science;
             FocusLevel = FocusLevel.Lvl4;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            // TODO: potential bug here with reset of science tokens
-            //       whereby the bot will use all available tokens on every science turn - when it hits max it wont use any
-            //       this means that the bot will never accumulate science tokens even though it should after max levels hit
-            //       i dont htink that the bot can do anything iwth these tokens after max level is reached so im ignoring it just now...
+            _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
+            _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
+            _botMoveStateService.ScienceTokensAvailable = botGameStateService.ScienceTradeTokens;
+            _botMoveStateService.BaseTechnologyIncrease = 5;
+        }
 
-            var techPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
-            _botMoveStateService.ScienceTokensUsedThisTurn = _botMoveStateService.ScienceTokensAvailable;
-            _technologyLevelModifier.IncrementTechnologyLevel(techPoints);
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        {
+            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
+            var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
+                                                                                               _botMoveStateService.ActiveFocusBarForMove);
+
+            botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
+            botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.ScienceTradeTokens = 0;
             _currentStep = -1;
 
-            return BuildMoveSummary();
+            return BuildMoveSummary(techUpgradeResponse);
         }
 
-        private string BuildMoveSummary()
+        private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
+            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I incremented my technology points by {_botMoveStateService.BaseTechnologyIncrease} to x\n";
-            if (_botMoveStateService.ScienceTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensUsedThisTurn} culture trade tokens I had available to me to facilitate this move\n";
+            summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {upgradeResponse.NewTechnologyLevelPoints}\n";
+            if (_botMoveStateService.ScienceTokensAvailable > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensAvailable} science trade tokens I had available to me to facilitate this move\n";
 
-            if (_technologyLevelModifier.EncounteredBreakthrough)
+            if (upgradeResponse.EncounteredBreakthroughs.Count > 0)
             {
-                summary += $"As a result of my technology upgrade from x to y I had a technological breakthrough\n";
-                foreach (var breakthrough in _technologyLevelModifier.BreakthroughsEncountered)
+                summary += $"As a result of my technology upgrade, I had a technological breakthrough\n";
+                foreach (var breakthrough in upgradeResponse.EncounteredBreakthroughs)
                 {
                     summary += $"This breakthrough resulted in my {breakthrough.ReplacedFocusCard.Name} being replaced with {breakthrough.UpgradedFocusCard.Name}\n";
                 }
             }
-
-            summary += "I had each player destroy one of their cities and its surrounding controlled territory via the use of a nuclear assault\n";
             return summary;
         }
     }

@@ -5,15 +5,15 @@ using AutoCivilization.Abstractions.TechnologyResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class ReplaceablePartsCardResolver : FocusCardResolverBase, IScienceLevel3FocusCardResolver
+    public class ReplaceablePartsCardResolver : FocusCardMoveResolverBase, IScienceLevel3FocusCardResolver
     {
-        private readonly ITechnologyLevelModifier _technologyLevelModifier;
+        private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
-        public ReplaceablePartsCardResolver(IBotMoveStateService botMoveStateService,
+        public ReplaceablePartsCardResolver(IBotMoveStateCache botMoveStateService,
                                              INoActionRequest noActionRequestActionRequest,
-                                             ITechnologyLevelModifier technologyLevelModifier) : base(botMoveStateService)
+                                             ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
         {
-            _technologyLevelModifier = technologyLevelModifier;
+            _technologyUpgradeResolver = technologyUpgradeResolver;
 
             _actionSteps.Add(0, noActionRequestActionRequest);
 
@@ -21,44 +21,46 @@ namespace AutoCivilization.FocusCardResolvers
             FocusLevel = FocusLevel.Lvl3;
         }
 
-        public override void PrimeMoveState(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
+            _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
+            _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
+            _botMoveStateService.ScienceTokensAvailable = botGameStateService.ScienceTradeTokens;
             _botMoveStateService.BaseTechnologyIncrease = 5;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            // TODO: potential bug here with reset of science tokens
-            //       whereby the bot will use all available tokens on every science turn - when it hits max it wont use any
-            //       this means that the bot will never accumulate science tokens even though it should after max levels hit
-            //       i dont htink that the bot can do anything iwth these tokens after max level is reached so im ignoring it just now...
-            // TODO: upgrade the lowest tech level card on focus bar (use highest placed on tie)
+            // TODO: we need to handle the other part of this rule which is to swap out the lowest tech focus card on focus bar
+            //       to be swapped with the next level up
 
-            var techPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
-            _botMoveStateService.ScienceTokensUsedThisTurn = _botMoveStateService.ScienceTokensAvailable;
-            _technologyLevelModifier.IncrementTechnologyLevel(techPoints);
+            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
+            var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
+                                                                                               _botMoveStateService.ActiveFocusBarForMove);
+
+            botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
+            botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.ScienceTradeTokens = 0;
             _currentStep = -1;
 
-            return BuildMoveSummary();
+            return BuildMoveSummary(techUpgradeResponse);
         }
 
-        private string BuildMoveSummary()
+        private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
+            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I incremented my technology points by {_botMoveStateService.BaseTechnologyIncrease} to x\n";
-            if (_botMoveStateService.ScienceTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensUsedThisTurn} culture trade tokens I had available to me to facilitate this move\n";
+            summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {upgradeResponse.NewTechnologyLevelPoints}\n";
+            if (_botMoveStateService.ScienceTokensAvailable > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensAvailable} science trade tokens I had available to me to facilitate this move\n";
 
-            if (_technologyLevelModifier.EncounteredBreakthrough)
+            if (upgradeResponse.EncounteredBreakthroughs.Count > 0)
             {
-                summary += $"As a result of my technology upgrade from x to y I had a technological breakthrough\n";
-                foreach (var breakthrough in _technologyLevelModifier.BreakthroughsEncountered)
+                summary += $"As a result of my technology upgrade, I had a technological breakthrough\n";
+                foreach (var breakthrough in upgradeResponse.EncounteredBreakthroughs)
                 {
                     summary += $"This breakthrough resulted in my {breakthrough.ReplacedFocusCard.Name} being replaced with {breakthrough.UpgradedFocusCard.Name}\n";
                 }
             }
-
-            // TODO: summerise the tech upgrade (out of band)
             return summary;
         }
     }

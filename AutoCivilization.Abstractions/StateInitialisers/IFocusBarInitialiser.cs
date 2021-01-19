@@ -4,6 +4,6 @@ namespace AutoCivilization.Abstractions
 {
     public interface IFocusBarInitialiser
     {
-        void InitialiseFocusBarForBot();
+        FocusBarModel InitialiseFocusBarForBot();
     }
 }

@@ -6,14 +6,10 @@ namespace AutoCivilization.TechnologyResolvers
 {
     public class TechnologyBreakthroughResolver : ITechnologyBreakthroughResolver
     {
-        private readonly IBotGameStateService _botGameStateService;
-
         private Dictionary<int, FocusLevel> LevelBarrierMarkers = new Dictionary<int, FocusLevel>();
 
-        public TechnologyBreakthroughResolver(IBotGameStateService botGameStateService)
+        public TechnologyBreakthroughResolver()
         {
-            _botGameStateService = botGameStateService;
-
             LevelBarrierMarkers.Add(3, FocusLevel.Lvl2);
             LevelBarrierMarkers.Add(6, FocusLevel.Lvl2);
             LevelBarrierMarkers.Add(10, FocusLevel.Lvl3);
@@ -25,11 +21,11 @@ namespace AutoCivilization.TechnologyResolvers
             LevelBarrierMarkers.Add(44, FocusLevel.Lvl4);
         }
 
-        public IReadOnlyCollection<FocusLevel> ResolveTechnologyBreakthrough(int techLevelIncrement)
+        public IReadOnlyCollection<FocusLevel> ResolveTechnologyBreakthrough(int currentTechLevel, int techLevelIncrement)
         {
             var upgradeLevelsHit = new List<FocusLevel>();
-            var currentTech = _botGameStateService.TechnologyLevel;
-            for (int i = currentTech + 1; i <= currentTech + techLevelIncrement; i++)
+            var newTechLevel = currentTechLevel + techLevelIncrement;
+            for (int i = currentTechLevel + 1; i <= newTechLevel; i++)
             {
                 if (LevelBarrierMarkers.ContainsKey(i))
                 {

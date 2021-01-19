@@ -8,7 +8,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementNaturalWondersInformationRequest : StepActionBase, ITokenPlacementNaturalWondersInformationRequest
     {
-        public TokenPlacementNaturalWondersInformationRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementNaturalWondersInformationRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
         }

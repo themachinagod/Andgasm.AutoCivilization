@@ -6,7 +6,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class NukePlayerCityFocusCardActionRequest : StepActionBase, INukePlayerCityFocusCardActionRequest
     {
-        public NukePlayerCityFocusCardActionRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
+        public NukePlayerCityFocusCardActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

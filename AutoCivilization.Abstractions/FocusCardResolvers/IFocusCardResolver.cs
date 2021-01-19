@@ -9,9 +9,9 @@ namespace AutoCivilization.Abstractions
         FocusLevel FocusLevel { get; set; }
         bool HasMoreSteps { get; }
 
-        void PrimeMoveState(IBotGameStateService botGameStateService);
+        void PrimeMoveState(BotGameStateCache botGameStateService);
         (string Message, IReadOnlyCollection<string> ResponseOptions) ProcessMoveStepRequest();
         void ProcessMoveStepResponse(string response);
-        string UpdateGameStateForMove(IBotGameStateService botGameStateService);
+        string UpdateGameStateForMove(BotGameStateCache botGameStateService);
     }
 }

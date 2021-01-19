@@ -2,6 +2,7 @@
 using AutoCivilization.Abstractions.TechnologyResolvers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AutoCivilization.TechnologyResolvers
@@ -9,25 +10,36 @@ namespace AutoCivilization.TechnologyResolvers
     public class FocusBarTechnologyUpgradeResolver : IFocusBarTechnologyUpgradeResolver
     {
         private readonly Random _randomService = new Random();
-        private readonly IBotGameStateService _botGameStateService;
+        private readonly IGlobalGameCache _globalGameCache;
 
-        public FocusBarTechnologyUpgradeResolver(IBotGameStateService botGameStateService)
+        public FocusBarTechnologyUpgradeResolver(IGlobalGameCache globalGameCache)
         {
-            _botGameStateService = botGameStateService;
+            _globalGameCache = globalGameCache;
         }
 
-        public (FocusCardModel OldTech, FocusCardModel NewTech) UpgradeFocusBarsLowestTechLevel(FocusLevel levelBarrierHit)
+        public FocusBarUpgradeResponse RegenerateFocusBarForLowestTechnologyLevelUpgrade(FocusBarModel activeFocusBar, FocusLevel levelBarrierHit)
         {
-            var focusCardToUpgrade = GetFocusCardToUpgrade();
+            var focusCardToUpgrade = GetFocusCardToUpgrade(activeFocusBar);
             var upgradeFocusCard = GetUpgradeFocusCard(focusCardToUpgrade.Value, levelBarrierHit);
-            _botGameStateService.ActiveFocusBar.ActiveFocusSlots[focusCardToUpgrade.Key] = upgradeFocusCard;
-            return (focusCardToUpgrade.Value, upgradeFocusCard);
+            return CreateUpgradedFocusBar(activeFocusBar, focusCardToUpgrade.Value, upgradeFocusCard);
         }
 
-        private KeyValuePair<int, FocusCardModel> GetFocusCardToUpgrade()
+        private FocusBarUpgradeResponse CreateUpgradedFocusBar(FocusBarModel activeFocusBar, FocusCardModel focusCardToUpgrade, FocusCardModel upgradeFocusCard)
         {
-            var lowestTechLevel = _botGameStateService.ActiveFocusBar.ActiveFocusSlots.Min(x => x.Value.Level);
-            var lowestTechFocusCards = _botGameStateService.ActiveFocusBar.ActiveFocusSlots.Where(x => x.Value.Level == lowestTechLevel).ToList();
+            Dictionary<int, FocusCardModel> newFocusBarCards = new Dictionary<int, FocusCardModel>();
+            foreach (var fs in activeFocusBar.ActiveFocusSlots)
+            {
+                if (fs.Value.Name == focusCardToUpgrade.Name) newFocusBarCards.Add(fs.Key, upgradeFocusCard);
+                else newFocusBarCards.Add(fs.Key, fs.Value);
+            }
+            var upgradedFocusBar = new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBarCards));
+            return new FocusBarUpgradeResponse(upgradedFocusBar, focusCardToUpgrade, upgradeFocusCard);
+        }
+
+        private KeyValuePair<int, FocusCardModel> GetFocusCardToUpgrade(FocusBarModel activeFocusBar)
+        {
+            var lowestTechLevel = activeFocusBar.ActiveFocusSlots.Min(x => x.Value.Level);
+            var lowestTechFocusCards = activeFocusBar.ActiveFocusSlots.Where(x => x.Value.Level == lowestTechLevel).ToList();
             var focusCardToUpgrade = lowestTechFocusCards.ElementAt(_randomService.Next(lowestTechFocusCards.Count - 1));
             return focusCardToUpgrade;
         }
@@ -36,12 +48,12 @@ namespace AutoCivilization.TechnologyResolvers
         {
             if (focusCardToUpgrade.Level < levelBarrierHit)
             {
-                return _botGameStateService.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
+                return _globalGameCache.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
                                                                                   x.Level == levelBarrierHit);
             }
             else
             {
-                return _botGameStateService.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
+                return _globalGameCache.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
                                                                                   x.Level == focusCardToUpgrade.Level + 1);
             }
         }

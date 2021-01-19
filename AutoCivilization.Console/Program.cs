@@ -26,13 +26,13 @@ namespace AutoCivilization.Console
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<AutoCivService>();
-                    services.AddTransient<IAutoCivGameService, AutoCivGameService>();
-                    services.AddTransient<IAutoCivMoveService, AutoCivMoveService>();
+                    services.AddTransient<IAutoCivGameClient, AutoCivGameClient>();
+                    services.AddTransient<IAutoCivMoveClient, AutoCivMoveClient>();
                     
                     // state services
-                    services.AddSingleton<IBotGameStateService, BotGameStateService>();
-                    services.AddScoped<IBotMoveStateService, BotMoveStateService>();
-                    
+                    services.AddScoped<IBotMoveStateCache, BotMoveStateCache>();
+                    services.AddSingleton<IGlobalGameCache, GlobalGameCache>();
+
                     // game initialisers
                     services.AddTransient<IFocusCardDeckInitialiser, FocusCardDeckInitialiser>();
                     services.AddTransient<IFocusBarInitialiser, FocusBarInitialiser>();
@@ -65,7 +65,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<IScienceLevel4FocusCardResolver, NuclearPowerFocusCardResolver>();
 
                     // technology resolvers
-                    services.AddTransient<ITechnologyLevelModifier, TechnologyLevelModifier>();
+                    services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
                     services.AddTransient<IFocusBarTechnologyUpgradeResolver, FocusBarTechnologyUpgradeResolver>();
                     services.AddTransient<ITechnologyBreakthroughResolver, TechnologyBreakthroughResolver>();
                 });

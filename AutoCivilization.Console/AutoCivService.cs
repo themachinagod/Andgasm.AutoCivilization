@@ -11,10 +11,10 @@ namespace AutoCivilization.Console
     public class AutoCivService : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IAutoCivGameService _autoCivGameService;
+        private readonly IAutoCivGameClient _autoCivGameService;
 
         public AutoCivService(IServiceScopeFactory serviceScopeFactory,                            
-                              IAutoCivGameService autoCivGameService)
+                              IAutoCivGameClient autoCivGameService)
         {
             _scopeFactory = serviceScopeFactory;
             _autoCivGameService = autoCivGameService;
@@ -29,13 +29,13 @@ namespace AutoCivilization.Console
         {
             await base.StartAsync(stoppingToken);
 
-            await _autoCivGameService.InitialiseNewGame();
+            var gameState = await _autoCivGameService.InitialiseNewGame();
             do
             {
                 using (var moveScope = _scopeFactory.CreateScope())
                 {
-                    var scopedMoveService = moveScope.ServiceProvider.GetRequiredService<IAutoCivMoveService>();
-                    scopedMoveService.ExecuteMoveForActiveFocusCard();
+                    var scopedMoveService = moveScope.ServiceProvider.GetRequiredService<IAutoCivMoveClient>();
+                    scopedMoveService.ExecuteMoveForActiveFocusCard(gameState);
                 }
             } while (true);
         }
@@ -46,42 +46,44 @@ namespace AutoCivilization.Console
         }
     }
 
-    public interface IAutoCivGameService 
+    public interface IAutoCivGameClient 
     {
-        Task InitialiseNewGame();
+        Task<BotGameStateCache> InitialiseNewGame();
     }
 
-    public class AutoCivGameService : IAutoCivGameService
+    public class AutoCivGameClient : IAutoCivGameClient
     {
         private readonly IFocusCardDeckInitialiser _focusCardDeckInitialiser;
         private readonly ILeaderCardInitialiser _leaderCardInitialiser;
         private readonly IFocusBarInitialiser _focusBarInitialiser;
-        private readonly IBotGameStateService _botGameStateService;
+        private readonly IGlobalGameCache _globalGameCache;
 
-        public AutoCivGameService(IBotGameStateService botGameStateService,
-                                  IFocusCardDeckInitialiser focusCardDeckInitialiser,
-                                  ILeaderCardInitialiser leaderCardInitialiser,
-                                  IFocusBarInitialiser focusBarInitialiser)
+        public AutoCivGameClient(IGlobalGameCache globalGameCache,
+                                 IFocusCardDeckInitialiser focusCardDeckInitialiser,
+                                 ILeaderCardInitialiser leaderCardInitialiser,
+                                 IFocusBarInitialiser focusBarInitialiser)
         {
-            _botGameStateService = botGameStateService;
+            _globalGameCache = globalGameCache;
             _focusCardDeckInitialiser = focusCardDeckInitialiser;
             _leaderCardInitialiser = leaderCardInitialiser;
             _focusBarInitialiser = focusBarInitialiser;
         }
 
-        public async Task InitialiseNewGame()
+        public async Task<BotGameStateCache> InitialiseNewGame()
         {
             // TODO: wonder card initialisation for bot
 
             WriteConsoleHeader();
 
-            await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
-            _focusBarInitialiser.InitialiseFocusBarForBot();
-            WriteConsoleInitialiseComplete();
+            var initialFocustCards = await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
+            _globalGameCache.FocusCardsDeck = initialFocustCards;
 
-            await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
-            _focusBarInitialiser.InitialiseFocusBarForBot();
-            WriteConsoleGameStart();
+            var focusBar = _focusBarInitialiser.InitialiseFocusBarForBot();
+            var chosenLeader = await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
+            var gameState = new BotGameStateCache(focusBar, chosenLeader);
+
+            WriteConsoleGameStart(gameState);
+            return gameState;
         }
 
         private void WriteConsoleHeader()
@@ -92,25 +94,15 @@ namespace AutoCivilization.Console
             System.Console.WriteLine();
         }
 
-        private static void WriteConsoleInitialiseComplete()
-        {
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine("#  Focus Deck Initialised   #");
-            System.Console.WriteLine("#  Wonder Deck Initialised  #");
-            System.Console.WriteLine("#  Focus Bar Initialised    #");
-            System.Console.WriteLine("#  Game State Initialised   #");
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine();
-        }
 
-        private void WriteConsoleGameStart()
+        private void WriteConsoleGameStart(BotGameStateCache gameState)
         {
-            System.Console.WriteLine($"Leader Selected: {_botGameStateService.ChosenLeaderCard.Name} : {_botGameStateService.ChosenLeaderCard.Nation}");
-            System.Console.WriteLine($"Focus Bar Slot 1: {_botGameStateService.ActiveFocusBar.FocusSlot1.Name}");
-            System.Console.WriteLine($"Focus Bar Slot 2: {_botGameStateService.ActiveFocusBar.FocusSlot2.Name}");
-            System.Console.WriteLine($"Focus Bar Slot 3: {_botGameStateService.ActiveFocusBar.FocusSlot3.Name}");
-            System.Console.WriteLine($"Focus Bar Slot 4: {_botGameStateService.ActiveFocusBar.FocusSlot4.Name}");
-            System.Console.WriteLine($"Focus Bar Slot 5: {_botGameStateService.ActiveFocusBar.FocusSlot5.Name}");
+            System.Console.WriteLine($"Leader Selected: {gameState.ChosenLeaderCard.Name} : {gameState.ChosenLeaderCard.Nation}");
+            System.Console.WriteLine($"Focus Bar Slot 1: {gameState.ActiveFocusBar.FocusSlot1.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 2: {gameState.ActiveFocusBar.FocusSlot2.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 3: {gameState.ActiveFocusBar.FocusSlot3.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 4: {gameState.ActiveFocusBar.FocusSlot4.Name}");
+            System.Console.WriteLine($"Focus Bar Slot 5: {gameState.ActiveFocusBar.FocusSlot5.Name}");
             System.Console.WriteLine();
             System.Console.WriteLine("Please go ahead and select leaders for all human players and setup the physical game board as normal.");
             System.Console.WriteLine("No need to deal me in, I will manage my own focus cards, focus bar and wonder decks.");
@@ -122,30 +114,26 @@ namespace AutoCivilization.Console
         }
     }
 
-    public interface IAutoCivMoveService 
+    public interface IAutoCivMoveClient 
     {
-        void ExecuteMoveForActiveFocusCard();
+        void ExecuteMoveForActiveFocusCard(BotGameStateCache gameState);
     }
 
-    public class AutoCivMoveService : IAutoCivMoveService
+    public class AutoCivMoveClient : IAutoCivMoveClient
     {
         private readonly IFocusCardResolverFactory _focusCardResolverFactory;
 
-        private readonly IBotGameStateService _botGameStateService;
-
-        public AutoCivMoveService(IFocusCardResolverFactory focusCardResolverFactory,
-                                  IBotGameStateService botGameStateService)
+        public AutoCivMoveClient(IFocusCardResolverFactory focusCardResolverFactory)
         {
-            _botGameStateService = botGameStateService;
             _focusCardResolverFactory = focusCardResolverFactory;
         }
 
-        public void ExecuteMoveForActiveFocusCard()
+        public void ExecuteMoveForActiveFocusCard(BotGameStateCache gameState)
         {
-            WriteConsoleRoundHeader();
-            var focusCardToExecute = _botGameStateService.ActiveFocusBar.ActiveFocusSlot;
+            WriteConsoleRoundHeader(gameState);
+            var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlot;
             var focusCardMoveResolver = _focusCardResolverFactory.GetFocusCardMoveResolver(focusCardToExecute);
-            focusCardMoveResolver.PrimeMoveState(_botGameStateService);
+            focusCardMoveResolver.PrimeMoveState(gameState);
             do
             {
                 if (focusCardMoveResolver.HasMoreSteps) 
@@ -158,13 +146,13 @@ namespace AutoCivilization.Console
                 }
             } while (focusCardMoveResolver.HasMoreSteps);
 
-            var moveSummary = focusCardMoveResolver.UpdateGameStateForMove(_botGameStateService);
+            var moveSummary = focusCardMoveResolver.UpdateGameStateForMove(gameState);
             WriteConsoleMoveSummary(moveSummary);
 
             // TODO: update focus bar - shift cards up by 1...
 
             WriteConsoleAwaitingNextTurn();
-            _botGameStateService.CurrentRoundNumber++;
+            gameState.CurrentRoundNumber++;
         }
 
         private void PromptUser(string msg)
@@ -202,12 +190,12 @@ namespace AutoCivilization.Console
             System.Console.Clear();
         }
 
-        private void WriteConsoleRoundHeader()
+        private void WriteConsoleRoundHeader(BotGameStateCache gameState)
         {
             System.Console.WriteLine();
             System.Console.WriteLine("#############################");
-            System.Console.WriteLine($"# Game {_botGameStateService.GameId}                 #");
-            System.Console.WriteLine($"# Round {_botGameStateService.CurrentRoundNumber}                   #");
+            System.Console.WriteLine($"# Game {gameState.GameId}                 #");
+            System.Console.WriteLine($"# Round {gameState.CurrentRoundNumber}                   #");
             System.Console.WriteLine("#############################");
         }
     }

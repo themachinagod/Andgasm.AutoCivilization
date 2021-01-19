@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.Console
 {
-    public class BotMoveStateService : IBotMoveStateService
+    public class BotMoveStateCache : IBotMoveStateCache
     {
+        public FocusBarModel ActiveFocusBarForMove { get; set; }
+
         public int BaseCityControlTokensToBePlaced { get; set; }
         public int BaseTerritoryControlTokensToBePlaced { get; set; }
         
@@ -22,5 +24,6 @@ namespace AutoCivilization.Console
 
         public int ScienceTokensAvailable { get; set; }
         public int ScienceTokensUsedThisTurn { get; set; }
+        public int StartingTechnologyLevel { get; set; }
     }
 }

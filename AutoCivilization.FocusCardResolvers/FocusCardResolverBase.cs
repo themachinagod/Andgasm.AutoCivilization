@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public abstract class FocusCardResolverBase : IFocusCardMoveResolver
+    public abstract class FocusCardMoveResolverBase : IFocusCardMoveResolver
     {
-        internal readonly IBotMoveStateService _botMoveStateService;
+        internal readonly IBotMoveStateCache _botMoveStateService;
 
         internal Dictionary<int, IStepAction> _actionSteps { get; set; }
         internal int _currentStep { get; set; }
@@ -22,14 +22,14 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
-        public FocusCardResolverBase(IBotMoveStateService botMoveStateService)
+        public FocusCardMoveResolverBase(IBotMoveStateCache botMoveStateService)
         {
             _botMoveStateService = botMoveStateService;
             _currentStep = -1;
             _actionSteps = new Dictionary<int, IStepAction>();
         }
 
-        public virtual void PrimeMoveState(IBotGameStateService botGameStateService)
+        public virtual void PrimeMoveState(BotGameStateCache botGameStateService)
         {
         }
 
@@ -49,7 +49,7 @@ namespace AutoCivilization.FocusCardResolvers
             stepAction.ProcessActionResponse(response);
         }
 
-        public virtual string UpdateGameStateForMove(IBotGameStateService botGameStateService = null)
+        public virtual string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             return string.Empty;
         }

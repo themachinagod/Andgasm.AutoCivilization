@@ -5,38 +5,33 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.TechnologyResolvers
 {
-    public class TechnologyLevelModifier : ITechnologyLevelModifier
+    public class TechnologyUpgradeResolver : ITechnologyUpgradeResolver
     {
-        private readonly IBotGameStateService _botGameStateService;
         private readonly ITechnologyBreakthroughResolver _technologyBreakthroughResolver;
         private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
-        public bool EncounteredBreakthrough { get; set; }
-        public List<BreakthroughModel> BreakthroughsEncountered { get; set; } = new List<BreakthroughModel>();
-
-        public TechnologyLevelModifier(IBotGameStateService botGameStateService,
-                                       ITechnologyBreakthroughResolver technologyBreakthroughResolver,
-                                       IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver)
+        public TechnologyUpgradeResolver(ITechnologyBreakthroughResolver technologyBreakthroughResolver,
+                                         IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver)
         {
-            _botGameStateService = botGameStateService;
             _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
             _technologyBreakthroughResolver = technologyBreakthroughResolver;
         }
 
-        public void IncrementTechnologyLevel(int techPoints)
+        public TechnologyUpgradeResponse ResolveTechnologyLevelUpdates(int currentTechLevel, int techLevelIncrement, FocusBarModel activeFocusBar)
         {
-            var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(techPoints);
+            var encounteredBreakthroughs = new List<BreakthroughModel>();
+            var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
             if (breakThroughResponse != null)
             {
                 foreach (var breakthroughLevel in breakThroughResponse)
                 {
-                    EncounteredBreakthrough = true;
-                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.UpgradeFocusBarsLowestTechLevel(breakthroughLevel);
-                    BreakthroughsEncountered.Add(new BreakthroughModel() { ReplacedFocusCard = techUpgradeResponse.OldTech, UpgradedFocusCard = techUpgradeResponse.NewTech });
+                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarForLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
+                    activeFocusBar = techUpgradeResponse.UpgradedFocusBar;
+                    encounteredBreakthroughs.Add(new BreakthroughModel() { ReplacedFocusCard = techUpgradeResponse.OldTechnology, UpgradedFocusCard = techUpgradeResponse.NewTechnology });
                 }
             }
-            _botGameStateService.TechnologyLevel += techPoints;
-            _botGameStateService.ScienceTradeTokens = _botGameStateService.ScienceTradeTokens;
+            var newTechLevelPoints = currentTechLevel + techLevelIncrement;
+            return new TechnologyUpgradeResponse(newTechLevelPoints, activeFocusBar, encounteredBreakthroughs);
         }
     }
 }

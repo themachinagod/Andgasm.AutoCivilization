@@ -13,21 +13,13 @@ namespace AutoCivilization.Console
     public class LeaderCardInitialiser : ILeaderCardInitialiser
     {
         private readonly Random _randomService = new Random();
-
-        private readonly IBotGameStateService _botGameStateService;
-
         private IReadOnlyCollection<LeaderCardModel> _leaderCardsDeck;
 
-        public LeaderCardInitialiser(IBotGameStateService botGameStateService)
-        {
-            _botGameStateService = botGameStateService;
-        }
-
-        public async Task InitialiseRandomLeaderForBot()
+        public async Task<LeaderCardModel> InitialiseRandomLeaderForBot()
         {
             var dataStream = ReadDataFromResource();
             _leaderCardsDeck = await InitialiseLeaderCardsDeck(dataStream);
-            _botGameStateService.ChosenLeaderCard = ChooseRandomLeader();
+            return ChooseRandomLeader();
         }
 
         private Stream ReadDataFromResource()

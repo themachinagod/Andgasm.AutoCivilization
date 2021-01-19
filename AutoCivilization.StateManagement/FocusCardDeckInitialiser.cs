@@ -11,17 +11,10 @@ namespace AutoCivilization.Console
 {
     public class FocusCardDeckInitialiser : IFocusCardDeckInitialiser
     {
-        private readonly IBotGameStateService _botGameStateService;
-
-        public FocusCardDeckInitialiser(IBotGameStateService botGameStateService)
-        {
-            _botGameStateService = botGameStateService;
-        }
-
-        public async Task InitialiseFocusCardsDeckForBot()
+        public async Task<IReadOnlyCollection<FocusCardModel>> InitialiseFocusCardsDeckForBot()
         {
             var dataStream = ReadDataFromResource();
-            _botGameStateService.FocusCardsDeck = await InitialiseFocusCardsDeck(dataStream);
+            return await InitialiseFocusCardsDeck(dataStream);
         }
 
         private Stream ReadDataFromResource()

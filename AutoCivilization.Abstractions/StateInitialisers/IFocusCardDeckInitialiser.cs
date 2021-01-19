@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoCivilization.Abstractions
 {
     public interface IFocusCardDeckInitialiser
     {
-        Task InitialiseFocusCardsDeckForBot();
+        Task<IReadOnlyCollection<FocusCardModel>> InitialiseFocusCardsDeckForBot();
     }
 }

@@ -6,12 +6,12 @@ namespace AutoCivilization.ActionSteps
 {
     public abstract class StepActionBase : IStepAction
     {
-        internal readonly IBotMoveStateService _botMoveStateService;
+        internal readonly IBotMoveStateCache _botMoveStateService;
 
         public int StepIndex { get; set; }
         public OperationType OperationType { get; set; }
 
-        public StepActionBase(IBotMoveStateService botMoveStateService)
+        public StepActionBase(IBotMoveStateCache botMoveStateService)
         {
             _botMoveStateService = botMoveStateService;
         }

@@ -4,9 +4,9 @@ using AutoCivilization.Abstractions.FocusCardResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class MassMediaFocusCardResolver : FocusCardResolverBase, ICultureLevel4FocusCardResolver
+    public class MassMediaFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel4FocusCardResolver
     {
-        public MassMediaFocusCardResolver(IBotMoveStateService botMoveStateService,
+        public MassMediaFocusCardResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenFlipEnemyActionRequest tokenFlipEnemyActionRequest,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
@@ -23,14 +23,14 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(4, resourcesControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
             _botMoveStateService.BaseCityControlTokensToBePlaced = 4;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
             botGameStateService.ControlledSpaces += totalTokensPlaced;

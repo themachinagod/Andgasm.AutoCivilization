@@ -6,7 +6,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenFlipEnemyActionRequest : StepActionBase, ITokenFlipEnemyActionRequest
     {
-        public TokenFlipEnemyActionRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
+        public TokenFlipEnemyActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

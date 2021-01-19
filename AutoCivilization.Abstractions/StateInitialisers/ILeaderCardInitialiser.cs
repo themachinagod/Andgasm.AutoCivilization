@@ -4,6 +4,6 @@ namespace AutoCivilization.Abstractions
 {
     public interface ILeaderCardInitialiser
     {
-        Task InitialiseRandomLeaderForBot();
+        Task<LeaderCardModel> InitialiseRandomLeaderForBot();
     }
 }

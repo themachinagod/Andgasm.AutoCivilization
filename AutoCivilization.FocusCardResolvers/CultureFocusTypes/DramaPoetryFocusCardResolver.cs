@@ -4,9 +4,9 @@ using AutoCivilization.Abstractions.FocusCardResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class DramaPoetryFocusCardResolver : FocusCardResolverBase, ICultureLevel2FocusCardResolver
+    public class DramaPoetryFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel2FocusCardResolver
     {
-        public DramaPoetryFocusCardResolver(IBotMoveStateService botMoveStateService,
+        public DramaPoetryFocusCardResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
@@ -21,14 +21,14 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(3, resourcesControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(IBotGameStateService botGameStateService)
+        public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
             _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
 
-        public override string UpdateGameStateForMove(IBotGameStateService botGameStateService)
+        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             // TODO: this seems to be the same for all culture focus cards - review as this has a small smell to it
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;

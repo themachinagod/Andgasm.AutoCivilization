@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AutoCivilization.Console
@@ -9,21 +10,21 @@ namespace AutoCivilization.Console
     {
         private readonly Random _randomService = new Random();
 
-        private readonly IBotGameStateService _botGameStateService;
+        private readonly IGlobalGameCache _globalGameCache;
 
-        public FocusBarInitialiser(IBotGameStateService botGameStateService)
+        public FocusBarInitialiser(IGlobalGameCache globalGameCache)
         {
-            _botGameStateService = botGameStateService;
+            _globalGameCache = globalGameCache;
         }
 
-        public void InitialiseFocusBarForBot()
+        public FocusBarModel InitialiseFocusBarForBot()
         {
-            _botGameStateService.ActiveFocusBar = InitialiseFocusBar();
+            return InitialiseFocusBar();
         }
 
         private FocusBarModel InitialiseFocusBar()
         {
-            var cardPool = _botGameStateService.FocusCardsDeck.Where(x => x.Level == FocusLevel.Lvl1).ToList();
+            var cardPool = _globalGameCache.FocusCardsDeck.Where(x => x.Level == FocusLevel.Lvl1).ToList();
             var activeBar = new Dictionary<int, FocusCardModel>();
             for (int slot = 0; slot < 5; slot++)
             {
@@ -31,7 +32,7 @@ namespace AutoCivilization.Console
                 activeBar.Add(slot, cardPool.ElementAt(cardPoolRndIndex));
                 cardPool.RemoveAt(cardPoolRndIndex);
             }
-            return new FocusBarModel(activeBar);
+            return new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(activeBar));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementCityAdjacentInformationRequest : StepActionBase, ITokenPlacementCityAdjacentInformationRequest
     {
-        public TokenPlacementCityAdjacentInformationRequest(IBotMoveStateService botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementCityAdjacentInformationRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
         }
