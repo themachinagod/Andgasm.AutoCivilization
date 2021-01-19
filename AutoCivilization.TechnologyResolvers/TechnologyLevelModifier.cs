@@ -35,7 +35,11 @@ namespace AutoCivilization.TechnologyResolvers
         }
 
         public FocusBarUpgradeResponse ResolveFreeTechnologyUpdate(FocusBarModel activeFocusBar)
-        {            
+        {      
+            // DBr: this wrapper method feels forced : rational was to prevent a new dependency going into the consumer
+            //      as the consumer would already have a dependency on this guy (which already has a dependency on our focusbar guy)
+            //      smells a little bit tho - perhaps we strip this method out and let the consumer have an additonal dependency
+
             return _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar);  
         }
     }
