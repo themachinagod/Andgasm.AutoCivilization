@@ -21,17 +21,22 @@ namespace AutoCivilization.TechnologyResolvers
         {
             var encounteredBreakthroughs = new List<BreakthroughModel>();
             var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
-            if (breakThroughResponse != null)
+            if (breakThroughResponse != null) // TODO: do we have better than null check here to define if no breakthrough??
             {
                 foreach (var breakthroughLevel in breakThroughResponse)
                 {
-                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarForLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
+                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
                     activeFocusBar = techUpgradeResponse.UpgradedFocusBar;
-                    encounteredBreakthroughs.Add(new BreakthroughModel() { ReplacedFocusCard = techUpgradeResponse.OldTechnology, UpgradedFocusCard = techUpgradeResponse.NewTechnology });
+                    encounteredBreakthroughs.Add(new BreakthroughModel(techUpgradeResponse.OldTechnology, techUpgradeResponse.NewTechnology));
                 }
             }
             var newTechLevelPoints = currentTechLevel + techLevelIncrement;
             return new TechnologyUpgradeResponse(newTechLevelPoints, activeFocusBar, encounteredBreakthroughs);
+        }
+
+        public FocusBarUpgradeResponse ResolveFreeTechnologyUpdate(FocusBarModel activeFocusBar)
+        {            
+            return _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar);  
         }
     }
 }

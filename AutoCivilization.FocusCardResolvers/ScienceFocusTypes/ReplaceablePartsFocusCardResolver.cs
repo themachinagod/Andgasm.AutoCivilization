@@ -9,6 +9,9 @@ namespace AutoCivilization.FocusCardResolvers
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
+        private FocusBarUpgradeResponse _freeTechUpgradeResponse;
+        private TechnologyUpgradeResponse _techLevelUpgradeResponse;
+
         public ReplaceablePartsCardResolver(IBotMoveStateCache botMoveStateService,
                                              INoActionStep noActionRequestActionRequest,
                                              ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
@@ -31,32 +34,31 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            // TODO: we need to handle the other part of this rule which is to swap out the lowest tech focus card on focus bar
-            //       to be swapped with the next level up
-
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
+            var freeTechUpgradeFocusBar = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
             var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
-                                                                                               _botMoveStateService.ActiveFocusBarForMove);
+                                                                                               freeTechUpgradeFocusBar.UpgradedFocusBar);
 
             botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
             botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.ScienceTradeTokens = 0;
             _currentStep = -1;
 
-            return BuildMoveSummary(techUpgradeResponse);
+            return BuildMoveSummary();
         }
 
-        private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
+        private string BuildMoveSummary()
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {upgradeResponse.NewTechnologyLevelPoints}\n";
+            summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {_freeTechUpgradeResponse.OldTechnology.Name} to {_freeTechUpgradeResponse.NewTechnology.Name}\n";
+            summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {_techLevelUpgradeResponse.NewTechnologyLevelPoints}\n";
             if (_botMoveStateService.ScienceTokensAvailable > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensAvailable} science trade tokens I had available to me to facilitate this move\n";
 
-            if (upgradeResponse.EncounteredBreakthroughs.Count > 0)
+            if (_techLevelUpgradeResponse.EncounteredBreakthroughs.Count > 0)
             {
                 summary += $"As a result of my technology upgrade, I had a technological breakthrough\n";
-                foreach (var breakthrough in upgradeResponse.EncounteredBreakthroughs)
+                foreach (var breakthrough in _techLevelUpgradeResponse.EncounteredBreakthroughs)
                 {
                     summary += $"This breakthrough resulted in my {breakthrough.ReplacedFocusCard.Name} being replaced with {breakthrough.UpgradedFocusCard.Name}\n";
                 }

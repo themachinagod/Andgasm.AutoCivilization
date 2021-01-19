@@ -6,6 +6,7 @@ namespace AutoCivilization.Abstractions.TechnologyResolvers
     public interface ITechnologyUpgradeResolver
     {
         TechnologyUpgradeResponse ResolveTechnologyLevelUpdates(int currentTechLevel, int techLevelIncrement, FocusBarModel activeFocusBar);
+        FocusBarUpgradeResponse ResolveFreeTechnologyUpdate(FocusBarModel activeFocusBar);
     }
 
     public class TechnologyUpgradeResponse

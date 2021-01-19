@@ -2,7 +2,13 @@
 {
     public class BreakthroughModel
     {
-        public FocusCardModel ReplacedFocusCard { get; set; }
-        public FocusCardModel UpgradedFocusCard { get; set; }
+        public FocusCardModel ReplacedFocusCard { get; }
+        public FocusCardModel UpgradedFocusCard { get; }
+
+        public BreakthroughModel(FocusCardModel replaced, FocusCardModel upgrade)
+        {
+            ReplacedFocusCard = replaced;
+            UpgradedFocusCard = upgrade;
+        }
     }
 }
