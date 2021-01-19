@@ -28,6 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
+            // review smallest pile
             _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
 
@@ -39,6 +40,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
+            // review smallest pile
             _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 1;
 
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
@@ -57,6 +59,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
+            // review smallest pile
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             var summary = "To summarise my move I did the following;\n";
             summary += $"I updated my game state to show that I recieved 1 {_botMoveStateService.SmallestTradeTokenPileType} trade tokens which i may use in the future\n";
@@ -83,6 +86,7 @@ namespace AutoCivilization.FocusCardResolvers
 
     public class SmallestTradeTokenPileResolver : ISmallestTradeTokenPileResolver
     {
+        // review smallest pile
         public FocusType DetermineFocusTypeForSmallestTradeTokenPile(Dictionary<FocusType, int> tradeTokenPiles)
         {
             var smallestPileValue = 0;
