@@ -8,12 +8,12 @@ namespace AutoCivilization.FocusCardResolvers
     public class CivilServiceFocusCardMoveResolver : FocusCardMoveResolverBase, ICultureLevel3FocusCardMoveResolver
     {
         public CivilServiceFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                                 ITokenPlacementCityAdjacentActionRequest placementCityInstructionRequest,
-                                                 ITokenPlacementTerritoryAdjacentActionRequest placementTerritoryInstructionRequest,
-                                                 ITokenPlacementCityAdjacentInformationRequest placedCityInformationRequest,
+                                                 ITokenPlacementCityAdjacentActionRequestStep placementCityInstructionRequest,
+                                                 ITokenPlacementTerritoryAdjacentActionRequestStep placementTerritoryInstructionRequest,
+                                                 ITokenPlacementCityAdjacentInformationRequestStep placedCityInformationRequest,
                                                  ITokenPlacementTerritoryAdjacentInformationRequest placedTerritoryInformationRequest,
-                                                 ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                                 ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
+                                                 ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,
+                                                 ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl3;

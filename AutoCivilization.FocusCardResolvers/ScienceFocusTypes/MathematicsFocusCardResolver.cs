@@ -10,7 +10,7 @@ namespace AutoCivilization.FocusCardResolvers
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
         public MathematicsFocusCardResolver(IBotMoveStateCache botMoveStateService,
-                                             INoActionRequest noActionRequestActionRequest,
+                                             INoActionStep noActionRequestActionRequest,
                                              ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
         {
             _technologyUpgradeResolver = technologyUpgradeResolver;

@@ -4,5 +4,5 @@
     public interface ITechnologyLevelIncreaseActionRequest : IStepAction { }
     public interface ILowestFocusTypeTokenPileIncreaseActionRequest : IStepAction { }
     public interface IUpgradeLowestFocusCardActionRequest : IStepAction { }
-    public interface INukePlayerCityFocusCardActionRequest : IStepAction { }
+    public interface INukePlayerCityFocusCardActionRequestStep : IStepAction { }
 }

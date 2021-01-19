@@ -39,17 +39,17 @@ namespace AutoCivilization.Console
                     services.AddTransient<ILeaderCardInitialiser, LeaderCardInitialiser>();
 
                     // culture action steps
-                    services.AddTransient<ITokenPlacementCityAdjacentActionRequest, TokenPlacementCityAdjacentActionRequest>();
-                    services.AddTransient<ITokenPlacementTerritoryAdjacentActionRequest, TokenPlacementTerritoryAdjacentActionRequest>();
-                    services.AddTransient<ITokenPlacementCityAdjacentInformationRequest, TokenPlacementCityAdjacentInformationRequest>();
+                    services.AddTransient<ITokenPlacementCityAdjacentActionRequestStep, TokenPlacementCityAdjacentActionRequestStep>();
+                    services.AddTransient<ITokenPlacementTerritoryAdjacentActionRequestStep, TokenPlacementTerritoryAdjacentActionRequestStep>();
+                    services.AddTransient<ITokenPlacementCityAdjacentInformationRequestStep, TokenPlacementCityAdjacentInformationRequestStep>();
                     services.AddTransient<ITokenPlacementTerritoryAdjacentInformationRequest, TokenPlacementTerritoryAdjacentInformationRequest>();
-                    services.AddTransient<ITokenPlacementNaturalWondersInformationRequest, TokenPlacementNaturalWondersInformationRequest>();
-                    services.AddTransient<ITokenPlacementNaturalResourcesInformationRequest, TokenPlacementNaturalResourcesInformationRequest>();
-                    services.AddTransient<ITokenFlipEnemyActionRequest, TokenFlipEnemyActionRequest>();
+                    services.AddTransient<ITokenPlacementNaturalWondersInformationRequestStep, TokenPlacementNaturalWondersInformationRequestStep>();
+                    services.AddTransient<ITokenPlacementNaturalResourcesInformationRequestStep, TokenPlacementNaturalResourcesInformationRequestStep>();
+                    services.AddTransient<ITokenFlipEnemyActionRequestStep, TokenFlipEnemyActionRequestStep>();
 
                     // science action steps
-                    services.AddTransient<INukePlayerCityFocusCardActionRequest, NukePlayerCityFocusCardActionRequest>();
-                    services.AddTransient<INoActionRequest, NoActionRequest>();
+                    services.AddTransient<INukePlayerCityFocusCardActionRequestStep, NukePlayerCityFocusCardActionRequestStep>();
+                    services.AddTransient<INoActionStep, NoActionStep>();
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();

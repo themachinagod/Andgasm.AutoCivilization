@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class NukePlayerCityFocusCardActionRequest : StepActionBase, INukePlayerCityFocusCardActionRequest
+    public class NukePlayerCityFocusCardActionRequestStep : StepActionBase, INukePlayerCityFocusCardActionRequestStep
     {
-        public NukePlayerCityFocusCardActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public NukePlayerCityFocusCardActionRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

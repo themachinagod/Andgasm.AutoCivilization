@@ -12,7 +12,7 @@ namespace AutoCivilization.Abstractions.ActionSteps
         void ProcessActionResponse(string input);
     }
 
-    public interface INoActionRequest : IStepAction 
+    public interface INoActionStep : IStepAction 
     {
     }
 }

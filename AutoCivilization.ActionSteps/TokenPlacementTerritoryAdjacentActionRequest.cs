@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenPlacementTerritoryAdjacentActionRequest : StepActionBase, ITokenPlacementTerritoryAdjacentActionRequest
+    public class TokenPlacementTerritoryAdjacentActionRequestStep : StepActionBase, ITokenPlacementTerritoryAdjacentActionRequestStep
     {
-        public TokenPlacementTerritoryAdjacentActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementTerritoryAdjacentActionRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

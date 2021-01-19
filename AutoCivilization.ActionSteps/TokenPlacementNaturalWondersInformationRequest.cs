@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenPlacementNaturalWondersInformationRequest : StepActionBase, ITokenPlacementNaturalWondersInformationRequest
+    public class TokenPlacementNaturalWondersInformationRequestStep : StepActionBase, ITokenPlacementNaturalWondersInformationRequestStep
     {
-        public TokenPlacementNaturalWondersInformationRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementNaturalWondersInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
         }

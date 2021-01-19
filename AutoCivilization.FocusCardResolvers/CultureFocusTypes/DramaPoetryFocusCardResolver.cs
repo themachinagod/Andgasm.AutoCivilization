@@ -7,10 +7,10 @@ namespace AutoCivilization.FocusCardResolvers
     public class DramaPoetryFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel2FocusCardResolver
     {
         public DramaPoetryFocusCardResolver(IBotMoveStateCache botMoveStateService,
-                                            ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
-                                            ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
-                                            ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
+                                            ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
+                                            ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
+                                            ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,
+                                            ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl2;

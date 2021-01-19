@@ -7,11 +7,11 @@ namespace AutoCivilization.FocusCardResolvers
     public class MassMediaFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel4FocusCardResolver
     {
         public MassMediaFocusCardResolver(IBotMoveStateCache botMoveStateService,
-                                            ITokenFlipEnemyActionRequest tokenFlipEnemyActionRequest,
-                                            ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
-                                            ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
-                                            ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
+                                            ITokenFlipEnemyActionRequestStep tokenFlipEnemyActionRequest,
+                                            ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
+                                            ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
+                                            ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,
+                                            ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl4;

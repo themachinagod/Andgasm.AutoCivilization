@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenFlipEnemyActionRequest : StepActionBase, ITokenFlipEnemyActionRequest
+    public class TokenFlipEnemyActionRequestStep : StepActionBase, ITokenFlipEnemyActionRequestStep
     {
-        public TokenFlipEnemyActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenFlipEnemyActionRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

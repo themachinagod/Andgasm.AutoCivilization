@@ -11,7 +11,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public NuclearPowerFocusCardResolver(IBotMoveStateCache botMoveStateService,
                                              ITechnologyUpgradeResolver technologyUpgradeResolver,
-                                             INukePlayerCityFocusCardActionRequest nukePlayerCityFocusCardActionRequest) : base(botMoveStateService)
+                                             INukePlayerCityFocusCardActionRequestStep nukePlayerCityFocusCardActionRequest) : base(botMoveStateService)
         {
             _technologyUpgradeResolver = technologyUpgradeResolver;
 

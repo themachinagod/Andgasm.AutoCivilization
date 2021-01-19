@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class NoActionRequest : StepActionBase, INoActionRequest
+    public class NoActionStep : StepActionBase, INoActionStep
     {
-        public NoActionRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public NoActionStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
         }

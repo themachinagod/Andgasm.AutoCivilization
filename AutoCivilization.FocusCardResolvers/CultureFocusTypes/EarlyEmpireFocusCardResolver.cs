@@ -8,10 +8,10 @@ namespace AutoCivilization.FocusCardResolvers
     public class EarlyEmpireFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel1FocusCardResolver
     {
         public EarlyEmpireFocusCardResolver(IBotMoveStateCache botMoveStateService,
-                                            ITokenPlacementCityAdjacentActionRequest placementInstructionRequest,
-                                            ITokenPlacementCityAdjacentInformationRequest placedInformationRequest,
-                                            ITokenPlacementNaturalWondersInformationRequest wondersControlledInformationRequest,
-                                            ITokenPlacementNaturalResourcesInformationRequest resourcesControlledInformationRequest) : base(botMoveStateService)
+                                            ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
+                                            ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
+                                            ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,
+                                            ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl1;

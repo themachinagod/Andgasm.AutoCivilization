@@ -1,11 +1,11 @@
 ﻿namespace AutoCivilization.Abstractions.ActionSteps
 {
     // below only used in culture resolution... so far!
-    public interface ITokenPlacementCityAdjacentActionRequest : IStepAction { }
-    public interface ITokenPlacementTerritoryAdjacentActionRequest : IStepAction { }
-    public interface ITokenPlacementCityAdjacentInformationRequest : IStepAction { }
+    public interface ITokenPlacementCityAdjacentActionRequestStep : IStepAction { }
+    public interface ITokenPlacementTerritoryAdjacentActionRequestStep : IStepAction { }
+    public interface ITokenPlacementCityAdjacentInformationRequestStep : IStepAction { }
     public interface ITokenPlacementTerritoryAdjacentInformationRequest : IStepAction { }
-    public interface ITokenPlacementNaturalWondersInformationRequest : IStepAction { }
-    public interface ITokenPlacementNaturalResourcesInformationRequest : IStepAction { }
-    public interface ITokenFlipEnemyActionRequest : IStepAction { }
+    public interface ITokenPlacementNaturalWondersInformationRequestStep : IStepAction { }
+    public interface ITokenPlacementNaturalResourcesInformationRequestStep : IStepAction { }
+    public interface ITokenFlipEnemyActionRequestStep : IStepAction { }
 }
