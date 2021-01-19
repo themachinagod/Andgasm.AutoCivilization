@@ -2,7 +2,6 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using System;
-using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -20,8 +19,8 @@ namespace AutoCivilization.FocusCardResolvers
             FocusLevel = FocusLevel.Lvl3;
 
             _actionSteps.Add(0, placementCityInstructionRequest);
-            _actionSteps.Add(1, placementTerritoryInstructionRequest);
-            _actionSteps.Add(2, placedCityInformationRequest);
+            _actionSteps.Add(1, placedCityInformationRequest);
+            _actionSteps.Add(2, placementTerritoryInstructionRequest);
             _actionSteps.Add(3, placedTerritoryInformationRequest);
             _actionSteps.Add(4, wondersControlledInformationRequest);
             _actionSteps.Add(5, resourcesControlledInformationRequest);
@@ -38,7 +37,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var totalTokensPlaced = _botMoveStateService.CityControlTokensPlaced + _botMoveStateService.TerritroyControlTokensPlaced;
             botGameStateService.ControlledSpaces += totalTokensPlaced;
-            botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
+            botGameStateService.ControlledResources += _botMoveStateService.NaturalResourceTokensControlled;
             botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
             botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
             _currentStep = -1;
