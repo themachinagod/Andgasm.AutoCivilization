@@ -25,7 +25,7 @@ namespace AutoCivilization.Console
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<AutoCivService>();
+                    services.AddHostedService<AutoCivClient>();
                     services.AddTransient<IAutoCivGameClient, AutoCivGameClient>();
                     services.AddTransient<IAutoCivMoveClient, AutoCivMoveClient>();
                     

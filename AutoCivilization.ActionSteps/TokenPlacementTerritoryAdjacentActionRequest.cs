@@ -11,9 +11,10 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.ActionRequest;
         }
 
-        public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
+        public override MoveStepActionData ExecuteAction()
         {
-            return ("Please place 1 control tokens on spaces adjacent to any of my friendly territory using the following placement priority rules:\nNatural wonder\nResource token\nVacant barbarian spawn point\nAdjacent to the most cities\nAdjacent to city closest to maturity\nHighest terrain difficulty",
+            var maxPlacements = _botMoveStateService.BaseTerritoryControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable;
+            return new MoveStepActionData($"Please place {maxPlacements} control tokens on spaces adjacent to any of my friendly territory using the following placement priority rules:\nNatural wonder\nResource token\nVacant barbarian spawn point\nAdjacent to the most cities\nAdjacent to city closest to maturity\nHighest terrain difficulty",
                    new List<string>());
         }
     }

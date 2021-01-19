@@ -33,14 +33,14 @@ namespace AutoCivilization.FocusCardResolvers
         {
         }
 
-        public (string Message, IReadOnlyCollection<string> ResponseOptions) ProcessMoveStepRequest()
+        public MoveStepActionData ProcessMoveStepRequest()
         {
             var stepAction = GetNextStep();
             if (stepAction.ShouldExecuteAction())
             {
                 return stepAction.ExecuteAction();
             }
-            return (null, null);
+            return null;
         }
 
         public void ProcessMoveStepResponse(string response)

@@ -8,7 +8,7 @@ namespace AutoCivilization.Abstractions.ActionSteps
         OperationType OperationType { get; set; }
 
         bool ShouldExecuteAction();
-        (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction();
+        MoveStepActionData ExecuteAction();
         void ProcessActionResponse(string input);
     }
 

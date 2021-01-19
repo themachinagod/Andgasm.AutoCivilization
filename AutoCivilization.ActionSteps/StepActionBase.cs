@@ -21,7 +21,7 @@ namespace AutoCivilization.ActionSteps
             return true;
         }
 
-        public abstract (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction();
+        public abstract MoveStepActionData ExecuteAction();
 
         public virtual void ProcessActionResponse(string input)
         {

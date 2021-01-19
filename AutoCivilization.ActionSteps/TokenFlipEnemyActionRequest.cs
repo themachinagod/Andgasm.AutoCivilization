@@ -11,9 +11,9 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.ActionRequest;
         }
 
-        public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
+        public override MoveStepActionData ExecuteAction()
         {
-            return ("For each rival control token adjacent to a friendly space, flip that token to its unreinforced side. If that token was already unreinforced, remove it from the map instead.",
+            return new MoveStepActionData("For each rival control token adjacent to a friendly space, flip that token to its unreinforced side. If that token was already unreinforced, remove it from the board instead.",
                    new List<string>());
         }
     }

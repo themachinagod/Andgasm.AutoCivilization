@@ -13,11 +13,11 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.InformationRequest;
         }
 
-        public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
+        public override MoveStepActionData ExecuteAction()
         {
             var maxControlTokensToBePlaced = _botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable;
             var options = Array.ConvertAll(Enumerable.Range(0, maxControlTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
-            return ("How many control tokens did you manage to place next to my cities on the board?",
+            return new MoveStepActionData("How many control tokens did you manage to place next to my cities on the board?",
                    options);
         }
 

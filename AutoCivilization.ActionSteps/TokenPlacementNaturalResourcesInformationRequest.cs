@@ -21,13 +21,12 @@ namespace AutoCivilization.ActionSteps
                    (_botMoveStateService.NaturalWonderTokensControlled < totalTokensPlaced);
         }
 
-        public override (string Message, IReadOnlyCollection<string> ResponseOptions) ExecuteAction()
+        public override MoveStepActionData ExecuteAction()
         {
             var preplaced = _botMoveStateService.NaturalResourceTokensControlled + _botMoveStateService.NaturalWonderTokensControlled;
             var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable) - preplaced;
-
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
-            return ("How many natural resources did I manage to take control of?",
+            return new MoveStepActionData("How many natural resources did I manage to take control of?",
                    options);
         }
 

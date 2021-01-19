@@ -10,8 +10,20 @@ namespace AutoCivilization.Abstractions
         bool HasMoreSteps { get; }
 
         void PrimeMoveState(BotGameStateCache botGameStateService);
-        (string Message, IReadOnlyCollection<string> ResponseOptions) ProcessMoveStepRequest();
+        MoveStepActionData ProcessMoveStepRequest();
         void ProcessMoveStepResponse(string response);
         string UpdateGameStateForMove(BotGameStateCache botGameStateService);
+    }
+
+    public class MoveStepActionData
+    {
+        public string Message { get; set; }
+        public IReadOnlyCollection<string> ResponseOptions { get; set; }
+
+        public MoveStepActionData(string message, IReadOnlyCollection<string> responseOpts)
+        {
+            Message = message;
+            ResponseOptions = responseOpts;
+        }
     }
 }
