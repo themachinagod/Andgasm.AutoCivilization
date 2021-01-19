@@ -35,12 +35,12 @@ namespace AutoCivilization.FocusCardResolvers
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
-            var freeTechUpgradeFocusBar = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
-            var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
-                                                                                               freeTechUpgradeFocusBar.UpgradedFocusBar);
+            _freeTechUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
+            _techLevelUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
+                                                                                               _freeTechUpgradeResponse.UpgradedFocusBar);
 
-            botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
-            botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
+            botGameStateService.ActiveFocusBar = _techLevelUpgradeResponse.UpgradedFocusBar;
+            botGameStateService.TechnologyLevel = _techLevelUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.ScienceTradeTokens = 0;
             _currentStep = -1;
 
@@ -51,7 +51,11 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.ScienceTokensAvailable;
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {_freeTechUpgradeResponse.OldTechnology.Name} to {_freeTechUpgradeResponse.NewTechnology.Name}\n";
+            if (_freeTechUpgradeResponse.OldTechnology.Name != _freeTechUpgradeResponse.NewTechnology.Name)
+            {
+                summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {_freeTechUpgradeResponse.OldTechnology.Name} to {_freeTechUpgradeResponse.NewTechnology.Name}\n";
+            }
+
             summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {_techLevelUpgradeResponse.NewTechnologyLevelPoints}\n";
             if (_botMoveStateService.ScienceTokensAvailable > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.ScienceTokensAvailable} science trade tokens I had available to me to facilitate this move\n";
 
