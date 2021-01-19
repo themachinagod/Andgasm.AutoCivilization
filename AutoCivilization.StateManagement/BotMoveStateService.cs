@@ -6,6 +6,8 @@ namespace AutoCivilization.Console
     public class BotMoveStateCache : IBotMoveStateCache
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
+        public Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
+        public FocusType SmallestTradeTokenPileType { get; set; }
 
         public int BaseCityControlTokensToBePlaced { get; set; }
         public int BaseTerritoryControlTokensToBePlaced { get; set; }
@@ -16,14 +18,11 @@ namespace AutoCivilization.Console
         public int NaturalWonderTokensControlled { get; set; }
         public int NaturalResourceTokensControlled { get; set; }
 
-        public int CultureTokensAvailable { get; set; }
         public int CultureTokensUsedThisTurn { get; set; }
 
         public int BaseTechnologyIncrease { get; set; }
         public int TechnologyLevelIncrease { get; set; }
 
-        public int ScienceTokensAvailable { get; set; }
-        public int ScienceTokensUsedThisTurn { get; set; }
         public int StartingTechnologyLevel { get; set; }
     }
 }

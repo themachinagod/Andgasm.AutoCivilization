@@ -28,7 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
+            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] = botGameStateService.TradeTokens[FocusType.Culture];
             _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
         }
@@ -39,7 +39,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.ControlledSpaces += totalTokensPlaced;
             botGameStateService.ControlledResources += _botMoveStateService.NaturalResourceTokensControlled;
             botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
+            botGameStateService.TradeTokens[FocusType.Culture] = _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
             _currentStep = -1;
 
             return BuildMoveSummary();
@@ -50,8 +50,8 @@ namespace AutoCivilization.FocusCardResolvers
             var summary = "To summarise my move I did the following;\n";
             if (_botMoveStateService.CityControlTokensPlaced > 0) summary += $"I updated my game state to show that I placed {_botMoveStateService.CityControlTokensPlaced} control tokens next to my cities on the board;\n";
             if (_botMoveStateService.TerritroyControlTokensPlaced > 0) summary += $"I updated my game state to show that I placed {_botMoveStateService.TerritroyControlTokensPlaced} control tokens next to my friendly territory on the board;\n";
-            if (_botMoveStateService.CultureTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.CultureTokensUsedThisTurn} culture trade tokens giving me {_botMoveStateService.CultureTokensAvailable} to use later\n";
-            if (_botMoveStateService.CultureTokensUsedThisTurn < 0) summary += $"I updated my game state to show that I recieved {Math.Abs(_botMoveStateService.CultureTokensUsedThisTurn)} culture trade tokens giving me {_botMoveStateService.CultureTokensAvailable} to use later\n";
+            if (_botMoveStateService.CultureTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.CultureTokensUsedThisTurn} culture trade tokens giving me {_botMoveStateService.TradeTokensAvailable[FocusType.Culture]} to use later\n";
+            if (_botMoveStateService.CultureTokensUsedThisTurn < 0) summary += $"I updated my game state to show that I recieved {Math.Abs(_botMoveStateService.CultureTokensUsedThisTurn)} culture trade tokens giving me {_botMoveStateService.TradeTokensAvailable[FocusType.Culture]} to use later\n";
             if (_botMoveStateService.NaturalWonderTokensControlled > 0) summary += $"I updated my game state to show that I controlled {_botMoveStateService.NaturalWonderTokensControlled} natural wonders\n";
             if (_botMoveStateService.NaturalResourceTokensControlled > 0) summary += $"I updated my game state to show that I controlled {_botMoveStateService.NaturalResourceTokensControlled} natural resources\n";
             return summary;

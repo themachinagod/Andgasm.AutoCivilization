@@ -25,7 +25,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.CultureTokensAvailable = botGameStateService.CultureTradeTokens;
+            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] = botGameStateService.TradeTokens[FocusType.Culture];
             _botMoveStateService.BaseCityControlTokensToBePlaced = 4;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }
@@ -36,7 +36,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.ControlledSpaces += totalTokensPlaced;
             botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
             botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            botGameStateService.CultureTradeTokens = _botMoveStateService.CultureTokensAvailable;
+            botGameStateService.TradeTokens[FocusType.Culture] = _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
             _currentStep = -1;
 
             return BuildMoveSummary();

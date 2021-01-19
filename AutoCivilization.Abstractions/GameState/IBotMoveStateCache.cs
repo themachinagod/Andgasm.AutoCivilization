@@ -1,4 +1,6 @@
-﻿namespace AutoCivilization.Abstractions
+﻿using System.Collections.Generic;
+
+namespace AutoCivilization.Abstractions
 {
     // DBr: currently this guy is mutated during the execution of a move
     //      this essentially provides a cache for the life time of the scope it lives in
@@ -11,10 +13,12 @@
     public interface IBotMoveStateCache
     {
         FocusBarModel ActiveFocusBarForMove { get; set; }
-        int CultureTokensAvailable { get; set; }
+        Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
+
+        //int CultureTokensAvailable { get; set; }
         int CultureTokensUsedThisTurn { get; set; }
 
-        int ScienceTokensAvailable { get; set; }
+        //int ScienceTokensAvailable { get; set; }
 
         int BaseCityControlTokensToBePlaced { get; set; }
         int BaseTerritoryControlTokensToBePlaced { get; set; }
@@ -28,6 +32,8 @@
         int StartingTechnologyLevel { get; set; }
         int BaseTechnologyIncrease { get; set; }
         int TechnologyLevelIncrease { get; set; }
+
+        FocusType SmallestTradeTokenPileType { get; set; }
 
     }
 }

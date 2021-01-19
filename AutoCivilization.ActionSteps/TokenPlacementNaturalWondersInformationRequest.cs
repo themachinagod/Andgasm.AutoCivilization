@@ -22,7 +22,7 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction()
         {
             var preplaced = _botMoveStateService.NaturalResourceTokensControlled + _botMoveStateService.NaturalWonderTokensControlled;
-            var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.CultureTokensAvailable) - preplaced;
+            var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.TradeTokensAvailable[FocusType.Culture]) - preplaced;
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData("How many natural wonders did I manage to take control of?",
                    options);

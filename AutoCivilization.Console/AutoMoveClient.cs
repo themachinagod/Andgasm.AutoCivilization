@@ -42,7 +42,7 @@ namespace AutoCivilization.Console
             // TODO: update focus bar - shift cards up by 1...
 
             WriteConsoleAwaitingNextTurn();
-            gameState.CurrentRoundNumber++;
+            gameState.CurrentRoundNumber++; 
         }
 
         private void PromptUser(string msg)
