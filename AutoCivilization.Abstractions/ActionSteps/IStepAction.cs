@@ -2,6 +2,12 @@
 
 namespace AutoCivilization.Abstractions.ActionSteps
 {
+    public enum OperationType
+    {
+        ActionRequest,
+        InformationRequest
+    }
+
     public interface IStepAction
     {
         int StepIndex { get; set; }

@@ -69,8 +69,9 @@ namespace AutoCivilization.Console
                     services.AddTransient<IFocusBarTechnologyUpgradeResolver, FocusBarTechnologyUpgradeResolver>();
                     services.AddTransient<ITechnologyBreakthroughResolver, TechnologyBreakthroughResolver>();
 
-                    //
+                    // misc resolvers
                     services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
+                    services.AddTransient<IResolveFocusBarEndOfMoveResolver, ResolveFocusBarEndOfMoveResolver>();
                 });
     }
 }

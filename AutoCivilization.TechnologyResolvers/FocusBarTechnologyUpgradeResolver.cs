@@ -68,12 +68,12 @@ namespace AutoCivilization.TechnologyResolvers
             if (focusCardToUpgrade.Level < levelBarrierHit)
             {
                 return _globalGameCache.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
-                                                                                  x.Level == levelBarrierHit);
+                                                                                    x.Level == levelBarrierHit);
             }
             else
             {
                 return _globalGameCache.FocusCardsDeck.First(x => x.Type == focusCardToUpgrade.Type &&
-                                                                                  x.Level == focusCardToUpgrade.Level + 1);
+                                                                                    x.Level == focusCardToUpgrade.Level + 1);
             }
         }
     }

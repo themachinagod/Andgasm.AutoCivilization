@@ -1,5 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AutoCivilization.Console
@@ -12,10 +13,13 @@ namespace AutoCivilization.Console
     public class AutoCivMoveClient : IAutoCivMoveClient
     {
         private readonly IFocusCardResolverFactory _focusCardResolverFactory;
+        IResolveFocusBarEndOfMoveResolver _focusBarEndOfMoveResolver;
 
-        public AutoCivMoveClient(IFocusCardResolverFactory focusCardResolverFactory)
+        public AutoCivMoveClient(IFocusCardResolverFactory focusCardResolverFactory,
+                                 IResolveFocusBarEndOfMoveResolver focusBarEndOfMoveResolver)
         {
             _focusCardResolverFactory = focusCardResolverFactory;
+            _focusBarEndOfMoveResolver = focusBarEndOfMoveResolver;
         }
 
         public void ExecuteMoveForActiveFocusCard(BotGameStateCache gameState)
@@ -39,7 +43,8 @@ namespace AutoCivilization.Console
             var moveSummary = focusCardMoveResolver.UpdateGameStateForMove(gameState);
             WriteConsoleMoveSummary(moveSummary);
 
-            // TODO: update focus bar - shift cards up by 1...
+            gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResolveFocusBarForNextMove(gameState.ActiveFocusBar);
+            // TODO: summarise new focus bar state
 
             WriteConsoleAwaitingNextTurn();
             gameState.CurrentRoundNumber++; 
@@ -87,6 +92,36 @@ namespace AutoCivilization.Console
             System.Console.WriteLine($"# Game {gameState.GameId}                 #");
             System.Console.WriteLine($"# Round {gameState.CurrentRoundNumber}                   #");
             System.Console.WriteLine("#############################");
+            System.Console.WriteLine($"Focus Bar Slot 1: {gameState.ActiveFocusBar.FocusSlot1.Name} ({gameState.ActiveFocusBar.FocusSlot1.Level})");
+            System.Console.WriteLine($"Focus Bar Slot 2: {gameState.ActiveFocusBar.FocusSlot2.Name} ({gameState.ActiveFocusBar.FocusSlot2.Level})");
+            System.Console.WriteLine($"Focus Bar Slot 3: {gameState.ActiveFocusBar.FocusSlot3.Name} ({gameState.ActiveFocusBar.FocusSlot3.Level})");
+            System.Console.WriteLine($"Focus Bar Slot 4: {gameState.ActiveFocusBar.FocusSlot4.Name} ({gameState.ActiveFocusBar.FocusSlot4.Level})");
+            System.Console.WriteLine($"Focus Bar Slot 5: {gameState.ActiveFocusBar.FocusSlot5.Name} ({gameState.ActiveFocusBar.FocusSlot5.Level})");
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine($"Active Move Focus: {gameState.ActiveFocusBar.FocusSlot5.Name}");
         }
     }
+
+    public interface IResolveFocusBarEndOfMoveResolver
+    {
+        FocusBarModel ResolveFocusBarForNextMove(FocusBarModel activeFocusBar);
+    }
+
+    public class ResolveFocusBarEndOfMoveResolver : IResolveFocusBarEndOfMoveResolver
+    {
+        public FocusBarModel ResolveFocusBarForNextMove(FocusBarModel activeFocusBar)
+        {
+            // shift all cards up by 1 with slot resolved this turn being reset to first slot
+
+            var tmpSlot2 = activeFocusBar.FocusSlot1;
+            var newFocusBar = new Dictionary<int, FocusCardModel>();
+            newFocusBar.Add(0, activeFocusBar.FocusSlot5);
+            newFocusBar.Add(4, activeFocusBar.FocusSlot4);
+            newFocusBar.Add(3, activeFocusBar.FocusSlot3);
+            newFocusBar.Add(2, activeFocusBar.FocusSlot2);
+            newFocusBar.Add(1, tmpSlot2);
+            return new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBar));
+        }
+    }
+
 }

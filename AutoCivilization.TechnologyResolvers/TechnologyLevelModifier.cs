@@ -2,6 +2,7 @@
 using AutoCivilization.Abstractions.Models;
 using AutoCivilization.Abstractions.TechnologyResolvers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoCivilization.TechnologyResolvers
 {
@@ -20,14 +21,17 @@ namespace AutoCivilization.TechnologyResolvers
         public TechnologyUpgradeResponse ResolveTechnologyLevelUpdates(int currentTechLevel, int techLevelIncrement, FocusBarModel activeFocusBar)
         {
             var encounteredBreakthroughs = new List<BreakthroughModel>();
-            var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
-            if (breakThroughResponse != null) // TODO: do we have better than null check here to define if no breakthrough??
+            if (!activeFocusBar.ActiveFocusSlots.All(x => x.Value.Level == FocusLevel.Lvl4))
             {
-                foreach (var breakthroughLevel in breakThroughResponse)
+                var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
+                if (breakThroughResponse != null) // TODO: do we have better than null check here to define if no breakthrough??
                 {
-                    var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
-                    activeFocusBar = techUpgradeResponse.UpgradedFocusBar;
-                    encounteredBreakthroughs.Add(new BreakthroughModel(techUpgradeResponse.OldTechnology, techUpgradeResponse.NewTechnology));
+                    foreach (var breakthroughLevel in breakThroughResponse)
+                    {
+                        var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
+                        activeFocusBar = techUpgradeResponse.UpgradedFocusBar;
+                        encounteredBreakthroughs.Add(new BreakthroughModel(techUpgradeResponse.OldTechnology, techUpgradeResponse.NewTechnology));
+                    }
                 }
             }
             var newTechLevelPoints = currentTechLevel + techLevelIncrement;

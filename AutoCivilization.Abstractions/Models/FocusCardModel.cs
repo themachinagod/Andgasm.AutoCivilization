@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoCivilization.Abstractions
+﻿namespace AutoCivilization.Abstractions
 {
     public enum FocusType
     { 
@@ -19,10 +17,20 @@ namespace AutoCivilization.Abstractions
         Lvl4
     }
 
+    // DBr: I think this is a good candidate for the record keyword...
+    //      this should only be initialised at construction and should NEVER change its internal state
+
     public class FocusCardModel
     {
-        public FocusType Type { get; set; }
-        public FocusLevel Level { get; set; }
-        public string Name { get; set; }
+        public FocusType Type { get; }
+        public FocusLevel Level { get; }
+        public string Name { get; }
+
+        public FocusCardModel(FocusType type, FocusLevel level, string name)
+        {
+            Type = type;
+            Level = level;
+            Name = name;
+        }
     }
 }
