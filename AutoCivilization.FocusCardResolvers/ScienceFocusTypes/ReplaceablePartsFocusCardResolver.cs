@@ -54,7 +54,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             var summary = "To summarise my move I did the following;\n";
-            if (_freeTechUpgradeResponse.OldTechnology.Name != _freeTechUpgradeResponse.NewTechnology.Name)
+            if (_freeTechUpgradeResponse.HasUpgraded && _freeTechUpgradeResponse.OldTechnology.Name != _freeTechUpgradeResponse.NewTechnology.Name)
             {
                 summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {_freeTechUpgradeResponse.OldTechnology.Name} to {_freeTechUpgradeResponse.NewTechnology.Name}\n";
             }

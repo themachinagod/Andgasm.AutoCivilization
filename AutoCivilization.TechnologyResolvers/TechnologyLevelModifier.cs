@@ -21,12 +21,12 @@ namespace AutoCivilization.TechnologyResolvers
         public TechnologyUpgradeResponse ResolveTechnologyLevelUpdates(int currentTechLevel, int techLevelIncrement, FocusBarModel activeFocusBar)
         {
             var encounteredBreakthroughs = new List<BreakthroughModel>();
-            if (!activeFocusBar.ActiveFocusSlots.All(x => x.Value.Level == FocusLevel.Lvl4))
+            var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
+            if (breakThroughResponse != null) // TODO: do we have better than null check here to define if no breakthrough??
             {
-                var breakThroughResponse = _technologyBreakthroughResolver.ResolveTechnologyBreakthrough(currentTechLevel, techLevelIncrement);
-                if (breakThroughResponse != null) // TODO: do we have better than null check here to define if no breakthrough??
+                foreach (var breakthroughLevel in breakThroughResponse)
                 {
-                    foreach (var breakthroughLevel in breakThroughResponse)
+                    if (!activeFocusBar.ActiveFocusSlots.All(x => x.Value.Level == FocusLevel.Lvl4))
                     {
                         var techUpgradeResponse = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar, breakthroughLevel);
                         activeFocusBar = techUpgradeResponse.UpgradedFocusBar;
@@ -39,12 +39,16 @@ namespace AutoCivilization.TechnologyResolvers
         }
 
         public FocusBarUpgradeResponse ResolveFreeTechnologyUpdate(FocusBarModel activeFocusBar)
-        {      
+        {
             // DBr: this wrapper method feels forced : rational was to prevent a new dependency going into the consumer
             //      as the consumer would already have a dependency on this guy (which already has a dependency on our focusbar guy)
             //      smells a little bit tho - perhaps we strip this method out and let the consumer have an additonal dependency
 
-            return _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar);  
+            if (!activeFocusBar.ActiveFocusSlots.All(x => x.Value.Level == FocusLevel.Lvl4))
+            {
+                return _focusBarTechnologyUpgradeResolver.RegenerateFocusBarLowestTechnologyLevelUpgrade(activeFocusBar);
+            }
+            return new FocusBarUpgradeResponse(false, activeFocusBar, null, null);
         }
     }
 }

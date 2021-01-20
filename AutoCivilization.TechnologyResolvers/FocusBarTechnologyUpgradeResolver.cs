@@ -52,7 +52,7 @@ namespace AutoCivilization.TechnologyResolvers
                 else newFocusBarCards.Add(fs.Key, fs.Value);
             }
             var upgradedFocusBar = new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBarCards));
-            return new FocusBarUpgradeResponse(upgradedFocusBar, focusCardToUpgrade, upgradeFocusCard);
+            return new FocusBarUpgradeResponse(true, upgradedFocusBar, focusCardToUpgrade, upgradeFocusCard);
         }
 
         private FocusCardModel GetFocusCardToUpgrade(FocusBarModel activeFocusBar)

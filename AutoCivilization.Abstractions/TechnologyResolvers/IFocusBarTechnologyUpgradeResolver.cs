@@ -14,9 +14,11 @@ namespace AutoCivilization.Abstractions.TechnologyResolvers
         public FocusBarModel UpgradedFocusBar { get; }
         public FocusCardModel OldTechnology { get; }
         public FocusCardModel NewTechnology { get; }
+        public bool HasUpgraded { get; }
 
-        public FocusBarUpgradeResponse(FocusBarModel focusBarModel, FocusCardModel oldTech, FocusCardModel newTech)
+        public FocusBarUpgradeResponse(bool hasUpgraded, FocusBarModel focusBarModel, FocusCardModel oldTech, FocusCardModel newTech)
         {
+            HasUpgraded = hasUpgraded;
             UpgradedFocusBar = focusBarModel;
             OldTechnology = oldTech;
             NewTechnology = newTech;
