@@ -2,7 +2,6 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {

@@ -22,8 +22,8 @@ namespace AutoCivilization.Console
 
         public int BaseTechnologyIncrease { get; set; }
         public int TechnologyLevelIncrease { get; set; }
-
         public int StartingTechnologyLevel { get; set; }
+
         public int BaseCaravanMoves { get; set; }
         public CaravanDestinationType CaravanDestinationType { get; set; }
         public string CaravanCityStateDestination { get; set; }

@@ -35,5 +35,7 @@ namespace AutoCivilization.Abstractions
         public int ControlledWonders { get; set; }
 
         public int TechnologyLevel { get; set; }
+        public int SupportedCaravanCount { get; set; }
+        public int CaravansOnRouteCount { get; set; }
     }
 }
