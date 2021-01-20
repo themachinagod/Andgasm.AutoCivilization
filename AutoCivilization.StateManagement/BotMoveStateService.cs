@@ -29,7 +29,7 @@ namespace AutoCivilization.Console
         public string CaravanCityStateDestination { get; set; }
         public string CaravanRivalCityColorDestination { get; set; }
         public int SupportedCaravanCount { get; set; }
-
         public int EconomyTokensUsedThisTurn { get; set; }
+        public int CaravanSpacesMoved { get; set; }
     }
 }

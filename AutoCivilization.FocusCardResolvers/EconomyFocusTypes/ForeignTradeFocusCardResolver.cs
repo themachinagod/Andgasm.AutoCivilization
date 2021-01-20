@@ -8,6 +8,7 @@ namespace AutoCivilization.FocusCardResolvers
     {
         public ForeignTradeFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
+                                            ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                             ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
                                             IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
                                             ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
@@ -16,19 +17,12 @@ namespace AutoCivilization.FocusCardResolvers
             FocusType = FocusType.Economy;
             FocusLevel = FocusLevel.Lvl1;
 
-            // DBr: how do we determine how many trade tokens were used
-            //      i.e. base = 3, tokens = 2 : total 5
-            //      move to closest unvisted city state move cost = 4
-            //      we should only use 1 of our two tokens
-            //      but we currently dont ask the user how many spaces we moved said caravan
-            //      TODO: we need to ask the user how many spaces the caravan was moved
-            //            only need to do this if we are not on route - on route can presume we used all moves and still didnt reach target
-
             _actionSteps.Add(0, caravanMovementActionRequest);
             _actionSteps.Add(1, caravanDestinationInformationRequest);
-            _actionSteps.Add(2, cityStateDestinationInformationRequest);
-            _actionSteps.Add(3, rivalCityDestinationInformationRequest);
-            _actionSteps.Add(4, removeCaravanActionRequest);
+            _actionSteps.Add(2, caravanMovementInformationRequest);
+            _actionSteps.Add(3, cityStateDestinationInformationRequest);
+            _actionSteps.Add(4, rivalCityDestinationInformationRequest);
+            _actionSteps.Add(5, removeCaravanActionRequest);
         }
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
@@ -46,19 +40,23 @@ namespace AutoCivilization.FocusCardResolvers
                 // add chosen city state to gamestates visited city states collection (if not visited)
                 // add city state diplomacy card to city state diplomancy cards collection (if not visited)
                 // add two trade tokens to the focus type associated with chosen city state (always)
+                botGameStateService.CaravansOnRouteCount = 0;
             }
             else if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.RivalCity)
             {
                 // TODO:
                 // add chosen player color to gamestates visited rival cities collection (if not visited)
-                // add players random diplomacy card to rival diplomacy cards collection (if not visited)
+                // add players random diplomacy card (in order stated in rules) to rival diplomacy cards collection (if not visited)
                 // add two trade tokens to the focus type with the smallest pile of trade tokens (always)
+                botGameStateService.CaravansOnRouteCount = 0;
             }
             else
             {
                 botGameStateService.SupportedCaravanCount = _botMoveStateService.SupportedCaravanCount;
                 botGameStateService.CaravansOnRouteCount = _botMoveStateService.SupportedCaravanCount;
             }
+
+            botGameStateService.TradeTokens[FocusType.Economy] = _botMoveStateService.EconomyTokensUsedThisTurn;
             _currentStep = -1;
 
             return BuildMoveSummary(botGameStateService);

@@ -6,5 +6,6 @@
     public interface ICityStateDestinationInformationRequestStep : IStepAction { }
     public interface IRivalCityDestinationInformationRequestStep : IStepAction { }
     public interface IRemoveCaravanActionRequestStep : IStepAction { }
+    public interface ICaravanMovementInformationRequestStep : IStepAction { }
 
 }
