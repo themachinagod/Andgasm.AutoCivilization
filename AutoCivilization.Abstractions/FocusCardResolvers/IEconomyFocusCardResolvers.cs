@@ -1,6 +1,6 @@
 ﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
-    public interface IEconomyLevel1FocusCardResolver : IFocusCardMoveResolver
+    public interface IEconomyLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 

@@ -1,5 +1,12 @@
 ﻿namespace AutoCivilization.Abstractions
 {
+    public enum CaravanDestinationType
+    {
+        OnRoute,
+        CityState,
+        RivalCity
+    }
+
     public class LeaderCardModel
     {
         public string Name { get; }

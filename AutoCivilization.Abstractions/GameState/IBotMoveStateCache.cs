@@ -35,5 +35,9 @@ namespace AutoCivilization.Abstractions
 
         FocusType SmallestTradeTokenPileType { get; set; }
 
+        int BaseCaravanMoves { get; set; }
+        CaravanDestinationType CaravanDestinationType { get; set; }
+        string CaravanCityStateDestination { get; set; }
+        string CaravanRivalCityColorDestination { get; set; }
     }
 }
