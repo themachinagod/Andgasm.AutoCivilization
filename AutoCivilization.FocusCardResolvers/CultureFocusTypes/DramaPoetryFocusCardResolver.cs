@@ -4,9 +4,9 @@ using AutoCivilization.Abstractions.FocusCardResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class DramaPoetryFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel2FocusCardResolver
+    public class DramaPoetryFocusCardMoveResolver : FocusCardMoveResolverBase, ICultureLevel2FocusCardMoveResolver
     {
-        public DramaPoetryFocusCardResolver(IBotMoveStateCache botMoveStateService,
+        public DramaPoetryFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,

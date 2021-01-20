@@ -37,7 +37,8 @@ namespace AutoCivilization.TechnologyResolvers
         {
             if (cardToInspect.Level != FocusLevel.Lvl4)
             {
-                return cardToInspect.Level++;
+                var nextlvl = cardToInspect.Level + 1;
+                return nextlvl;
             }
             return cardToInspect.Level;
         }

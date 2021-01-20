@@ -6,7 +6,7 @@ namespace AutoCivilization.Console
     public class BotMoveStateCache : IBotMoveStateCache
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
-        public Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
+        public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();
         public FocusType SmallestTradeTokenPileType { get; set; }
 
         public int BaseCityControlTokensToBePlaced { get; set; }

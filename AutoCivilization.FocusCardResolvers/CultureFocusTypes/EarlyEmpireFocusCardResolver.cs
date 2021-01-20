@@ -5,9 +5,9 @@ using System;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class EarlyEmpireFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel1FocusCardResolver
+    public class EarlyEmpireFocusCardMoveResolver : FocusCardMoveResolverBase, ICultureLevel1FocusCardMoveResolver
     {
-        public EarlyEmpireFocusCardResolver(IBotMoveStateCache botMoveStateService,
+        public EarlyEmpireFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
                                             ITokenPlacementNaturalWondersInformationRequestStep wondersControlledInformationRequest,

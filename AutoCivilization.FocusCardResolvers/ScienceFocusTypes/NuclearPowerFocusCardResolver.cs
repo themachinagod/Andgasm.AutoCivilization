@@ -2,14 +2,15 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using AutoCivilization.Abstractions.TechnologyResolvers;
+using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class NuclearPowerFocusCardResolver : FocusCardMoveResolverBase, IScienceLevel4FocusCardResolver
+    public class NuclearPowerFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel4FocusCardResolver
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
-        public NuclearPowerFocusCardResolver(IBotMoveStateCache botMoveStateService,
+        public NuclearPowerFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                              ITechnologyUpgradeResolver technologyUpgradeResolver,
                                              INukePlayerCityFocusCardActionRequestStep nukePlayerCityFocusCardActionRequest) : base(botMoveStateService)
         {
@@ -26,7 +27,7 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
 
-            _botMoveStateService.TradeTokensAvailable[FocusType.Science] = botGameStateService.TradeTokens[FocusType.Science];
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
 
             _botMoveStateService.BaseTechnologyIncrease = 5;
         }

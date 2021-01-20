@@ -10,13 +10,13 @@ namespace AutoCivilization.Console
     {
         private readonly List<IFocusCardMoveResolver> _resolvers;
 
-        public FocusCardResolverFactory(ICultureLevel1FocusCardResolver cultureLevel1FocusCardResolver,
-                                        ICultureLevel2FocusCardResolver cultureLevel2FocusCardResolver,
+        public FocusCardResolverFactory(ICultureLevel1FocusCardMoveResolver cultureLevel1FocusCardResolver,
+                                        ICultureLevel2FocusCardMoveResolver cultureLevel2FocusCardResolver,
                                         ICultureLevel3FocusCardMoveResolver cultureLevel3FocusCardResolver,
-                                        ICultureLevel4FocusCardResolver cultureLevel4FocusCardResolver,
+                                        ICultureLevel4FocusCardMoveResolver cultureLevel4FocusCardResolver,
                                         IScienceLevel1FocusCardResolver scienceLevel1FocusCardResolver,
-                                        IScienceLevel2FocusCardResolver scienceLevel2FocusCardResolver,
-                                        IScienceLevel3FocusCardResolver scienceLevel3FocusCardResolver,
+                                        IScienceLevel2FocusCardMoveResolver scienceLevel2FocusCardResolver,
+                                        IScienceLevel3FocusCardMoveResolver scienceLevel3FocusCardResolver,
                                         IScienceLevel4FocusCardResolver scienceLevel4FocusCardResolver)
         {
             _resolvers = new List<IFocusCardMoveResolver>();
@@ -32,7 +32,7 @@ namespace AutoCivilization.Console
 
         public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
-            var applicableTypeResolvers = ResolveForFocusType(FocusType.Culture); // activeFocusCard.Type);
+            var applicableTypeResolvers = ResolveForFocusType(FocusType.Science); // activeFocusCard.Type);
             var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl3); // activeFocusCard.Level);
             return applicableResolver;
         }

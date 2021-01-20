@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class MathematicsFocusCardResolver : FocusCardMoveResolverBase, IScienceLevel2FocusCardResolver
+    public class MathematicsFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel2FocusCardMoveResolver
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
         private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
 
-        public MathematicsFocusCardResolver(IBotMoveStateCache botMoveStateService,
+        public MathematicsFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                              INoActionStep noActionRequestActionRequest,
                                              ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver,
                                              ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
@@ -28,19 +28,17 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            // review smallest pile
             _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
 
-            _botMoveStateService.TradeTokensAvailable[FocusType.Science] = botGameStateService.TradeTokens[FocusType.Science];
-            _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.DetermineFocusTypeForSmallestTradeTokenPile(botGameStateService.TradeTokens);
-            
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
+            _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(botGameStateService.ActiveFocusBar, botGameStateService.TradeTokens);
+
             _botMoveStateService.BaseTechnologyIncrease = 5;
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            // review smallest pile
             _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 1;
 
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
@@ -48,7 +46,6 @@ namespace AutoCivilization.FocusCardResolvers
                                                                                                _botMoveStateService.ActiveFocusBarForMove);
 
             botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
-
             botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.TradeTokens[_botMoveStateService.SmallestTradeTokenPileType] = _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType];
             botGameStateService.TradeTokens[FocusType.Science] = 0;
@@ -59,10 +56,8 @@ namespace AutoCivilization.FocusCardResolvers
 
         private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
-            // review smallest pile
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I recieved 1 {_botMoveStateService.SmallestTradeTokenPileType} trade tokens which i may use in the future\n";
 
             summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {upgradeResponse.NewTechnologyLevelPoints}\n";
             if (_botMoveStateService.TradeTokensAvailable[FocusType.Science] > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.TradeTokensAvailable[FocusType.Science]} science trade tokens I had available to me to facilitate this move\n";
@@ -76,39 +71,6 @@ namespace AutoCivilization.FocusCardResolvers
                 }
             }
             return summary;
-        }
-    }
-
-    public interface ISmallestTradeTokenPileResolver 
-    {
-        FocusType DetermineFocusTypeForSmallestTradeTokenPile(Dictionary<FocusType, int> tradeTokenPiles);
-    }
-
-    public class SmallestTradeTokenPileResolver : ISmallestTradeTokenPileResolver
-    {
-        // review smallest pile
-        public FocusType DetermineFocusTypeForSmallestTradeTokenPile(Dictionary<FocusType, int> tradeTokenPiles)
-        {
-            var smallestPileValue = 0;
-            var smallestPileType = FocusType.Culture;
-            foreach (var tokenPile in tradeTokenPiles)
-            {
-                if (tokenPile.Value >= smallestPileValue)
-                    smallestPileType = tokenPile.Key;
-            }
-            return smallestPileType;
-        }
-
-        public FocusType DetermineFocusTypeForSmallestTradeTokenPileEX(Dictionary<FocusType, int> tradeTokenPiles)
-        {
-            var smallestPileValue = 0;
-            var smallestPileType = FocusType.Culture;
-            foreach (var tokenPile in tradeTokenPiles)
-            {
-                if (tokenPile.Value >= smallestPileValue)
-                    smallestPileType = tokenPile.Key;
-            }
-            return smallestPileType;
         }
     }
 }

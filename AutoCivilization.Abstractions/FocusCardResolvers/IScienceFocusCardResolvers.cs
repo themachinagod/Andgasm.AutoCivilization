@@ -4,11 +4,11 @@
     {
     }
 
-    public interface IScienceLevel2FocusCardResolver : IFocusCardMoveResolver
+    public interface IScienceLevel2FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IScienceLevel3FocusCardResolver : IFocusCardMoveResolver
+    public interface IScienceLevel3FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 

@@ -4,9 +4,9 @@ using AutoCivilization.Abstractions.FocusCardResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class MassMediaFocusCardResolver : FocusCardMoveResolverBase, ICultureLevel4FocusCardResolver
+    public class MassMediaFocusCardMoveResolver : FocusCardMoveResolverBase, ICultureLevel4FocusCardMoveResolver
     {
-        public MassMediaFocusCardResolver(IBotMoveStateCache botMoveStateService,
+        public MassMediaFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ITokenFlipEnemyActionRequestStep tokenFlipEnemyActionRequest,
                                             ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
                                             ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,

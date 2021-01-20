@@ -53,21 +53,24 @@ namespace AutoCivilization.Console
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
-                    services.AddTransient<ICultureLevel1FocusCardResolver, EarlyEmpireFocusCardResolver>();
-                    services.AddTransient<ICultureLevel2FocusCardResolver, DramaPoetryFocusCardResolver>();
+                    services.AddTransient<ICultureLevel1FocusCardMoveResolver, EarlyEmpireFocusCardMoveResolver>();
+                    services.AddTransient<ICultureLevel2FocusCardMoveResolver, DramaPoetryFocusCardMoveResolver>();
                     services.AddTransient<ICultureLevel3FocusCardMoveResolver, CivilServiceFocusCardMoveResolver>();
-                    services.AddTransient<ICultureLevel4FocusCardResolver, MassMediaFocusCardResolver>();
+                    services.AddTransient<ICultureLevel4FocusCardMoveResolver, MassMediaFocusCardMoveResolver>();
 
                     // science focus resolvers
-                    services.AddTransient<IScienceLevel1FocusCardResolver, AstrologyFocusCardResolver>();
-                    services.AddTransient<IScienceLevel2FocusCardResolver, MathematicsFocusCardResolver>();
-                    services.AddTransient<IScienceLevel3FocusCardResolver, ReplaceablePartsCardResolver>();
-                    services.AddTransient<IScienceLevel4FocusCardResolver, NuclearPowerFocusCardResolver>();
+                    services.AddTransient<IScienceLevel1FocusCardResolver, AstrologyFocusCardMoveResolver>();
+                    services.AddTransient<IScienceLevel2FocusCardMoveResolver, MathematicsFocusCardMoveResolver>();
+                    services.AddTransient<IScienceLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
+                    services.AddTransient<IScienceLevel4FocusCardResolver, NuclearPowerFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
                     services.AddTransient<IFocusBarTechnologyUpgradeResolver, FocusBarTechnologyUpgradeResolver>();
                     services.AddTransient<ITechnologyBreakthroughResolver, TechnologyBreakthroughResolver>();
+
+                    //
+                    services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
                 });
     }
 }
