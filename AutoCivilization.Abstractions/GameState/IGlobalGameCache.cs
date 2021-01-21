@@ -8,5 +8,6 @@ namespace AutoCivilization.Abstractions
     public interface IGlobalGameCache
     {
         IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; }
+        IReadOnlyCollection<CityStateModel> CityStates { get; set; }
     }
 }

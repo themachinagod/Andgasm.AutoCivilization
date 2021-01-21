@@ -8,9 +8,14 @@ namespace AutoCivilization.ActionSteps
 {
     public class CityStateDestinationInformationRequestStep : StepActionBase, ICityStateDestinationInformationRequestStep
     {
-        public CityStateDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        private readonly IGlobalGameCache _globalGameCache;
+
+        public CityStateDestinationInformationRequestStep(IGlobalGameCache globalGameCache,
+                                                          IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
+
+            _globalGameCache = globalGameCache;
         }
 
         public override bool ShouldExecuteAction()
@@ -21,33 +26,21 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction()
         {
-            // TODO: we need a list of city states that are active in this game
-            //       currently hard wired for two player game!
+            // TODO: this lists all avilable city states - would be better if we can limit this list:
+            //       to remove already visited city states
+            //       to remove city states that are not in the current game
 
-            var cityStates = new List<string> { "1. Brussels", "2. Carthage", "3. Buenos Ares" };
+            var cityStates = _globalGameCache.CityStates.Select(x => $"{x.Id}. {x.Name}").ToList();
             return new MoveStepActionData("Which city state was arrived at?",
                    cityStates);
         }
 
         public override void ProcessActionResponse(string input)
         {
-            // TODO: just using string to start with - these city states will need to be modelled as they will have associated properties!
-
-            switch (Convert.ToInt32(input))
-            {
-                case 1:
-                    _botMoveStateService.CaravanCityStateDestination = "Brussels";
-                    break;
-                case 2:
-                    _botMoveStateService.CaravanCityStateDestination = "Carthage";
-                    break;
-                case 3:
-                    _botMoveStateService.CaravanCityStateDestination = "Buenos Ares";
-                    break;
-                default:
-                    _botMoveStateService.CaravanCityStateDestination = "Brussels";
-                    break;
-            }
+            var selectedid = Convert.ToInt32(input);
+            var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);
+            _botMoveStateService.CaravanCityStateDestination = citystate;
+            _botMoveStateService.TradeTokensAvailable[citystate.Type] += 2;
         }
     }
 }

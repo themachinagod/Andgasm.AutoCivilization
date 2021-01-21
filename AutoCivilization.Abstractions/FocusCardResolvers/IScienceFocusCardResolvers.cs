@@ -1,6 +1,6 @@
 ﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
-    public interface IScienceLevel1FocusCardResolver : IFocusCardMoveResolver
+    public interface IScienceLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
@@ -12,7 +12,7 @@
     {
     }
 
-    public interface IScienceLevel4FocusCardResolver : IFocusCardMoveResolver
+    public interface IScienceLevel4FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 }

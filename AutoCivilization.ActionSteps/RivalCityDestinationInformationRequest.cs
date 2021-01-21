@@ -8,9 +8,14 @@ namespace AutoCivilization.ActionSteps
 {
     public class RivalCityDestinationInformationRequestStep : StepActionBase, IRivalCityDestinationInformationRequestStep
     {
-        public RivalCityDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
+
+        public RivalCityDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService,
+                                                          ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
+
+            _smallestTradeTokenPileResolver = smallestTradeTokenPileResolver;
         }
 
         public override bool ShouldExecuteAction()
@@ -48,6 +53,9 @@ namespace AutoCivilization.ActionSteps
                     _botMoveStateService.CaravanRivalCityColorDestination = "White";
                     break;
             }
+
+            var smallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(_botMoveStateService.ActiveFocusBarForMove, _botMoveStateService.TradeTokensAvailable);
+            _botMoveStateService.TradeTokensAvailable[smallestTradeTokenPileType] += 2;
         }
     }
 }

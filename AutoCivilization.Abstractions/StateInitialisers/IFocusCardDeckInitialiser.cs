@@ -5,6 +5,6 @@ namespace AutoCivilization.Abstractions
 {
     public interface IFocusCardDeckInitialiser
     {
-        Task<IReadOnlyCollection<FocusCardModel>> InitialiseFocusCardsDeckForBot();
+        Task<IReadOnlyCollection<FocusCardModel>> InitialiseFocusCardsDeck();
     }
 }

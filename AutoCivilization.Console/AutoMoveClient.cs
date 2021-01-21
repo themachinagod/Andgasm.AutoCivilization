@@ -33,10 +33,13 @@ namespace AutoCivilization.Console
                 if (focusCardMoveResolver.HasMoreSteps)
                 {
                     var nextMoveData = focusCardMoveResolver.ProcessMoveStepRequest();
-                    PromptUser(nextMoveData.Message);
+                    if (nextMoveData != null) // DBr: this smells - we return null on should excute and then have to do null check here!!
+                    {
+                        PromptUser(nextMoveData.Message);
 
-                    var response = TakeUserInput(nextMoveData.ResponseOptions.ToList());
-                    focusCardMoveResolver.ProcessMoveStepResponse(response);
+                        var response = TakeUserInput(nextMoveData.ResponseOptions.ToList());
+                        focusCardMoveResolver.ProcessMoveStepResponse(response);
+                    }
                 }
             } while (focusCardMoveResolver.HasMoreSteps);
 

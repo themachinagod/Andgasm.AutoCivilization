@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class NuclearPowerFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel4FocusCardResolver
+    public class NuclearPowerFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel4FocusCardMoveResolver
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 

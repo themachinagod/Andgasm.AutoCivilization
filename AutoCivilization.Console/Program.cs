@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.StateInitialisers;
 using AutoCivilization.Abstractions.TechnologyResolvers;
 using AutoCivilization.ActionSteps;
 using AutoCivilization.FocusCardResolvers;
@@ -37,6 +38,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<IFocusCardDeckInitialiser, FocusCardDeckInitialiser>();
                     services.AddTransient<IFocusBarInitialiser, FocusBarInitialiser>();
                     services.AddTransient<ILeaderCardInitialiser, LeaderCardInitialiser>();
+                    services.AddTransient<ICityStatesInitialiser, CityStatesInitialiser>();
 
                     // culture action steps
                     services.AddTransient<ITokenPlacementCityAdjacentActionRequestStep, TokenPlacementCityAdjacentActionRequestStep>();
@@ -51,6 +53,14 @@ namespace AutoCivilization.Console
                     services.AddTransient<INukePlayerCityFocusCardActionRequestStep, NukePlayerCityFocusCardActionRequestStep>();
                     services.AddTransient<INoActionStep, NoActionStep>();
 
+                    // economy action steps
+                    services.AddTransient<ICaravanDestinationInformationRequestStep, CaravanDestinationInformationRequestStep>();
+                    services.AddTransient<ICaravanMovementActionRequestStep, CaravanMovementActionRequestStep>();
+                    services.AddTransient<ICaravanMovementInformationRequestStep, CaravanMovementInformationRequestStep>();
+                    services.AddTransient<ICityStateDestinationInformationRequestStep, CityStateDestinationInformationRequestStep>();
+                    services.AddTransient<IRivalCityDestinationInformationRequestStep, RivalCityDestinationInformationRequestStep>();
+                    services.AddTransient<IRemoveCaravanActionRequestStep, RemoveCaravanActionRequestStep>();
+
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureLevel1FocusCardMoveResolver, EarlyEmpireFocusCardMoveResolver>();
@@ -59,10 +69,16 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICultureLevel4FocusCardMoveResolver, MassMediaFocusCardMoveResolver>();
 
                     // science focus resolvers
-                    services.AddTransient<IScienceLevel1FocusCardResolver, AstrologyFocusCardMoveResolver>();
+                    services.AddTransient<IScienceLevel1FocusCardMoveResolver, AstrologyFocusCardMoveResolver>();
                     services.AddTransient<IScienceLevel2FocusCardMoveResolver, MathematicsFocusCardMoveResolver>();
                     services.AddTransient<IScienceLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
-                    services.AddTransient<IScienceLevel4FocusCardResolver, NuclearPowerFocusCardMoveResolver>();
+                    services.AddTransient<IScienceLevel4FocusCardMoveResolver, NuclearPowerFocusCardMoveResolver>();
+
+                    // economy focus resolvers
+                    services.AddTransient<IEconomyLevel1FocusCardMoveResolver, ForeignTradeFocusCardMoveResolver>();
+                    //services.AddTransient<IEconomyLevel2FocusCardMoveResolver, MathematicsFocusCardMoveResolver>();
+                    //services.AddTransient<IEconomyLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
+                    //services.AddTransient<IEconomyLevel4FocusCardMoveResolver, NuclearPowerFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();

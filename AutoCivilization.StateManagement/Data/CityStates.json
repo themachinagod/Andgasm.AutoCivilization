@@ -1,0 +1,17 @@
+[
+  {
+    "Id":  1,
+    "Name": "Brussels",
+    "Type": "Culture"
+  },
+  {
+    "Id": 2,
+    "Name": "Carthage",
+    "Type": "Military"
+  },
+  {
+    "Id": 3,
+    "Name": "Buenos Ares",
+    "Type": "Industry"
+  }
+]

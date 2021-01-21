@@ -4,15 +4,15 @@
     {
     }
 
-    public interface IEconomyLevel2FocusCardResolver : IFocusCardMoveResolver
+    public interface IEconomyLevel2FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IEconomyLevel3FocusCardResolver : IFocusCardMoveResolver
+    public interface IEconomyLevel3FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IEconomyLevel4FocusCardResolver : IFocusCardMoveResolver
+    public interface IEconomyLevel4FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoCivilization.Abstractions;
+using AutoCivilization.Abstractions.StateInitialisers;
 using System.Threading.Tasks;
 
 namespace AutoCivilization.Console
@@ -13,14 +14,17 @@ namespace AutoCivilization.Console
         private readonly IFocusCardDeckInitialiser _focusCardDeckInitialiser;
         private readonly ILeaderCardInitialiser _leaderCardInitialiser;
         private readonly IFocusBarInitialiser _focusBarInitialiser;
+        private readonly ICityStatesInitialiser _cityStateInitialiser;
         private readonly IGlobalGameCache _globalGameCache;
 
         public AutoCivGameClient(IGlobalGameCache globalGameCache,
                                  IFocusCardDeckInitialiser focusCardDeckInitialiser,
                                  ILeaderCardInitialiser leaderCardInitialiser,
-                                 IFocusBarInitialiser focusBarInitialiser)
+                                 IFocusBarInitialiser focusBarInitialiser,
+                                 ICityStatesInitialiser cityStateInitialiser)
         {
             _globalGameCache = globalGameCache;
+            _cityStateInitialiser = cityStateInitialiser;
             _focusCardDeckInitialiser = focusCardDeckInitialiser;
             _leaderCardInitialiser = leaderCardInitialiser;
             _focusBarInitialiser = focusBarInitialiser;
@@ -32,8 +36,11 @@ namespace AutoCivilization.Console
 
             WriteConsoleHeader();
 
-            var initialFocustCards = await _focusCardDeckInitialiser.InitialiseFocusCardsDeckForBot();
+            var initialFocustCards = await _focusCardDeckInitialiser.InitialiseFocusCardsDeck();
             _globalGameCache.FocusCardsDeck = initialFocustCards;
+
+            var initialCityStates = await _cityStateInitialiser.InitialiseCityStates();
+            _globalGameCache.CityStates = initialCityStates;
 
             var focusBar = _focusBarInitialiser.InitialiseFocusBarForBot();
             var chosenLeader = await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
@@ -68,6 +75,7 @@ namespace AutoCivilization.Console
             System.Console.WriteLine("All you need to do just now is pick a color for me, place my captial city on the board and set aside my other peices.");
             System.Console.WriteLine("When everything is setup and you are happy to start the game, press any key and I will make the first move.");
             System.Console.ReadKey();
+            System.Console.Clear();
         }
     }
 }

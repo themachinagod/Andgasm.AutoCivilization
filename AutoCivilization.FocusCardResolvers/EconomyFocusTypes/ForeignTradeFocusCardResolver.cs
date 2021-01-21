@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -27,7 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.TradeTokensAvailable[FocusType.Economy] = botGameStateService.TradeTokens[FocusType.Economy];
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _botMoveStateService.BaseCaravanMoves = 3;
             _botMoveStateService.SupportedCaravanCount = 1;
         }
@@ -36,18 +37,20 @@ namespace AutoCivilization.FocusCardResolvers
         {
             if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.CityState)
             {
-                // TODO:
-                // add chosen city state to gamestates visited city states collection (if not visited)
-                // add city state diplomacy card to city state diplomancy cards collection (if not visited)
-                // add two trade tokens to the focus type associated with chosen city state (always)
+                if (!botGameStateService.VisitedCityStates.Contains(_botMoveStateService.CaravanCityStateDestination))
+                {
+                    // TODO: add city state diplomacy card to city state diplomancy cards collection (if not visited)
+                    botGameStateService.VisitedCityStates.Add(_botMoveStateService.CaravanCityStateDestination);
+                }
                 botGameStateService.CaravansOnRouteCount = 0;
             }
             else if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.RivalCity)
             {
-                // TODO:
-                // add chosen player color to gamestates visited rival cities collection (if not visited)
-                // add players random diplomacy card (in order stated in rules) to rival diplomacy cards collection (if not visited)
-                // add two trade tokens to the focus type with the smallest pile of trade tokens (always)
+                if (!botGameStateService.VisitedPlayerColors.Contains(_botMoveStateService.CaravanRivalCityColorDestination))
+                {
+                    // TODO: add players diplomacy card (in order stated in rules) to rival diplomacy cards collection
+                    botGameStateService.VisitedPlayerColors.Add(_botMoveStateService.CaravanRivalCityColorDestination);
+                }
                 botGameStateService.CaravansOnRouteCount = 0;
             }
             else
@@ -56,7 +59,7 @@ namespace AutoCivilization.FocusCardResolvers
                 botGameStateService.CaravansOnRouteCount = _botMoveStateService.SupportedCaravanCount;
             }
 
-            botGameStateService.TradeTokens[FocusType.Economy] = _botMoveStateService.EconomyTokensUsedThisTurn;
+            botGameStateService.TradeTokens = new Dictionary<FocusType, int>(_botMoveStateService.TradeTokensAvailable);
             _currentStep = -1;
 
             return BuildMoveSummary(botGameStateService);

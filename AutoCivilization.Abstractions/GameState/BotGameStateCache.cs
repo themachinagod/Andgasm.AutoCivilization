@@ -21,6 +21,9 @@ namespace AutoCivilization.Abstractions
             TradeTokens.Add(FocusType.Science, 0);
             TradeTokens.Add(FocusType.Industry, 0);
             TradeTokens.Add(FocusType.Military, 0);
+
+            VisitedCityStates = new List<CityStateModel>();
+            VisitedPlayerColors = new List<string>();
         }
 
         public int GameId { get; set; } = 1001;
@@ -29,6 +32,8 @@ namespace AutoCivilization.Abstractions
         public Dictionary<FocusType, int> TradeTokens { get; set; }
         public FocusBarModel ActiveFocusBar { get; set; }
         public LeaderCardModel ChosenLeaderCard { get; set; }
+        public List<CityStateModel> VisitedCityStates { get; set; }
+        public List<string> VisitedPlayerColors { get; set; }
 
         public int ControlledSpaces { get; set; }
         public int ControlledResources { get; set; }

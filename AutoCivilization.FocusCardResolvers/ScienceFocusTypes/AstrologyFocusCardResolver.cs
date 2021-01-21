@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class AstrologyFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel1FocusCardResolver
+    public class AstrologyFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel1FocusCardMoveResolver
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 

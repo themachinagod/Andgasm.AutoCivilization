@@ -37,7 +37,7 @@ namespace AutoCivilization.Abstractions
 
         int BaseCaravanMoves { get; set; }
         CaravanDestinationType CaravanDestinationType { get; set; }
-        string CaravanCityStateDestination { get; set; }
+        CityStateModel CaravanCityStateDestination { get; set; }
         string CaravanRivalCityColorDestination { get; set; }
         int SupportedCaravanCount { get; set; }
         int EconomyTokensUsedThisTurn { get; set; }
