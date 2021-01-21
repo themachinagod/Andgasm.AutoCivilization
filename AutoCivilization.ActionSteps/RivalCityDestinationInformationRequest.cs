@@ -54,8 +54,8 @@ namespace AutoCivilization.ActionSteps
                     break;
             }
 
-            var smallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(_botMoveStateService.ActiveFocusBarForMove, _botMoveStateService.TradeTokensAvailable);
-            _botMoveStateService.TradeTokensAvailable[smallestTradeTokenPileType] += 2;
+            _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(_botMoveStateService.ActiveFocusBarForMove, _botMoveStateService.TradeTokensAvailable);
+            _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 2;
         }
     }
 }

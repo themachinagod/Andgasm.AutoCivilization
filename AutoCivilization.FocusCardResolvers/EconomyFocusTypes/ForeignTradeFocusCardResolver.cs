@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using System;
 using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
@@ -67,12 +68,24 @@ namespace AutoCivilization.FocusCardResolvers
 
         private string BuildMoveSummary(BotGameStateCache gameState)
         {
-            // TODO:
-
             var summary = "To summarise my move I did the following;\n";
-            if (_botMoveStateService.CityControlTokensPlaced > 0) summary += $"I updated my game state to show that have {_botMoveStateService.SupportedCaravanCount} caravans available to me in total;\n";
-            if (_botMoveStateService.CityControlTokensPlaced > 0) summary += $"I updated my game state to show that have {gameState.CaravansOnRouteCount} caravans currently on route to destinations on the board;\n";
+            summary += $"I updated my game state to show that have {_botMoveStateService.SupportedCaravanCount} caravans available to me in total;\n";
+            summary += $"I updated my game state to show that have {gameState.CaravansOnRouteCount} caravans currently on route to destinations on the board;\n";
 
+            if (_botMoveStateService.EconomyTokensUsedThisTurn > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.EconomyTokensUsedThisTurn} economy trade tokens I had available to me to facilitate this move\n";
+            if (_botMoveStateService.EconomyTokensUsedThisTurn < 0) summary += $"I updated my game state to show that I recieved {Math.Abs(_botMoveStateService.EconomyTokensUsedThisTurn)} economy trade tokens which I may use in the future\n";
+
+            if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.CityState)
+            {
+                // TODO: diplomacy cards for city states if first visit
+                summary += $"As a result of visiting {_botMoveStateService.CaravanCityStateDestination.Name}, I updated my game state to show that I recieved 2 {_botMoveStateService.CaravanCityStateDestination.Type} trade tokens which I may use in the future\n";
+            }
+
+            if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.RivalCity)
+            {
+                // TODO: diplomacy cards for city states if first visit
+                summary += $"As a result of visiting the {_botMoveStateService.CaravanRivalCityColorDestination} players city, I updated my game state to show that I recieved 2 {_botMoveStateService.SmallestTradeTokenPileType} trade tokens which I may use in the future\n";
+            }
             return summary;
         }
     }
