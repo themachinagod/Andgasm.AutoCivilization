@@ -76,7 +76,7 @@ namespace AutoCivilization.Console
 
                     // economy focus resolvers
                     services.AddTransient<IEconomyLevel1FocusCardMoveResolver, ForeignTradeFocusCardMoveResolver>();
-                    //services.AddTransient<IEconomyLevel2FocusCardMoveResolver, MathematicsFocusCardMoveResolver>();
+                    services.AddTransient<IEconomyLevel2FocusCardMoveResolver, CurrencyFocusCardMoveResolver>();
                     //services.AddTransient<IEconomyLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
                     //services.AddTransient<IEconomyLevel4FocusCardMoveResolver, NuclearPowerFocusCardMoveResolver>();
 
@@ -88,6 +88,7 @@ namespace AutoCivilization.Console
                     // misc resolvers
                     services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
                     services.AddTransient<IResolveFocusBarEndOfMoveResolver, ResolveFocusBarEndOfMoveResolver>();
+                    services.AddTransient<IOrdinalSuffixResolver, OrdinalSuffixResolver>();
                 });
     }
 }

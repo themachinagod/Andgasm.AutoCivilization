@@ -9,48 +9,53 @@ namespace AutoCivilization.ActionSteps
     public class RivalCityDestinationInformationRequestStep : StepActionBase, IRivalCityDestinationInformationRequestStep
     {
         private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
+        private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
 
         public RivalCityDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService,
+                                                          IOrdinalSuffixResolver ordinalSuffixResolver,
                                                           ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
 
             _smallestTradeTokenPileResolver = smallestTradeTokenPileResolver;
+            _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
         public override bool ShouldExecuteAction()
         {
-            if (_botMoveStateService.CaravanDestinationType == CaravanDestinationType.RivalCity) return true;
+            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
+            if (movingCaravan.CaravanDestinationType == CaravanDestinationType.RivalCity) return true;
             return false;
         }
 
         public override MoveStepActionData ExecuteAction()
         {
             // TODO: we need a players and colors
-            //       currently hard wired for two player game!
+            //       currently hard wired!
 
+            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
             var playerColor = new List<string> { "1. Red", "2. Green", "3. Blue", "4. White" };
-            return new MoveStepActionData("Which rival city color was arrived at?",
+            return new MoveStepActionData($"Which rival city color did my {caravanRef} trade caravan arrive at?",
                    playerColor);
         }
 
         public override void ProcessActionResponse(string input)
         {
             // TODO: just using string to start with
-
+            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
                 case 1:
-                    _botMoveStateService.CaravanRivalCityColorDestination = "Red";
+                    movingCaravan.CaravanRivalCityColorDestination = "Red";
                     break;
                 case 2:
-                    _botMoveStateService.CaravanRivalCityColorDestination = "Green";
+                    movingCaravan.CaravanRivalCityColorDestination = "Green";
                     break;
                 case 3:
-                    _botMoveStateService.CaravanRivalCityColorDestination = "Blue";
+                    movingCaravan.CaravanRivalCityColorDestination = "Blue";
                     break;
                 default:
-                    _botMoveStateService.CaravanRivalCityColorDestination = "White";
+                    movingCaravan.CaravanRivalCityColorDestination = "White";
                     break;
             }
 

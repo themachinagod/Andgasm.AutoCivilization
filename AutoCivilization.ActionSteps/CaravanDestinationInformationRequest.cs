@@ -7,32 +7,39 @@ namespace AutoCivilization.ActionSteps
 {
     public class CaravanDestinationInformationRequestStep : StepActionBase, ICaravanDestinationInformationRequestStep
     {
-        public CaravanDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
+
+        public CaravanDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService,
+                                                        IOrdinalSuffixResolver ordinalSuffixResolver) : base(botMoveStateService)
         {
             OperationType = OperationType.InformationRequest;
+
+            _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
         public override MoveStepActionData ExecuteAction()
         {
-            return new MoveStepActionData("Which type of destination was arrived at?",
+            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
+            return new MoveStepActionData($"Which type of destination did my {caravanRef} trade caravan arrive at?",
                    new List<string>() { "1. On Route", "2. City State", "3. Rival City" });
         }
 
         public override void ProcessActionResponse(string input)
         {
+            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
                 case 1:
-                    _botMoveStateService.CaravanDestinationType = CaravanDestinationType.OnRoute;
+                    movingCaravan.CaravanDestinationType = CaravanDestinationType.OnRoute;
                     break;
                 case 2:
-                    _botMoveStateService.CaravanDestinationType = CaravanDestinationType.CityState;
+                    movingCaravan.CaravanDestinationType = CaravanDestinationType.CityState;
                     break;
                 case 3:
-                    _botMoveStateService.CaravanDestinationType = CaravanDestinationType.RivalCity;
+                    movingCaravan.CaravanDestinationType = CaravanDestinationType.RivalCity;
                     break;
                 default:
-                    _botMoveStateService.CaravanDestinationType = CaravanDestinationType.OnRoute;
+                    movingCaravan.CaravanDestinationType = CaravanDestinationType.OnRoute;
                     break;
             }
         }

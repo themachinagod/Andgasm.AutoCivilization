@@ -71,7 +71,7 @@ namespace AutoCivilization.Console
             System.Console.WriteLine("Please go ahead and select leaders for all human players and setup the physical game board as normal.");
             System.Console.WriteLine("No need to deal me in, I will manage my own focus cards, focus bar, wonder decks, technology upgrades and trade tokens.");
             System.Console.WriteLine("If I need any physical interaction with the board, I will ask you to do this for me.");
-            System.Console.WriteLine("If I need any information about moves that were made I will ask you some simple questions.");
+            System.Console.WriteLine("If I need any information about moves that were made I will ask some simple questions.");
             System.Console.WriteLine("All you need to do just now is pick a color for me, place my captial city on the board and set aside my other peices.");
             System.Console.WriteLine("When everything is setup and you are happy to start the game, press any key and I will make the first move.");
             System.Console.ReadKey();

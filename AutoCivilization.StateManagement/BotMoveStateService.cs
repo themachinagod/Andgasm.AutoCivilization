@@ -25,11 +25,9 @@ namespace AutoCivilization.Console
         public int StartingTechnologyLevel { get; set; }
 
         public int BaseCaravanMoves { get; set; }
-        public CaravanDestinationType CaravanDestinationType { get; set; }
-        public CityStateModel CaravanCityStateDestination { get; set; }
-        public string CaravanRivalCityColorDestination { get; set; }
         public int SupportedCaravanCount { get; set; }
         public int EconomyTokensUsedThisTurn { get; set; }
-        public int CaravanSpacesMoved { get; set; }
+        public int CurrentCaravanIdToMove { get; set; }
+        public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
     }
 }

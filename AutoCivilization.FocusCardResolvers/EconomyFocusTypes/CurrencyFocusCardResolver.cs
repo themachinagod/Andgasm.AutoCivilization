@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class ForeignTradeFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel1FocusCardMoveResolver
+    public class CurrencyFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel2FocusCardMoveResolver
     {
-        public ForeignTradeFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
+        public CurrencyFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                             ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                             ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
@@ -17,22 +17,27 @@ namespace AutoCivilization.FocusCardResolvers
                                             IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Economy;
-            FocusLevel = FocusLevel.Lvl1;
+            FocusLevel = FocusLevel.Lvl2;
 
-            _actionSteps.Add(0, caravanMovementActionRequest);
-            _actionSteps.Add(1, caravanDestinationInformationRequest);
-            _actionSteps.Add(2, caravanMovementInformationRequest);
-            _actionSteps.Add(3, cityStateDestinationInformationRequest);
-            _actionSteps.Add(4, rivalCityDestinationInformationRequest);
-            _actionSteps.Add(5, removeCaravanActionRequest);
+            var loopSeed = 0;
+            for (var tradecaravan = 0; tradecaravan < 2; tradecaravan++)
+            {
+                _actionSteps.Add(loopSeed, caravanMovementActionRequest);
+                _actionSteps.Add(loopSeed + 1, caravanDestinationInformationRequest);
+                _actionSteps.Add(loopSeed + 2, caravanMovementInformationRequest);
+                _actionSteps.Add(loopSeed + 3, cityStateDestinationInformationRequest);
+                _actionSteps.Add(loopSeed + 4, rivalCityDestinationInformationRequest);
+                _actionSteps.Add(loopSeed + 5, removeCaravanActionRequest);
+                loopSeed = _actionSteps.Count;
+            }
         }
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
-            _botMoveStateService.BaseCaravanMoves = 3;
-            _botMoveStateService.SupportedCaravanCount = 1;
+            _botMoveStateService.BaseCaravanMoves = 4;
+            _botMoveStateService.SupportedCaravanCount = 2;
 
             for (int tc = 0; tc < _botMoveStateService.SupportedCaravanCount; tc++)
             {

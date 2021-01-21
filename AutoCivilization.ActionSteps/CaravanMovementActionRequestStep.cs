@@ -6,9 +6,14 @@ namespace AutoCivilization.ActionSteps
 {
     public class CaravanMovementActionRequestStep : StepActionBase, ICaravanMovementActionRequestStep
     {
-        public CaravanMovementActionRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
+
+        public CaravanMovementActionRequestStep(IBotMoveStateCache botMoveStateService,
+                                                IOrdinalSuffixResolver ordinalSuffixResolver) : base(botMoveStateService)
         {
             OperationType = OperationType.ActionRequest;
+
+            _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
         public override MoveStepActionData ExecuteAction()
@@ -20,8 +25,10 @@ namespace AutoCivilization.ActionSteps
             //              for rival city: red...
             //              for visited city state: buenos ares...
 
+            if (_botMoveStateService.CurrentCaravanIdToMove < _botMoveStateService.SupportedCaravanCount) _botMoveStateService.CurrentCaravanIdToMove++;
+            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
             var maxSpacesMoved = _botMoveStateService.BaseCaravanMoves + _botMoveStateService.TradeTokensAvailable[FocusType.Economy];
-            return new MoveStepActionData($"Please move a single trade caravan {maxSpacesMoved} spaces on the shortest path to a target using the following placement priority rules:\nUnvisited City State\nRival City\nVisited City State",
+            return new MoveStepActionData($"Please move my {caravanRef} trade caravan {maxSpacesMoved} spaces toward its destination, taking the shortest path using the following destination priority rules:\nUnvisited City State\nRival City\nVisited City State",
                    new List<string>());
         }
     }

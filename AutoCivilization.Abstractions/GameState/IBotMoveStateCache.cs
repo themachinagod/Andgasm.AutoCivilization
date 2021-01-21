@@ -15,10 +15,7 @@ namespace AutoCivilization.Abstractions
         FocusBarModel ActiveFocusBarForMove { get; set; }
         Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
 
-        //int CultureTokensAvailable { get; set; }
         int CultureTokensUsedThisTurn { get; set; }
-
-        //int ScienceTokensAvailable { get; set; }
 
         int BaseCityControlTokensToBePlaced { get; set; }
         int BaseTerritoryControlTokensToBePlaced { get; set; }
@@ -36,11 +33,18 @@ namespace AutoCivilization.Abstractions
         FocusType SmallestTradeTokenPileType { get; set; }
 
         int BaseCaravanMoves { get; set; }
-        CaravanDestinationType CaravanDestinationType { get; set; }
-        CityStateModel CaravanCityStateDestination { get; set; }
-        string CaravanRivalCityColorDestination { get; set; }
         int SupportedCaravanCount { get; set; }
         int EconomyTokensUsedThisTurn { get; set; }
-        int CaravanSpacesMoved { get; set; }
+        int CurrentCaravanIdToMove { get; set; }
+
+        Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; }
+    }
+
+    public class TradeCaravanMoveState
+    {
+        public int CaravanSpacesMoved { get; set; }
+        public string CaravanRivalCityColorDestination { get; set; }
+        public CaravanDestinationType CaravanDestinationType { get; set; }
+        public CityStateModel CaravanCityStateDestination { get; set; }
     }
 }

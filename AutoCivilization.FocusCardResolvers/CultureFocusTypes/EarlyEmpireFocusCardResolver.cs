@@ -2,6 +2,7 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using System;
+using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -36,7 +37,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.ControlledSpaces += totalTokensPlaced;
             botGameStateService.ControlledResources += _botMoveStateService.BaseTechnologyIncrease;
             botGameStateService.ControlledWonders += _botMoveStateService.NaturalWonderTokensControlled;
-            botGameStateService.TradeTokens[FocusType.Culture] = _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _currentStep = -1;
 
             return BuildMoveSummary();

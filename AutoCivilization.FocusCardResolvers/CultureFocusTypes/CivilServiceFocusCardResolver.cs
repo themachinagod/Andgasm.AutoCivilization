@@ -2,6 +2,7 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using System;
+using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -28,7 +29,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] = botGameStateService.TradeTokens[FocusType.Culture];
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _botMoveStateService.BaseCityControlTokensToBePlaced = 3;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 1;
         }
