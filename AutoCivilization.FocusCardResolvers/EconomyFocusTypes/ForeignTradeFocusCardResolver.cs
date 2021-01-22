@@ -8,6 +8,9 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class ForeignTradeFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel1FocusCardMoveResolver
     {
+        private const int SupportedCaravans = 1;
+        private const int BaseCaravanMoves = 3;
+
         public ForeignTradeFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                             ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
@@ -31,8 +34,8 @@ namespace AutoCivilization.FocusCardResolvers
         {
             _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
-            _botMoveStateService.BaseCaravanMoves = 3;
-            _botMoveStateService.SupportedCaravanCount = 1;
+            _botMoveStateService.BaseCaravanMoves = BaseCaravanMoves;
+            _botMoveStateService.SupportedCaravanCount = SupportedCaravans;
 
             for (int tc = 0; tc < _botMoveStateService.SupportedCaravanCount; tc++)
             {

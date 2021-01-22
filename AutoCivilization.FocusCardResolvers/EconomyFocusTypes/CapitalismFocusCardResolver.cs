@@ -7,26 +7,23 @@ using System.Linq;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class CurrencyFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel2FocusCardMoveResolver
+    public class CapitalismFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel4FocusCardMoveResolver
     {
-        private const int SupportedCaravans = 2;
-        private const int BaseCaravanMoves = 4;
+        private const int SupportedCaravans = 3;
+        private const int BaseCaravanMoves = 6;
 
-        public CurrencyFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
+        public CapitalismFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                             ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                             ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
                                             IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
                                             ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
-                                            IRemoveAdjacentBarbariansActionRequestStep removeAdjacentBarbariansActionRequest,
                                             IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Economy;
-            FocusLevel = FocusLevel.Lvl2;
+            FocusLevel = FocusLevel.Lvl4;
 
-            _actionSteps.Add(0, removeAdjacentBarbariansActionRequest);
-
-            var loopSeed = 1;
+            var loopSeed = 0;
             for (var tradecaravan = 0; tradecaravan < SupportedCaravans; tradecaravan++)
             {
                 _actionSteps.Add(loopSeed, caravanMovementActionRequest);
@@ -45,6 +42,9 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _botMoveStateService.BaseCaravanMoves = BaseCaravanMoves;
             _botMoveStateService.SupportedCaravanCount = SupportedCaravans;
+            _botMoveStateService.CanMoveOnWater = true;
+            _botMoveStateService.ShouldExecuteAdditionalFocusCard = true;
+            _botMoveStateService.AdditionalFocusTypeToExecuteOnFocusBar = _botMoveStateService.ActiveFocusBarForMove.FocusSlot4.Type;
 
             for (int tc = 0; tc < _botMoveStateService.SupportedCaravanCount; tc++)
             {
@@ -54,6 +54,9 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
+            // at end of move we need to resolve the card in slot 4 (but DO NOT REPLACE IT)
+            // this is a bit of a bugger!!!
+
             var onRouteCaravans = 0;
             for (var tradecaravan = 0; tradecaravan < SupportedCaravans; tradecaravan++)
             {
@@ -112,6 +115,8 @@ namespace AutoCivilization.FocusCardResolvers
                     summary += $"As a result of visiting the {vc.CaravanRivalCityColorDestination} players city, I updated my game state to show that I recieved 2 {vc.SmallestTradeTokenPileType} trade tokens which I may use in the future\n";
                 }
             }
+
+            summary += $"\nAs a result of executing this focus card, I will now resolve the card in my 4th focus bar slot without reseting it. Please press any key to execute this action now...\n";
             return summary;
         }
     }

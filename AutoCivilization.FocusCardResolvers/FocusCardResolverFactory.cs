@@ -19,7 +19,9 @@ namespace AutoCivilization.Console
                                         IScienceLevel3FocusCardMoveResolver scienceLevel3FocusCardResolver,
                                         IScienceLevel4FocusCardMoveResolver scienceLevel4FocusCardResolver,
                                         IEconomyLevel1FocusCardMoveResolver economyLevel1FocusCardResolver,
-                                        IEconomyLevel2FocusCardMoveResolver economyLevel2FocusCardResolver)
+                                        IEconomyLevel2FocusCardMoveResolver economyLevel2FocusCardResolver,
+                                        IEconomyLevel3FocusCardMoveResolver economyLevel3FocusCardResolver,
+                                        IEconomyLevel4FocusCardMoveResolver economyLevel4FocusCardResolver)
         {
             _resolvers = new List<IFocusCardMoveResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
@@ -32,14 +34,14 @@ namespace AutoCivilization.Console
             _resolvers.Add(scienceLevel4FocusCardResolver);
             _resolvers.Add(economyLevel1FocusCardResolver);
             _resolvers.Add(economyLevel2FocusCardResolver);
-            //_resolvers.Add(economyLevel3FocusCardResolver);
-            //_resolvers.Add(economyLevel4FocusCardResolver);
+            _resolvers.Add(economyLevel3FocusCardResolver);
+            _resolvers.Add(economyLevel4FocusCardResolver);
         }
 
         public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
-            var applicableTypeResolvers = ResolveForFocusType(FocusType.Economy); // activeFocusCard.Type);
-            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl2); // activeFocusCard.Level);
+            var applicableTypeResolvers = ResolveForFocusType(activeFocusCard.Type);
+            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, activeFocusCard.Level);
             return applicableResolver;
         }
 
@@ -50,7 +52,9 @@ namespace AutoCivilization.Console
 
         private IFocusCardMoveResolver ResolveForFocusLevel(IReadOnlyCollection<IFocusCardMoveResolver> applicableTypeResolvers, FocusLevel focusLevel)
         {
-            return applicableTypeResolvers.Single(x => x.FocusLevel == focusLevel);
+            var resolver = applicableTypeResolvers.FirstOrDefault(x => x.FocusLevel == focusLevel);
+            if (resolver == null) return _resolvers.First(); // DBr: TESTING HACK: this is just to cover no impls for some cards - remove!
+            return resolver;
         }
     }
 }

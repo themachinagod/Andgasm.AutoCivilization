@@ -60,6 +60,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICityStateDestinationInformationRequestStep, CityStateDestinationInformationRequestStep>();
                     services.AddTransient<IRivalCityDestinationInformationRequestStep, RivalCityDestinationInformationRequestStep>();
                     services.AddTransient<IRemoveCaravanActionRequestStep, RemoveCaravanActionRequestStep>();
+                    services.AddTransient<IRemoveAdjacentBarbariansActionRequestStep, RemoveAdjacentBarbariansActionRequestStep>();
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
@@ -77,8 +78,8 @@ namespace AutoCivilization.Console
                     // economy focus resolvers
                     services.AddTransient<IEconomyLevel1FocusCardMoveResolver, ForeignTradeFocusCardMoveResolver>();
                     services.AddTransient<IEconomyLevel2FocusCardMoveResolver, CurrencyFocusCardMoveResolver>();
-                    //services.AddTransient<IEconomyLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
-                    //services.AddTransient<IEconomyLevel4FocusCardMoveResolver, NuclearPowerFocusCardMoveResolver>();
+                    services.AddTransient<IEconomyLevel3FocusCardMoveResolver, SteamPowerFocusCardMoveResolver>();
+                    services.AddTransient<IEconomyLevel4FocusCardMoveResolver, CapitalismFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
@@ -87,7 +88,7 @@ namespace AutoCivilization.Console
 
                     // misc resolvers
                     services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
-                    services.AddTransient<IResolveFocusBarEndOfMoveResolver, ResolveFocusBarEndOfMoveResolver>();
+                    services.AddTransient<IFocusBarEndOfMoveResolver, FocusBarEndOfMoveResolver>();
                     services.AddTransient<IOrdinalSuffixResolver, OrdinalSuffixResolver>();
                 });
     }

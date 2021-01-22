@@ -12,12 +12,15 @@ namespace AutoCivilization.Console
 
     public class AutoCivMoveClient : IAutoCivMoveClient
     {
+        private readonly IBotMoveStateCache _botMoveStateCache;
         private readonly IFocusCardResolverFactory _focusCardResolverFactory;
-        IResolveFocusBarEndOfMoveResolver _focusBarEndOfMoveResolver;
+        private readonly IFocusBarEndOfMoveResolver _focusBarEndOfMoveResolver;
 
         public AutoCivMoveClient(IFocusCardResolverFactory focusCardResolverFactory,
-                                 IResolveFocusBarEndOfMoveResolver focusBarEndOfMoveResolver)
+                                 IFocusBarEndOfMoveResolver focusBarEndOfMoveResolver,
+                                 IBotMoveStateCache botMoveStateCache)
         {
+            _botMoveStateCache = botMoveStateCache;
             _focusCardResolverFactory = focusCardResolverFactory;
             _focusBarEndOfMoveResolver = focusBarEndOfMoveResolver;
         }
@@ -26,6 +29,23 @@ namespace AutoCivilization.Console
         {
             WriteConsoleRoundHeader(gameState);
             var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlot;
+            ExecuteMoveForSpecifiedFocusCard(gameState, focusCardToExecute);
+
+            if (_botMoveStateCache.ShouldExecuteAdditionalFocusCard)
+            {
+                // this is not going to have a new move scope so i can see some potential problems here!
+                System.Console.ReadKey();
+                var additionalFocusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlots.First(x => x.Value.Type == _botMoveStateCache.AdditionalFocusTypeToExecuteOnFocusBar).Value;
+                ExecuteMoveForSpecifiedFocusCard(gameState, additionalFocusCardToExecute);
+            }
+
+            gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResetFocusBarForNextMove(gameState.ActiveFocusBar);
+            WriteConsoleAwaitingNextTurn();
+            gameState.CurrentRoundNumber++; 
+        }
+
+        private void ExecuteMoveForSpecifiedFocusCard(BotGameStateCache gameState, FocusCardModel focusCardToExecute)
+        {
             var focusCardMoveResolver = _focusCardResolverFactory.GetFocusCardMoveResolver(focusCardToExecute);
             focusCardMoveResolver.PrimeMoveState(gameState);
             do
@@ -45,12 +65,6 @@ namespace AutoCivilization.Console
 
             var moveSummary = focusCardMoveResolver.UpdateGameStateForMove(gameState);
             WriteConsoleMoveSummary(moveSummary);
-
-            gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResolveFocusBarForNextMove(gameState.ActiveFocusBar);
-            // TODO: summarise new focus bar state
-
-            WriteConsoleAwaitingNextTurn();
-            gameState.CurrentRoundNumber++; 
         }
 
         private void PromptUser(string msg)
@@ -105,14 +119,14 @@ namespace AutoCivilization.Console
         }
     }
 
-    public interface IResolveFocusBarEndOfMoveResolver
+    public interface IFocusBarEndOfMoveResolver
     {
-        FocusBarModel ResolveFocusBarForNextMove(FocusBarModel activeFocusBar);
+        FocusBarModel ResetFocusBarForNextMove(FocusBarModel activeFocusBar);
     }
 
-    public class ResolveFocusBarEndOfMoveResolver : IResolveFocusBarEndOfMoveResolver
+    public class FocusBarEndOfMoveResolver : IFocusBarEndOfMoveResolver
     {
-        public FocusBarModel ResolveFocusBarForNextMove(FocusBarModel activeFocusBar)
+        public FocusBarModel ResetFocusBarForNextMove(FocusBarModel activeFocusBar)
         {
             // shift all cards up by 1 with slot resolved this turn being reset to first slot
 

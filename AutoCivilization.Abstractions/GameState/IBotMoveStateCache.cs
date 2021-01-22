@@ -32,11 +32,14 @@ namespace AutoCivilization.Abstractions
 
         FocusType SmallestTradeTokenPileType { get; set; }
 
+        bool CanMoveOnWater { get; set; }
         int BaseCaravanMoves { get; set; }
         int SupportedCaravanCount { get; set; }
         int CurrentCaravanIdToMove { get; set; }
 
         Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; }
+        FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
+        bool ShouldExecuteAdditionalFocusCard { get; set; }
     }
 
     public class TradeCaravanMoveState

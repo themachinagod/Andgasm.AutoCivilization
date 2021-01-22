@@ -7,26 +7,23 @@ using System.Linq;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class CurrencyFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel2FocusCardMoveResolver
+    public class SteamPowerFocusCardMoveResolver : FocusCardMoveResolverBase, IEconomyLevel3FocusCardMoveResolver
     {
         private const int SupportedCaravans = 2;
-        private const int BaseCaravanMoves = 4;
+        private const int BaseCaravanMoves = 6;
 
-        public CurrencyFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
+        public SteamPowerFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                             ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                             ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
                                             IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
                                             ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
-                                            IRemoveAdjacentBarbariansActionRequestStep removeAdjacentBarbariansActionRequest,
                                             IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base(botMoveStateService)
         {
             FocusType = FocusType.Economy;
-            FocusLevel = FocusLevel.Lvl2;
+            FocusLevel = FocusLevel.Lvl3;
 
-            _actionSteps.Add(0, removeAdjacentBarbariansActionRequest);
-
-            var loopSeed = 1;
+            var loopSeed = 0;
             for (var tradecaravan = 0; tradecaravan < SupportedCaravans; tradecaravan++)
             {
                 _actionSteps.Add(loopSeed, caravanMovementActionRequest);
@@ -45,6 +42,7 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _botMoveStateService.BaseCaravanMoves = BaseCaravanMoves;
             _botMoveStateService.SupportedCaravanCount = SupportedCaravans;
+            _botMoveStateService.CanMoveOnWater = true;
 
             for (int tc = 0; tc < _botMoveStateService.SupportedCaravanCount; tc++)
             {
@@ -80,6 +78,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.SupportedCaravanCount = _botMoveStateService.SupportedCaravanCount;
             botGameStateService.CaravansOnRouteCount = onRouteCaravans;
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(_botMoveStateService.TradeTokensAvailable);
+            botGameStateService.ControlledResources += 1;
             _currentStep = -1;
 
             return BuildMoveSummary(botGameStateService);
@@ -90,6 +89,7 @@ namespace AutoCivilization.FocusCardResolvers
             var summary = "To summarise my move I did the following;\n";
             summary += $"I updated my game state to show that have {gameState.SupportedCaravanCount} caravans available to me in total;\n";
             summary += $"I updated my game state to show that have {gameState.CaravansOnRouteCount} caravans currently on route to destinations on the board;\n";
+            summary += $"I updated my game state to show that I recieved 1 natural resource which I may use in the future;\n";
 
             var totTokensUsed = _botMoveStateService.TradeCaravansAvailable[0].EconomyTokensUsedThisTurn;
             if (totTokensUsed > 0) summary += $"I updated my game state to show that I used {totTokensUsed} economy trade tokens I had available to me to facilitate this move\n";

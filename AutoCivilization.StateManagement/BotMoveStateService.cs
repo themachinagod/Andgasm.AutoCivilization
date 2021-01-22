@@ -7,6 +7,8 @@ namespace AutoCivilization.Console
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
         public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();
+        public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
+
         public FocusType SmallestTradeTokenPileType { get; set; }
 
         public int BaseCityControlTokensToBePlaced { get; set; }
@@ -26,8 +28,10 @@ namespace AutoCivilization.Console
 
         public int BaseCaravanMoves { get; set; }
         public int SupportedCaravanCount { get; set; }
-        public int EconomyTokensUsedThisTurn { get; set; }
         public int CurrentCaravanIdToMove { get; set; }
-        public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
+        public bool CanMoveOnWater { get; set; }
+
+        public FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
+        public bool ShouldExecuteAdditionalFocusCard { get; set; }
     }
 }
