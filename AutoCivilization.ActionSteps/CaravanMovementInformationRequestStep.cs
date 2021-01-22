@@ -32,8 +32,12 @@ namespace AutoCivilization.ActionSteps
             movingCaravan.CaravanSpacesMoved = Convert.ToInt32(input);
 
             var economyTokensUsedThisTurn = movingCaravan.CaravanSpacesMoved - _botMoveStateService.BaseCaravanMoves;
-            _botMoveStateService.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;
-            _botMoveStateService.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
+            movingCaravan.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;
+            if (_botMoveStateService.CurrentCaravanIdToMove == 1 || economyTokensUsedThisTurn > 0)
+            {
+                // only the first trade caravan should give tokens for unused moves
+                _botMoveStateService.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
+            }
         }
     }
 }

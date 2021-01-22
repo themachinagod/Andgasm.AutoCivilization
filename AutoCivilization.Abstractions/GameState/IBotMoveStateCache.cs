@@ -34,7 +34,6 @@ namespace AutoCivilization.Abstractions
 
         int BaseCaravanMoves { get; set; }
         int SupportedCaravanCount { get; set; }
-        int EconomyTokensUsedThisTurn { get; set; }
         int CurrentCaravanIdToMove { get; set; }
 
         Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; }
@@ -42,9 +41,11 @@ namespace AutoCivilization.Abstractions
 
     public class TradeCaravanMoveState
     {
+        public int EconomyTokensUsedThisTurn { get; set; }
         public int CaravanSpacesMoved { get; set; }
         public string CaravanRivalCityColorDestination { get; set; }
         public CaravanDestinationType CaravanDestinationType { get; set; }
         public CityStateModel CaravanCityStateDestination { get; set; }
+        public FocusType SmallestTradeTokenPileType { get; set; }
     }
 }

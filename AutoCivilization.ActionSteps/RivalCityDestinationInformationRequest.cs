@@ -30,7 +30,7 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction()
         {
-            // TODO: we need a players and colors
+            // TODO: we need players and colors
             //       currently hard wired!
 
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
@@ -41,7 +41,6 @@ namespace AutoCivilization.ActionSteps
 
         public override void ProcessActionResponse(string input)
         {
-            // TODO: just using string to start with
             var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
@@ -59,8 +58,10 @@ namespace AutoCivilization.ActionSteps
                     break;
             }
 
-            _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(_botMoveStateService.ActiveFocusBarForMove, _botMoveStateService.TradeTokensAvailable);
-            _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 2;
+            var smallestpile = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(_botMoveStateService.ActiveFocusBarForMove, _botMoveStateService.TradeTokensAvailable);
+            _botMoveStateService.SmallestTradeTokenPileType = smallestpile;
+            movingCaravan.SmallestTradeTokenPileType = smallestpile;
+            _botMoveStateService.TradeTokensAvailable[smallestpile] += 2;
         }
     }
 }
