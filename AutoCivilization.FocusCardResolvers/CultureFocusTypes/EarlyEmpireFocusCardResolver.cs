@@ -25,7 +25,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] = botGameStateService.TradeTokens[FocusType.Culture];
+            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
             _botMoveStateService.BaseCityControlTokensToBePlaced = 2;
             _botMoveStateService.BaseTerritoryControlTokensToBePlaced = 0;
         }

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AutoCivilization.Console
 {
-    public class AutoCivClient : BackgroundService
+    public class AutoCivGameHost : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IAutoCivGameClient _autoCivGameService;
 
-        public AutoCivClient(IServiceScopeFactory serviceScopeFactory,                            
+        public AutoCivGameHost(IServiceScopeFactory serviceScopeFactory,                            
                               IAutoCivGameClient autoCivGameService)
         {
             _scopeFactory = serviceScopeFactory;
@@ -32,10 +32,10 @@ namespace AutoCivilization.Console
             var gameState = await _autoCivGameService.InitialiseNewGame();
             do
             {
-                using (var moveScope = _scopeFactory.CreateScope())
+                using (var roundScope = _scopeFactory.CreateScope())
                 {
-                    var scopedMoveService = moveScope.ServiceProvider.GetRequiredService<IAutoCivMoveClient>();
-                    scopedMoveService.ExecuteMoveForActiveFocusCard(gameState);
+                    var scopedRoundService = roundScope.ServiceProvider.GetRequiredService<IAutoCivRoundClient>();
+                    scopedRoundService.ExecuteRoundForBot(gameState);
                 }
             } while (true);
         }

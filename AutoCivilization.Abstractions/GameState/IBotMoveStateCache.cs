@@ -38,8 +38,6 @@ namespace AutoCivilization.Abstractions
         int CurrentCaravanIdToMove { get; set; }
 
         Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; }
-        FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
-        bool ShouldExecuteAdditionalFocusCard { get; set; }
     }
 
     public class TradeCaravanMoveState

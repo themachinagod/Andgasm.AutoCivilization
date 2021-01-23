@@ -12,7 +12,10 @@ namespace AutoCivilization.FocusCardResolvers
         private const int SupportedCaravans = 3;
         private const int BaseCaravanMoves = 6;
 
+        private readonly IBotRoundStateCache _botRoundStateCache;
+
         public CapitalismFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
+                                            IBotRoundStateCache botRoundState,
                                             ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                             ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                             ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
@@ -22,6 +25,8 @@ namespace AutoCivilization.FocusCardResolvers
         {
             FocusType = FocusType.Economy;
             FocusLevel = FocusLevel.Lvl4;
+
+            _botRoundStateCache = botRoundState;
 
             var loopSeed = 0;
             for (var tradecaravan = 0; tradecaravan < SupportedCaravans; tradecaravan++)
@@ -43,8 +48,8 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.BaseCaravanMoves = BaseCaravanMoves;
             _botMoveStateService.SupportedCaravanCount = SupportedCaravans;
             _botMoveStateService.CanMoveOnWater = true;
-            _botMoveStateService.ShouldExecuteAdditionalFocusCard = true;
-            _botMoveStateService.AdditionalFocusTypeToExecuteOnFocusBar = _botMoveStateService.ActiveFocusBarForMove.FocusSlot4.Type;
+            _botRoundStateCache.ShouldExecuteAdditionalFocusCard = true;
+            _botRoundStateCache.AdditionalFocusTypeToExecuteOnFocusBar = _botMoveStateService.ActiveFocusBarForMove.FocusSlot4.Type;
 
             for (int tc = 0; tc < _botMoveStateService.SupportedCaravanCount; tc++)
             {

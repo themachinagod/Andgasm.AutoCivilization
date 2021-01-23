@@ -13,7 +13,7 @@ namespace AutoCivilization.Console
 
         public int BaseCityControlTokensToBePlaced { get; set; }
         public int BaseTerritoryControlTokensToBePlaced { get; set; }
-        
+
         public int CityControlTokensPlaced { get; set; }
         public int TerritroyControlTokensPlaced { get; set; }
 
@@ -30,8 +30,5 @@ namespace AutoCivilization.Console
         public int SupportedCaravanCount { get; set; }
         public int CurrentCaravanIdToMove { get; set; }
         public bool CanMoveOnWater { get; set; }
-
-        public FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
-        public bool ShouldExecuteAdditionalFocusCard { get; set; }
     }
 }

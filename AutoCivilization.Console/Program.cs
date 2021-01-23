@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.MiscResolvers;
 using AutoCivilization.Abstractions.StateInitialisers;
 using AutoCivilization.Abstractions.TechnologyResolvers;
 using AutoCivilization.ActionSteps;
@@ -26,12 +27,14 @@ namespace AutoCivilization.Console
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<AutoCivClient>();
+                    services.AddHostedService<AutoCivGameHost>();
                     services.AddTransient<IAutoCivGameClient, AutoCivGameClient>();
+                    services.AddTransient<IAutoCivRoundClient, AutoCivRoundClient>();
                     services.AddTransient<IAutoCivMoveClient, AutoCivMoveClient>();
-                    
+
                     // state services
                     services.AddScoped<IBotMoveStateCache, BotMoveStateCache>();
+                    services.AddScoped<IBotRoundStateCache, BotRoundStateCache>();
                     services.AddSingleton<IGlobalGameCache, GlobalGameCache>();
 
                     // game initialisers
@@ -88,7 +91,7 @@ namespace AutoCivilization.Console
 
                     // misc resolvers
                     services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
-                    services.AddTransient<IFocusBarEndOfMoveResolver, FocusBarEndOfMoveResolver>();
+                    services.AddTransient<IFocusBarEndOfRoundResolver, FocusBarEndOfMoveResolver>();
                     services.AddTransient<IOrdinalSuffixResolver, OrdinalSuffixResolver>();
                 });
     }
