@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace AutoCivilization.TechnologyResolvers
 {
-    public class FocusBarEndOfMoveResolver : IFocusBarEndOfRoundResolver
+    public class FocusBarResetResolver : IFocusBarResetResolver
     {
         public FocusBarModel ResetFocusBarForNextMove(FocusBarModel activeFocusBar)
         {

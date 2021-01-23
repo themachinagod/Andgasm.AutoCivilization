@@ -1,6 +1,6 @@
 ﻿namespace AutoCivilization.Abstractions.MiscResolvers
 {
-    public interface IFocusBarEndOfRoundResolver
+    public interface IFocusBarResetResolver
     {
         FocusBarModel ResetFocusBarForNextMove(FocusBarModel activeFocusBar);
     }

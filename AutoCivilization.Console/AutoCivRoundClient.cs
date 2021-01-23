@@ -13,12 +13,12 @@ namespace AutoCivilization.Console
     public class AutoCivRoundClient : IAutoCivRoundClient
     {
         private readonly IFocusCardResolverFactory _focusCardResolverFactory;
-        private readonly IFocusBarEndOfRoundResolver _focusBarEndOfMoveResolver;
+        private readonly IFocusBarResetResolver _focusBarEndOfMoveResolver;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IBotRoundStateCache _botRoundState;
 
         public AutoCivRoundClient(IFocusCardResolverFactory focusCardResolverFactory,
-                                  IFocusBarEndOfRoundResolver focusBarEndOfMoveResolver,
+                                  IFocusBarResetResolver focusBarEndOfMoveResolver,
                                   IBotRoundStateCache botRoundState,
                                   IServiceScopeFactory serviceScopeFactory)
         {
@@ -38,8 +38,8 @@ namespace AutoCivilization.Console
             //       currently we await any key to continue
             //       instead we should prompt if any player would like to interact with it
             //       options provided should be
-            //          - I wish to attach one of your cities
-            //          - no, please proceed to the next round
+            //          - I wish to attach one of the bot cities
+            //          - no, please proceed to the bots next move
 
             WriteConsoleRoundHeader(gameState);
             ExecutePrimaryMove(gameState);

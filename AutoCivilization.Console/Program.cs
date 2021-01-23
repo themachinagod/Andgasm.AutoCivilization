@@ -91,7 +91,7 @@ namespace AutoCivilization.Console
 
                     // misc resolvers
                     services.AddTransient<ISmallestTradeTokenPileResolver, SmallestTradeTokenPileResolver>();
-                    services.AddTransient<IFocusBarEndOfRoundResolver, FocusBarEndOfMoveResolver>();
+                    services.AddTransient<IFocusBarResetResolver, FocusBarResetResolver>();
                     services.AddTransient<IOrdinalSuffixResolver, OrdinalSuffixResolver>();
                 });
     }
