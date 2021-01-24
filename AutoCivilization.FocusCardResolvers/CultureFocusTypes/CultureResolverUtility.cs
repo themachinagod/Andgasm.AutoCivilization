@@ -22,7 +22,7 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.BaseCityControlTokensToBePlaced = baseTokens;
         }
 
-        public void UpdateBaseGameStateForMove(BotGameStateCache botGameStateService)
+        public void UpdateBaseCultureGameStateForMove(BotGameStateCache botGameStateService)
         {
             var totalTokensPlacedThisTurn = _botMoveStateService.CityControlTokensPlacedThisTurn + _botMoveStateService.TerritroyControlTokensPlacedThisTurn;
             botGameStateService.ControlledSpaces += totalTokensPlacedThisTurn;

@@ -3,7 +3,7 @@
     public interface ICultureResolverUtility
     {
         void PrimeBaseCultureState(BotGameStateCache botGameStateCache, int baseTokens);
-        void UpdateBaseGameStateForMove(BotGameStateCache botGameStateService);
+        void UpdateBaseCultureGameStateForMove(BotGameStateCache botGameStateService);
         string BuildGeneralisedCultureMoveSummary(string summary);
     }
 

@@ -41,7 +41,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            _cultureResolverUtility.UpdateBaseGameStateForMove(botGameStateService);
+            _cultureResolverUtility.UpdateBaseCultureGameStateForMove(botGameStateService);
             _currentStep = -1;
             return BuildMoveSummary();
         }
