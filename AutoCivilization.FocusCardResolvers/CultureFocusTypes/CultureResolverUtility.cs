@@ -38,8 +38,12 @@ namespace AutoCivilization.FocusCardResolvers
             if (_botMoveStateService.TerritroyControlTokensPlacedThisTurn > 0) sb.Append($"I updated my game state to show that I placed {_botMoveStateService.TerritroyControlTokensPlacedThisTurn} control tokens next to my friendly territory on the board\n");
             if (_botMoveStateService.CultureTokensUsedThisTurn > 0) sb.Append($"I updated my game state to show that I used {_botMoveStateService.CultureTokensUsedThisTurn} culture trade tokens I had available to me to facilitate this move\n");
             if (_botMoveStateService.CultureTokensUsedThisTurn < 0) sb.Append($"I updated my game state to show that I recieved {Math.Abs(_botMoveStateService.CultureTokensUsedThisTurn)} culture trade tokens which i may use in the future\n");
-            if (_botMoveStateService.NaturalWonderTokensControlledThisTurn > 0) sb.Append($"I updated my game state to show that I controlled the {string.Join(",", _botMoveStateService.ControlledNaturalWonders)} natural wonders\n");
-            if (_botMoveStateService.NaturalResourceTokensControlledThisTurn > 0) sb.Append($"I updated my game state to show that I controlled {_botMoveStateService.NaturalResourceTokensControlledThisTurn} natural resources\n");
+            if (_botMoveStateService.NaturalResourceTokensControlledThisTurn > 0) sb.Append($"I updated my game state to show that I controlled {_botMoveStateService.NaturalResourceTokensControlledThisTurn} natural resources which I may use for future construction projects\n");
+            if (_botMoveStateService.NaturalWonderTokensControlledThisTurn > 0)
+            {
+                sb.Append($"I updated my game state to show that I controlled the {string.Join(",", _botMoveStateService.ControlledNaturalWonders)} natural wonder(s)\n");
+                sb.Append($"As a result of controlling natural wonders on this turn I have recieved {_botMoveStateService.NaturalWonderTokensControlledThisTurn} natural resources that I may use for future construction projects\n");
+            }
             return sb.ToString();
         }
     }

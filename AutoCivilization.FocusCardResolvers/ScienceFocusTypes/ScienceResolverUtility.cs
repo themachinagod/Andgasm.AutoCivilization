@@ -20,7 +20,7 @@ namespace AutoCivilization.FocusCardResolvers
             _technologyUpgradeResolver = technologyUpgradeResolver;
         }
 
-        public void PrimeBaseEconomyState(BotGameStateCache botGameStateCache, int basePoints)
+        public void PrimeBaseScienceState(BotGameStateCache botGameStateCache, int basePoints)
         {
             _botMoveStateService.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
             _botMoveStateService.StartingTechnologyLevel = botGameStateCache.TechnologyLevel;
@@ -28,7 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
             _botMoveStateService.BaseTechnologyIncrease = basePoints;
         }
 
-        public TechnologyUpgradeResponse UpdateBaseEconomyGameStateForMove(BotGameStateCache botGameStateService)
+        public TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotGameStateCache botGameStateService)
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
@@ -38,7 +38,7 @@ namespace AutoCivilization.FocusCardResolvers
             return techUpgradeResponse;
         }
 
-        public string BuildGeneralisedEconomyMoveSummary(string currentSummary, TechnologyUpgradeResponse upgradeResponse)
+        public string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse upgradeResponse)
         {
             StringBuilder sb = new StringBuilder(currentSummary);
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];

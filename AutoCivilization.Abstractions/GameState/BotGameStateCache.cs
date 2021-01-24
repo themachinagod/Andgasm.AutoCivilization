@@ -24,6 +24,7 @@ namespace AutoCivilization.Abstractions
 
             VisitedCityStates = new List<CityStateModel>();
             VisitedPlayerColors = new List<string>();
+            ControlledNaturalWonders = new List<string>();
         }
 
         public int GameId { get; set; } = 1001;
@@ -34,7 +35,7 @@ namespace AutoCivilization.Abstractions
         public LeaderCardModel ChosenLeaderCard { get; set; }
         public List<CityStateModel> VisitedCityStates { get; set; }
         public List<string> VisitedPlayerColors { get; set; }
-        public List<string> ControlledNaturalWonders { get; set; }
+        public List<string> ControlledNaturalWonders { get; set; } = new List<string>();
 
         public int ControlledSpaces { get; set; }
         public int ControlledNaturalResources { get; set; }

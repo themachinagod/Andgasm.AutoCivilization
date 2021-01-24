@@ -25,12 +25,12 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _scienceResolverUtility.PrimeBaseEconomyState(botGameStateService, BaseTechIncreasePoints);
+            _scienceResolverUtility.PrimeBaseScienceState(botGameStateService, BaseTechIncreasePoints);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService);
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(botGameStateService);
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
             return BuildMoveSummary(techUpgradeResponse);
@@ -39,7 +39,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
             var summary = "To summarise my move I did the following;\n";
-            return _scienceResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, upgradeResponse);
+            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, upgradeResponse);
         }
     }
 }

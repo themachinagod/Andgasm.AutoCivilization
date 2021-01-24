@@ -15,7 +15,9 @@ namespace AutoCivilization.ActionSteps
 
         public override bool ShouldExecuteAction()
         {
-            return _botMoveStateService.NaturalWonderTokensControlledThisTurn > 0;
+            var totalTokensPlaced = _botMoveStateService.CityControlTokensPlacedThisTurn + _botMoveStateService.TerritroyControlTokensPlacedThisTurn;
+            return (totalTokensPlaced > 0) &&
+                   (_botMoveStateService.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
         }
 
         public override MoveStepActionData ExecuteAction()
@@ -38,11 +40,11 @@ namespace AutoCivilization.ActionSteps
             switch (Convert.ToInt32(input))
             {
                 case 1:
-                    _botMoveStateService.ControlledNaturalWonders.Add("Gran Mesa");
+                    _botMoveStateService.ControlledNaturalWonders.Add("Mt. Everest");
                     _botMoveStateService.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 2:
-                    _botMoveStateService.ControlledNaturalWonders.Add("Mt. Everest");
+                    _botMoveStateService.ControlledNaturalWonders.Add("Gran Mesa");
                     _botMoveStateService.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 3:

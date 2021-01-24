@@ -4,9 +4,9 @@ namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
     public interface IScienceResolverUtility
     {
-        void PrimeBaseEconomyState(BotGameStateCache botGameStateCache, int basePoints);
-        TechnologyUpgradeResponse UpdateBaseEconomyGameStateForMove(BotGameStateCache botGameStateService);
-        string BuildGeneralisedEconomyMoveSummary(string currentSummary, TechnologyUpgradeResponse techResponse);
+        void PrimeBaseScienceState(BotGameStateCache botGameStateCache, int basePoints);
+        TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotGameStateCache botGameStateService);
+        string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse techResponse);
     }
     public interface IScienceLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {

@@ -30,14 +30,14 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _scienceResolverUtility.PrimeBaseEconomyState(botGameStateService, BaseTechIncreasePoints);
+            _scienceResolverUtility.PrimeBaseScienceState(botGameStateService, BaseTechIncreasePoints);
             _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(botGameStateService.ActiveFocusBar, botGameStateService.TradeTokens);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 1;
-            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService);
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(botGameStateService);
             botGameStateService.TradeTokens[_botMoveStateService.SmallestTradeTokenPileType] = _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType];
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
@@ -48,7 +48,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var summary = "To summarise my move I did the following;\n";
             summary += $"I updated my game state to show that I recieved 1 {_botMoveStateService.SmallestTradeTokenPileType} trade token as it was the smallest token pile\n";
-            return _scienceResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, upgradeResponse);
+            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, upgradeResponse);
         }
     }
 }

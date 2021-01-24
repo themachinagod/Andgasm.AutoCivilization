@@ -29,13 +29,13 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _scienceResolverUtility.PrimeBaseEconomyState(botGameStateService, BaseTechIncreasePoints);
+            _scienceResolverUtility.PrimeBaseScienceState(botGameStateService, BaseTechIncreasePoints);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var freeUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
-            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService);
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(botGameStateService);
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
             return BuildMoveSummary(freeUpgradeResponse, techUpgradeResponse);
@@ -48,7 +48,7 @@ namespace AutoCivilization.FocusCardResolvers
             {
                 summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {freeTechUpgradeResponse.OldTechnology.Name} to {freeTechUpgradeResponse.NewTechnology.Name}\n";
             }
-            return _scienceResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, techLevelUpgradeResponse);
+            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, techLevelUpgradeResponse);
         }
     }
 }

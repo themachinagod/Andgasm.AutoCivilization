@@ -55,7 +55,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(BotGameStateCache gameState)
         {
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I recieved 1 natural resource which I may use in the future;\n";
+            summary += $"I updated my game state to show that I recieved 1 natural resource which I may use for future construction projects;\n";
             return _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState);
         }
     }
