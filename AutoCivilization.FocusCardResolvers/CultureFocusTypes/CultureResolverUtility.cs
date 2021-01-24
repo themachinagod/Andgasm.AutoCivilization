@@ -1,18 +1,12 @@
 ﻿using AutoCivilization.Abstractions;
+using AutoCivilization.Abstractions.FocusCardResolvers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public interface ICultureResolverUtility
-    {
-        void PrimeBaseCultureState(BotGameStateCache botGameStateCache, int baseTokens);
-        void UpdateBaseGameStateForMove(BotGameStateCache botGameStateService)
-        string BuildGeneralisedCultureMoveSummary(string summary);
-    }
-
-    public class CultureResolverUtility
+    public class CultureResolverUtility : ICultureResolverUtility
     {
         private readonly IBotMoveStateCache _botMoveStateService;
 

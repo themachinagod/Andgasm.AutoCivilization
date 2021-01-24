@@ -68,6 +68,7 @@ namespace AutoCivilization.Console
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
+                    services.AddTransient<ICultureResolverUtility, CultureResolverUtility>();
                     services.AddTransient<ICultureLevel1FocusCardMoveResolver, EarlyEmpireFocusCardMoveResolver>();
                     services.AddTransient<ICultureLevel2FocusCardMoveResolver, DramaPoetryFocusCardMoveResolver>();
                     services.AddTransient<ICultureLevel3FocusCardMoveResolver, CivilServiceFocusCardMoveResolver>();

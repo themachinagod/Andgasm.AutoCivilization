@@ -1,5 +1,12 @@
 ﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
+    public interface ICultureResolverUtility
+    {
+        void PrimeBaseCultureState(BotGameStateCache botGameStateCache, int baseTokens);
+        void UpdateBaseGameStateForMove(BotGameStateCache botGameStateService);
+        string BuildGeneralisedCultureMoveSummary(string summary);
+    }
+
     public interface ICultureLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
