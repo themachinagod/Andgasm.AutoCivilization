@@ -26,7 +26,7 @@ namespace AutoCivilization.ActionSteps
             var cultureTokensUsedThisTurn = territoryControlTokensPlaced - _botMoveStateService.BaseTerritoryControlTokensToBePlaced;
             _botMoveStateService.CultureTokensUsedThisTurn += (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
             _botMoveStateService.TradeTokensAvailable[FocusType.Culture] -= (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
-            _botMoveStateService.TerritroyControlTokensPlaced = Convert.ToInt32(input);
+            _botMoveStateService.TerritroyControlTokensPlacedThisTurn = Convert.ToInt32(input);
         }
     }
 }

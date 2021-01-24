@@ -6,11 +6,13 @@
 
   <ItemGroup>
     <None Remove="Data\CityStates.json" />
+    <None Remove="Data\NaturalWonders.json" />
     <None Remove="FocusCards.json" />
     <None Remove="LeaderCards.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\NaturalWonders.json" />
     <EmbeddedResource Include="Data\CityStates.json" />
     <EmbeddedResource Include="Data\FocusCards.json" />
     <EmbeddedResource Include="Data\LeaderCards.json" />

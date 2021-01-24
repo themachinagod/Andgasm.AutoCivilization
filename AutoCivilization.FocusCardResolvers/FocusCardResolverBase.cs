@@ -7,11 +7,13 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public abstract class FocusCardMoveResolverBase : IFocusCardMoveResolver
     {
+        #region Fields
         internal readonly IBotMoveStateCache _botMoveStateService;
-
         internal Dictionary<int, IStepAction> _actionSteps { get; set; }
         internal int _currentStep { get; set; }
+        #endregion
 
+        #region Properties
         public FocusType FocusType { get; set; }
         public FocusLevel FocusLevel { get; set; }
         public bool HasMoreSteps
@@ -21,13 +23,16 @@ namespace AutoCivilization.FocusCardResolvers
                 return _actionSteps.ContainsKey(_currentStep + 1);
             }
         }
+        #endregion
 
+        #region Ctor
         public FocusCardMoveResolverBase(IBotMoveStateCache botMoveStateService)
         {
             _botMoveStateService = botMoveStateService;
             _currentStep = -1;
             _actionSteps = new Dictionary<int, IStepAction>();
         }
+        #endregion
 
         public virtual void PrimeMoveState(BotGameStateCache botGameStateService)
         {

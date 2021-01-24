@@ -34,10 +34,10 @@ namespace AutoCivilization.Abstractions
         public LeaderCardModel ChosenLeaderCard { get; set; }
         public List<CityStateModel> VisitedCityStates { get; set; }
         public List<string> VisitedPlayerColors { get; set; }
+        public List<string> ControlledNaturalWonders { get; set; }
 
         public int ControlledSpaces { get; set; }
-        public int ControlledResources { get; set; }
-        public int ControlledWonders { get; set; }
+        public int ControlledNaturalResources { get; set; }
 
         public int TechnologyLevel { get; set; }
         public int SupportedCaravanCount { get; set; }

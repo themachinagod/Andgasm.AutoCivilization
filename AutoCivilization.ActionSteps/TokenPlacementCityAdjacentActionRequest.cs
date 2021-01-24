@@ -14,7 +14,7 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction()
         {
             var maxPlacements = _botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
-            return new MoveStepActionData($"Please place {maxPlacements} control tokens on spaces adjacent to any of my cities using the following placement priority rules:\nNatural wonder\nResource token\nVacant barbarian spawn point\nAdjacent to the most cities\nAdjacent to city closest to maturity\nHighest terrain difficulty",
+            return new MoveStepActionData($"Please place {maxPlacements} control tokens on spaces adjacent to any of my cities using the following placement priority rules:\nNatural wonder\nResource token\nVacant barbarian spawn point\nAdjacent to the most cities\nAdjacent to city closest to maturity\nHighest terrain difficulty\nFor each token that cannot be placed, I will recieve 1 culture trade token to be used in the future",
                    new List<string>());
         }
     }

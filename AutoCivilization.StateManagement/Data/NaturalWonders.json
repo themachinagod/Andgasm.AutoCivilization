@@ -1,0 +1,12 @@
+[
+  {
+    "Id":  1,
+    "Name": "Mt. Everest",
+    "Type": "Oil"
+  },
+  {
+    "Id": 2,
+    "Name": "Grand Mesa",
+    "Type": "Diamond"
+  }
+]

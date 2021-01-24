@@ -13,7 +13,7 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction()
         {
-            return new MoveStepActionData("For each rival control token adjacent to a friendly space, flip that token to its unreinforced side. If that token was already unreinforced, remove it from the board instead.",
+            return new MoveStepActionData("For each rival control token adjacent to my friendly territory, flip that token to its unreinforced side. If that token was already unreinforced, remove it from the board instead.",
                    new List<string>());
         }
     }

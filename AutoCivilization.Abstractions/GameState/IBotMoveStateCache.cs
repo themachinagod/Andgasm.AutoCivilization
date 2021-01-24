@@ -14,17 +14,18 @@ namespace AutoCivilization.Abstractions
     {
         FocusBarModel ActiveFocusBarForMove { get; set; }
         Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
+        List<string> ControlledNaturalWonders { get; set; }
 
         int CultureTokensUsedThisTurn { get; set; }
 
         int BaseCityControlTokensToBePlaced { get; set; }
         int BaseTerritoryControlTokensToBePlaced { get; set; }
 
-        int CityControlTokensPlaced { get; set; }
-        int TerritroyControlTokensPlaced { get; set; }
+        int CityControlTokensPlacedThisTurn { get; set; }
+        int TerritroyControlTokensPlacedThisTurn { get; set; }
 
-        int NaturalWonderTokensControlled { get; set; }
-        int NaturalResourceTokensControlled { get; set; }
+        int NaturalWonderTokensControlledThisTurn { get; set; }
+        int NaturalResourceTokensControlledThisTurn { get; set; }
 
         int StartingTechnologyLevel { get; set; }
         int BaseTechnologyIncrease { get; set; }

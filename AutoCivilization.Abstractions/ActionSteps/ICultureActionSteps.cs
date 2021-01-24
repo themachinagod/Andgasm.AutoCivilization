@@ -5,7 +5,9 @@
     public interface ITokenPlacementTerritoryAdjacentActionRequestStep : IStepAction { }
     public interface ITokenPlacementCityAdjacentInformationRequestStep : IStepAction { }
     public interface ITokenPlacementTerritoryAdjacentInformationRequest : IStepAction { }
-    public interface ITokenPlacementNaturalWondersInformationRequestStep : IStepAction { }
+    public interface ITokenPlacementNaturalWonderCountInformationRequestStep : IStepAction { }
+    public interface ITokenPlacementNaturalWonderControlledInformationRequestStep : IStepAction { }
     public interface ITokenPlacementNaturalResourcesInformationRequestStep : IStepAction { }
     public interface ITokenFlipEnemyActionRequestStep : IStepAction { }
+    
 }

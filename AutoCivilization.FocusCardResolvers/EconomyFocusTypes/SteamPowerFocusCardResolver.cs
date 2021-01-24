@@ -78,7 +78,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.SupportedCaravanCount = _botMoveStateService.SupportedCaravanCount;
             botGameStateService.CaravansOnRouteCount = onRouteCaravans;
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(_botMoveStateService.TradeTokensAvailable);
-            botGameStateService.ControlledResources += 1;
+            botGameStateService.ControlledNaturalResources += 1;
             _currentStep = -1;
 
             return BuildMoveSummary(botGameStateService);

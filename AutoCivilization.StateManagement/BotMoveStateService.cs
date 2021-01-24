@@ -14,11 +14,11 @@ namespace AutoCivilization.Console
         public int BaseCityControlTokensToBePlaced { get; set; }
         public int BaseTerritoryControlTokensToBePlaced { get; set; }
 
-        public int CityControlTokensPlaced { get; set; }
-        public int TerritroyControlTokensPlaced { get; set; }
+        public int CityControlTokensPlacedThisTurn { get; set; }
+        public int TerritroyControlTokensPlacedThisTurn { get; set; }
 
-        public int NaturalWonderTokensControlled { get; set; }
-        public int NaturalResourceTokensControlled { get; set; }
+        public int NaturalWonderTokensControlledThisTurn { get; set; }
+        public int NaturalResourceTokensControlledThisTurn { get; set; }
 
         public int CultureTokensUsedThisTurn { get; set; }
 
