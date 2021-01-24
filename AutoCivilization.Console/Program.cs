@@ -75,12 +75,14 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICultureLevel4FocusCardMoveResolver, MassMediaFocusCardMoveResolver>();
 
                     // science focus resolvers
+                    services.AddTransient<IScienceResolverUtility, ScienceResolverUtility>();
                     services.AddTransient<IScienceLevel1FocusCardMoveResolver, AstrologyFocusCardMoveResolver>();
                     services.AddTransient<IScienceLevel2FocusCardMoveResolver, MathematicsFocusCardMoveResolver>();
                     services.AddTransient<IScienceLevel3FocusCardMoveResolver, ReplaceablePartsCardMoveResolver>();
                     services.AddTransient<IScienceLevel4FocusCardMoveResolver, NuclearPowerFocusCardMoveResolver>();
 
                     // economy focus resolvers
+                    services.AddTransient<IEconomyResolverUtility, EconomyResolverUtility>();
                     services.AddTransient<IEconomyLevel1FocusCardMoveResolver, ForeignTradeFocusCardMoveResolver>();
                     services.AddTransient<IEconomyLevel2FocusCardMoveResolver, CurrencyFocusCardMoveResolver>();
                     services.AddTransient<IEconomyLevel3FocusCardMoveResolver, SteamPowerFocusCardMoveResolver>();

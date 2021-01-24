@@ -9,7 +9,7 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class MathematicsFocusCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel2FocusCardMoveResolver
     {
-        private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
+        private readonly IScienceResolverUtility _scienceResolverUtility;
         private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
 
         private const int BaseTechIncreasePoints = 5;
@@ -17,9 +17,9 @@ namespace AutoCivilization.FocusCardResolvers
         public MathematicsFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                                 INoActionStep noActionRequestActionRequest,
                                                 ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver,
-                                                ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
+                                                IScienceResolverUtility scienceResolverUtility) : base(botMoveStateService)
         {
-            _technologyUpgradeResolver = technologyUpgradeResolver;
+            _scienceResolverUtility = scienceResolverUtility;
             _smallestTradeTokenPileResolver = smallestTradeTokenPileResolver;
 
             _actionSteps.Add(0, noActionRequestActionRequest);
@@ -30,55 +30,25 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _botMoveStateService.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
-            _botMoveStateService.StartingTechnologyLevel = botGameStateService.TechnologyLevel;
-            _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
+            _scienceResolverUtility.PrimeBaseEconomyState(botGameStateService, BaseTechIncreasePoints);
             _botMoveStateService.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(botGameStateService.ActiveFocusBar, botGameStateService.TradeTokens);
-            _botMoveStateService.BaseTechnologyIncrease = BaseTechIncreasePoints;
         }
 
-        /// <summary>
-        /// Resolve the updated game state from the current move state
-        /// Updtes game states active focus bar to incorporate any new upgrades
-        /// Update game states technoology points
-        /// Update game states trade tokens counters
-        /// Increment the moves step counter
-        /// </summary>
-        /// <param name="botGameStateService">The game state to update for move</param>
-        /// <returns>A textual summary of what the bot did this move</returns>
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType] += 1;
-
-            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
-            var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
-                                                                                               _botMoveStateService.ActiveFocusBarForMove);
-            botGameStateService.ActiveFocusBar = techUpgradeResponse.UpgradedFocusBar;
-            botGameStateService.TechnologyLevel = techUpgradeResponse.NewTechnologyLevelPoints;
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService);
             botGameStateService.TradeTokens[_botMoveStateService.SmallestTradeTokenPileType] = _botMoveStateService.TradeTokensAvailable[_botMoveStateService.SmallestTradeTokenPileType];
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
-
             return BuildMoveSummary(techUpgradeResponse);
         }
 
         private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
-            var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {upgradeResponse.NewTechnologyLevelPoints}\n";
             summary += $"I updated my game state to show that I recieved 1 {_botMoveStateService.SmallestTradeTokenPileType} trade token as it was the smallest token pile\n";
-
-            if (_botMoveStateService.TradeTokensAvailable[FocusType.Science] > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.TradeTokensAvailable[FocusType.Science]} science trade tokens I had available to me to facilitate this move\n";
-            if (upgradeResponse.EncounteredBreakthroughs.Count > 0)
-            {
-                summary += $"As a result of my technology upgrade, I had a technological breakthrough\n";
-                foreach (var breakthrough in upgradeResponse.EncounteredBreakthroughs)
-                {
-                    summary += $"This breakthrough resulted in my {breakthrough.ReplacedFocusCard.Name} being replaced with {breakthrough.UpgradedFocusCard.Name}\n";
-                }
-            }
-            return summary;
+            return _scienceResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, upgradeResponse);
         }
     }
 }
