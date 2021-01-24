@@ -9,9 +9,11 @@ namespace AutoCivilization.FocusCardResolvers
     public class ReplaceablePartsCardMoveResolver : FocusCardMoveResolverBase, IScienceLevel3FocusCardMoveResolver
     {
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
-
+        
         private FocusBarUpgradeResponse _freeTechUpgradeResponse;
         private TechnologyUpgradeResponse _techLevelUpgradeResponse;
+
+        private const int BaseTechIncreasePoints = 5;
 
         public ReplaceablePartsCardMoveResolver(IBotMoveStateCache botMoveStateService,
                                              INoActionStep noActionRequestActionRequest,
@@ -32,16 +34,24 @@ namespace AutoCivilization.FocusCardResolvers
 
             _botMoveStateService.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
 
-            _botMoveStateService.BaseTechnologyIncrease = 5;
+            _botMoveStateService.BaseTechnologyIncrease = BaseTechIncreasePoints;
         }
 
+        /// <summary>
+        /// Resolve the updated game state from the current move state
+        /// Updtes game states active focus bar to incorporate any new upgrades
+        /// Update game states technoology points
+        /// Update game states trade tokens counters
+        /// Increment the moves step counter
+        /// </summary>
+        /// <param name="botGameStateService">The game state to update for move</param>
+        /// <returns>A textual summary of what the bot did this move</returns>
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var techIncrementPoints = _botMoveStateService.BaseTechnologyIncrease + _botMoveStateService.TradeTokensAvailable[FocusType.Science];
             _freeTechUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
             _techLevelUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(_botMoveStateService.StartingTechnologyLevel, techIncrementPoints,
                                                                                                _freeTechUpgradeResponse.UpgradedFocusBar);
-
             botGameStateService.ActiveFocusBar = _techLevelUpgradeResponse.UpgradedFocusBar;
             botGameStateService.TechnologyLevel = _techLevelUpgradeResponse.NewTechnologyLevelPoints;
             botGameStateService.TradeTokens[FocusType.Science] = 0;
@@ -61,7 +71,6 @@ namespace AutoCivilization.FocusCardResolvers
 
             summary += $"I updated my game state to show that I incremented my technology points by {techIncrementPoints} to {_techLevelUpgradeResponse.NewTechnologyLevelPoints}\n";
             if (_botMoveStateService.TradeTokensAvailable[FocusType.Science] > 0) summary += $"I updated my game state to show that I used {_botMoveStateService.TradeTokensAvailable[FocusType.Science]} science trade tokens I had available to me to facilitate this move\n";
-
             if (_techLevelUpgradeResponse.EncounteredBreakthroughs.Count > 0)
             {
                 summary += $"As a result of my technology upgrade, I had a technological breakthrough\n";
