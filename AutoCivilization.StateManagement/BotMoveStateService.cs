@@ -8,6 +8,7 @@ namespace AutoCivilization.Console
         public FocusBarModel ActiveFocusBarForMove { get; set; }
         public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();
         public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
+        public List<string> ControlledNaturalWonders { get; set; }
 
         public FocusType SmallestTradeTokenPileType { get; set; }
 
