@@ -103,8 +103,13 @@ namespace AutoCivilization.Console
             System.Console.WriteLine($"Focus Bar Slot 3: {gameState.ActiveFocusBar.FocusSlot3.Name} ({gameState.ActiveFocusBar.FocusSlot3.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot3.Type]} tokens");
             System.Console.WriteLine($"Focus Bar Slot 4: {gameState.ActiveFocusBar.FocusSlot4.Name} ({gameState.ActiveFocusBar.FocusSlot4.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot4.Type]} tokens");
             System.Console.WriteLine($"Focus Bar Slot 5: {gameState.ActiveFocusBar.FocusSlot5.Name} ({gameState.ActiveFocusBar.FocusSlot5.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot5.Type]} tokens");
-            System.Console.WriteLine("#############################");
             System.Console.WriteLine($"Active Move Focus: {gameState.ActiveFocusBar.FocusSlot5.Name}");
+            System.Console.WriteLine("#############################");
+            System.Console.WriteLine($"Controlled Natural Resource Count: {gameState.ControlledNaturalResources}");
+            System.Console.WriteLine($"Controlled Natural Wonders: {string.Join(",", gameState.ControlledNaturalWonders)}");
+            System.Console.WriteLine($"Supported Trade Caravan Count: {gameState.SupportedCaravanCount}");
+            System.Console.WriteLine($"Trade Caravans on Route Count: {gameState.CaravansOnRouteCount}");
+            System.Console.WriteLine("#############################");
         }
     }
 }
