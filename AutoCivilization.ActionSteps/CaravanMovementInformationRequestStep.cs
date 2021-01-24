@@ -26,6 +26,12 @@ namespace AutoCivilization.ActionSteps
                    options);
         }
 
+        /// <summary>
+        /// Take in the number of spaces the user managed to move a trade caravan
+        /// Update move state with how many culture tokens were used to facilitate placements
+        /// Update move state with how many culture tokens were recieved due to unused moves
+        /// </summary>
+        /// <param name="input">The number of control tokens placed next to cities</param>
         public override void ProcessActionResponse(string input)
         {
             var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];

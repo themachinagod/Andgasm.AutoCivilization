@@ -20,13 +20,19 @@ namespace AutoCivilization.ActionSteps
                    options);
         }
 
+        /// <summary>
+        /// Take in the number of control tokens the user managed to place on the board next to bot territory
+        /// Update move state with how many culture tokens were used to facilitate placements
+        /// Update move state control tokens placed counter
+        /// </summary>
+        /// <param name="input">The number of control tokens placed next to friendly territory</param>
         public override void ProcessActionResponse(string input)
         {
             var territoryControlTokensPlaced = Convert.ToInt32(input);
             var cultureTokensUsedThisTurn = territoryControlTokensPlaced - _botMoveStateService.BaseTerritoryControlTokensToBePlaced;
             _botMoveStateService.CultureTokensUsedThisTurn += (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
             _botMoveStateService.TradeTokensAvailable[FocusType.Culture] -= (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
-            _botMoveStateService.TerritroyControlTokensPlacedThisTurn = Convert.ToInt32(input);
+            _botMoveStateService.TerritroyControlTokensPlacedThisTurn = territoryControlTokensPlaced;
         }
     }
 }

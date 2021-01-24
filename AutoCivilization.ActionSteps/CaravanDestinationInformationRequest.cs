@@ -24,6 +24,10 @@ namespace AutoCivilization.ActionSteps
                    new List<string>() { "1. On Route", "2. City State", "3. Rival City" });
         }
 
+        /// <summary>
+        /// Update move state for a caravan to show what its destination result was
+        /// </summary>
+        /// <param name="input">The code for the destination result specified by the user</param>
         public override void ProcessActionResponse(string input)
         {
             var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];

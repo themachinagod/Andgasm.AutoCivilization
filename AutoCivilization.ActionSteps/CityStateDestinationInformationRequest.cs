@@ -1,7 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoCivilization.ActionSteps
@@ -10,6 +9,8 @@ namespace AutoCivilization.ActionSteps
     {
         private readonly IGlobalGameCache _globalGameCache;
         private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
+
+        private const int BaseTradeTokensForCityStateVisit = 2;
 
         public CityStateDestinationInformationRequestStep(IGlobalGameCache globalGameCache,
                                                           IOrdinalSuffixResolver ordinalSuffixResolver,
@@ -40,6 +41,10 @@ namespace AutoCivilization.ActionSteps
                    cityStates);
         }
 
+        /// <summary>
+        /// Update move state with visited city states
+        /// </summary>
+        /// <param name="input">The code for the city states visited specified by the user</param>
         public override void ProcessActionResponse(string input)
         {
 
@@ -47,7 +52,7 @@ namespace AutoCivilization.ActionSteps
             var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);
             var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanCityStateDestination = citystate;
-            _botMoveStateService.TradeTokensAvailable[citystate.Type] += 2;
+            _botMoveStateService.TradeTokensAvailable[citystate.Type] += BaseTradeTokensForCityStateVisit;
         }
     }
 }

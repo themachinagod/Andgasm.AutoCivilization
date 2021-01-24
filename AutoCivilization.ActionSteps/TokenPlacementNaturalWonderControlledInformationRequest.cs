@@ -29,6 +29,10 @@ namespace AutoCivilization.ActionSteps
                    naturalWonders);
         }
 
+        /// <summary>
+        /// Update move state with how natural wonders that were controlled this turn
+        /// </summary>
+        /// <param name="input">The code for the natural wonders visited specified by the user</param>
         public override void ProcessActionResponse(string input)
         {
             switch (Convert.ToInt32(input))

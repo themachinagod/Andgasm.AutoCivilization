@@ -50,6 +50,17 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
+        /// <summary>
+        /// Resolve the updated game state from the current move state
+        /// Updtes game states caravan status
+        /// Update game states visited city states
+        /// Update game states visited rivals cities
+        /// Update game state natural resources
+        /// Update game states trade tokens counters
+        /// Increment the moves step counter
+        /// </summary>
+        /// <param name="botGameStateService">The game state to update for move</param>
+        /// <returns>A textual summary of what the bot did this move</returns>
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
             var onRouteCaravans = 0;
@@ -87,8 +98,8 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(BotGameStateCache gameState)
         {
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that have {gameState.SupportedCaravanCount} caravans available to me in total;\n";
-            summary += $"I updated my game state to show that have {gameState.CaravansOnRouteCount} caravans currently on route to destinations on the board;\n";
+            summary += $"I updated my game state to show that I have {gameState.SupportedCaravanCount} trade caravans available to me in total;\n";
+            summary += $"I updated my game state to show that I have {gameState.CaravansOnRouteCount} trade caravans currently on route to destinations on the board;\n";
             summary += $"I updated my game state to show that I recieved 1 natural resource which I may use in the future;\n";
 
             var totTokensUsed = _botMoveStateService.TradeCaravansAvailable[0].EconomyTokensUsedThisTurn;
