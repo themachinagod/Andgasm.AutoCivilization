@@ -30,10 +30,9 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the destination result specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            var updatedMoveState = moveState.Clone();
-            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
+            var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
                 case 1:
@@ -49,7 +48,6 @@ namespace AutoCivilization.ActionSteps
                     movingCaravan.CaravanDestinationType = CaravanDestinationType.OnRoute;
                     break;
             }
-            return updatedMoveState;
         }
     }
 }

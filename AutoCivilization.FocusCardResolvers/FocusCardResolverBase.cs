@@ -53,7 +53,7 @@ namespace AutoCivilization.FocusCardResolvers
         public void ProcessMoveStepResponse(string response)
         {
             var stepAction = _actionSteps[_currentStep];
-            _moveState = stepAction.ProcessActionResponse(response, _moveState);
+            stepAction.UpdateMoveStateForUserResponse(response, _moveState);
         }
 
         public virtual string UpdateGameStateForMove(BotGameStateCache botGameStateService)

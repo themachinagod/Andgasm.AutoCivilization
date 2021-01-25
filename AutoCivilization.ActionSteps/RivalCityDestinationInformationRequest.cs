@@ -47,13 +47,11 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited rival cities
         /// </summary>
         /// <param name="input">The code for the rival cities visited specified by the user</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
             // TODO: what if the bot visited more than 1?
-            // TODO: potentially some state mutation issues on caravan obj
 
-            var updatedMoveState = moveState.Clone();
-            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
+            var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
                 case 1:
@@ -70,11 +68,10 @@ namespace AutoCivilization.ActionSteps
                     break;
             }
 
-            var smallestpile = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(updatedMoveState.ActiveFocusBarForMove, updatedMoveState.TradeTokensAvailable);
-            updatedMoveState.SmallestTradeTokenPileType = smallestpile;
+            var smallestpile = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(moveState.ActiveFocusBarForMove, moveState.TradeTokensAvailable);
+            moveState.SmallestTradeTokenPileType = smallestpile;
             movingCaravan.SmallestTradeTokenPileType = smallestpile;
-            updatedMoveState.TradeTokensAvailable[smallestpile] += BaseTradeTokensForRivalCityVisit;
-            return updatedMoveState;
+            moveState.TradeTokensAvailable[smallestpile] += BaseTradeTokensForRivalCityVisit;
         }
     }
 }

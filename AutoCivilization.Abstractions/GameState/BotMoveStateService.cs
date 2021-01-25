@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.Console
 {
+    // DBr: currently this guy is mutated during the execution of a move
+    //      this data object will exist for the duration of move resolver 
+    //      use of this object should be limited as below
+    //      - initialise the instance object in the PrimeMoveState() method of a FocusCardMoveResolver
+    //      - when resolving ProcessActionResponse() update the state instance properties
+    //      doing the above keeps changes to the move state easy to track however we are not preventing the mutation of this object
+
     public class BotMoveStateCache
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
@@ -24,7 +31,6 @@ namespace AutoCivilization.Console
         public int CultureTokensUsedThisTurn { get; set; }
 
         public int BaseTechnologyIncrease { get; set; }
-        public int TechnologyLevelIncrease { get; set; }
         public int StartingTechnologyLevel { get; set; }
 
         public int BaseCaravanMoves { get; set; }

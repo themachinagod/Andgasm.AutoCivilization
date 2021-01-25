@@ -16,7 +16,7 @@ namespace AutoCivilization.Abstractions.ActionSteps
 
         bool ShouldExecuteAction(BotMoveStateCache moveState);
         MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
-        BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState);
+        void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState);
     }
 
     public interface INoActionStep : IStepAction 

@@ -34,20 +34,18 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            var updatedMoveState = moveState.Clone();
-            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
+            var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanSpacesMoved = Convert.ToInt32(input);
 
-            var economyTokensUsedThisTurn = movingCaravan.CaravanSpacesMoved - updatedMoveState.BaseCaravanMoves;
+            var economyTokensUsedThisTurn = movingCaravan.CaravanSpacesMoved - moveState.BaseCaravanMoves;
             movingCaravan.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;
-            if (updatedMoveState.CurrentCaravanIdToMove == 1 || economyTokensUsedThisTurn > 0)
+            if (moveState.CurrentCaravanIdToMove == 1 || economyTokensUsedThisTurn > 0)
             {
                 // only the first trade caravan should give tokens for unused moves
-                updatedMoveState.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
+                moveState.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
             }
-            return updatedMoveState;
         }
     }
 }

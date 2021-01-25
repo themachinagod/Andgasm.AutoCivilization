@@ -21,9 +21,8 @@ namespace AutoCivilization.ActionSteps
 
         public abstract MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
 
-        public virtual BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public virtual void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            return moveState;
         }
     }
 }

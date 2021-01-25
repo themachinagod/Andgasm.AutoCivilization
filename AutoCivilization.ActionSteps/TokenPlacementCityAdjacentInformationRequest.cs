@@ -30,15 +30,13 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            var updatedMoveState = moveState.Clone();
             var cityControlTokensPlaced = Convert.ToInt32(input);
-            var cultureTokensUsedThisTurn = cityControlTokensPlaced - updatedMoveState.BaseCityControlTokensToBePlaced;
-            updatedMoveState.CultureTokensUsedThisTurn = cultureTokensUsedThisTurn;
-            updatedMoveState.TradeTokensAvailable[FocusType.Culture] -= cultureTokensUsedThisTurn;
-            updatedMoveState.CityControlTokensPlacedThisTurn = cityControlTokensPlaced;
-            return updatedMoveState;
+            var cultureTokensUsedThisTurn = cityControlTokensPlaced - moveState.BaseCityControlTokensToBePlaced;
+            moveState.CultureTokensUsedThisTurn = cultureTokensUsedThisTurn;
+            moveState.TradeTokensAvailable[FocusType.Culture] -= cultureTokensUsedThisTurn;
+            moveState.CityControlTokensPlacedThisTurn = cityControlTokensPlaced;
         }
     }
 }

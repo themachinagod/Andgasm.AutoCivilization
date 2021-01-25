@@ -38,29 +38,27 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the natural wonders visited specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            var updatedMoveState = moveState.Clone();
             switch (Convert.ToInt32(input))
             {
                 case 1:
-                    updatedMoveState.ControlledNaturalWonders.Add("Mt. Everest");
-                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 1;
+                    moveState.ControlledNaturalWonders.Add("Mt. Everest");
+                    moveState.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 2:
-                    updatedMoveState.ControlledNaturalWonders.Add("Gran Mesa");
-                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 1;
+                    moveState.ControlledNaturalWonders.Add("Gran Mesa");
+                    moveState.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 3:
-                    updatedMoveState.ControlledNaturalWonders.Add("Gran Mesa");
-                    updatedMoveState.ControlledNaturalWonders.Add("Mt. Everest");
-                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 2;
+                    moveState.ControlledNaturalWonders.Add("Gran Mesa");
+                    moveState.ControlledNaturalWonders.Add("Mt. Everest");
+                    moveState.NaturalWonderTokensControlledThisTurn = 2;
                     break;
                 default:
-                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 0;
+                    moveState.NaturalWonderTokensControlledThisTurn = 0;
                     break;
             }
-            return updatedMoveState;
         }
     }
 }

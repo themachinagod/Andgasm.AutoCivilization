@@ -46,15 +46,13 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited city states
         /// </summary>
         /// <param name="input">The code for the city states visited specified by the user</param>
-        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
         {
-            var updatedMoveState = moveState.Clone();
             var selectedid = Convert.ToInt32(input);
             var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);
-            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
+            var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanCityStateDestination = citystate;
-            updatedMoveState.TradeTokensAvailable[citystate.Type] += BaseTradeTokensForCityStateVisit;
-            return updatedMoveState;
+            moveState.TradeTokensAvailable[citystate.Type] += BaseTradeTokensForCityStateVisit;
         }
     }
 }
