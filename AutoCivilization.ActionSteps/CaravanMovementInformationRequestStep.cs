@@ -40,9 +40,15 @@ namespace AutoCivilization.ActionSteps
 
             var economyTokensUsedThisTurn = movingCaravan.CaravanSpacesMoved - moveState.BaseCaravanMoves;
             movingCaravan.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;
-            if (moveState.CurrentCaravanIdToMove == 1 || economyTokensUsedThisTurn > 0)
+            if (economyTokensUsedThisTurn > 0)
             {
-                // only the first trade caravan should give tokens for unused moves
+                // we should not gain tokens for unspent moves however the rules technically state:
+                // —The AP only spends trade tokens
+                //  from this card if doing so allows at least one of its caravans
+                //  to reach its destination when that caravan would not reach
+                //  the destination without the token
+                // currently we will always use tokens if they are available 
+                // above rule cannot be satisfied witout a further information request to the user
                 moveState.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
             }
         }

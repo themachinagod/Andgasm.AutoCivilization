@@ -8,6 +8,7 @@ namespace AutoCivilization.FocusCardResolvers
     {
         private const int SupportedCaravans = 2;
         private const int BaseCaravanMoves = 6;
+        private const int BaseFreeResources = 1;
 
         private readonly IEconomyResolverUtility _economyResolverUtility;
 
@@ -46,7 +47,7 @@ namespace AutoCivilization.FocusCardResolvers
         public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _economyResolverUtility.UpdateBaseEconomyGameStateForMove(_moveState, botGameStateService, SupportedCaravans);
-            botGameStateService.ControlledNaturalResources += 1;
+            botGameStateService.ControlledNaturalResources += BaseFreeResources;
             _currentStep = -1;
             return BuildMoveSummary(botGameStateService);
         }
@@ -54,7 +55,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(BotGameState gameState)
         {
             var summary = "To summarise my move I did the following;\n";
-            summary += $"I updated my game state to show that I recieved 1 natural resource which I may use for future construction projects;\n";
+            summary += $"I updated my game state to show that I recieved {BaseFreeResources} natural resource(s) which I may use for future construction projects\n";
             return _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState, _moveState);
         }
     }

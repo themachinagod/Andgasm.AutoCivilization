@@ -45,6 +45,8 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
+            // TODO: the bot round state cache is suspicious here - same the old move state cache
+
             _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
             _moveState.CanMoveOnWater = true;
             _botRoundStateCache.ShouldExecuteAdditionalFocusCard = true;
@@ -62,7 +64,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var summary = "To summarise my move I did the following;\n";
             summary = _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState, _moveState);
-            summary += $"\nAs a result of executing this focus card, I will now resolve the card in my 4th focus bar slot without reseting it. Please press any key to execute this action now...\n";
+            summary += $"\nAs a result of executing this focus card, I will now resolve the card in my 4th focus bar slot without reseting it.\nPlease press any key to execute this action now...\n";
             return summary;
         }
     }

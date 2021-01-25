@@ -17,7 +17,6 @@ namespace AutoCivilization.FocusCardResolvers
             moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateCache.TradeTokens);
             moveState.BaseCaravanMoves = baseMoves;
             moveState.SupportedCaravanCount = supportedCaravans;
-            moveState.CanMoveOnWater = true;
 
             for (int tc = 0; tc < moveState.SupportedCaravanCount; tc++)
             {
