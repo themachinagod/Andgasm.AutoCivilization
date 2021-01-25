@@ -18,7 +18,7 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             return new MoveStepActionData($"Which type of destination did my {caravanRef} trade caravan arrive at?",
@@ -30,7 +30,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the destination result specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))

@@ -15,14 +15,14 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.InformationRequest;
         }
 
-        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
             return (totalTokensPlaced > 0) &&
                    (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: we need natural wonders for game
             //       currently hard wired!
@@ -38,7 +38,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the natural wonders visited specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             switch (Convert.ToInt32(input))
             {

@@ -10,7 +10,7 @@ namespace AutoCivilization.Console
     //      - when resolving ProcessActionResponse() update the state instance properties
     //      doing the above keeps changes to the move state easy to track however we are not preventing the mutation of this object
 
-    public class BotMoveStateCache
+    public class BotMoveState
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
         public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();

@@ -12,7 +12,7 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.ActionRequest;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             return new MoveStepActionData("Each human player should pick a city that is not their capital, and remove the city as well as all adjacent control tokens from the board.",
                    new List<string>());

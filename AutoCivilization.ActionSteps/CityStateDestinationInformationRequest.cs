@@ -23,14 +23,14 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             if (movingCaravan.CaravanDestinationType == CaravanDestinationType.CityState) return true;
             return false;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: this lists all avilable city states - would be better if we can limit this list:
             //       to remove already visited city states
@@ -46,7 +46,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited city states
         /// </summary>
         /// <param name="input">The code for the city states visited specified by the user</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             var selectedid = Convert.ToInt32(input);
             var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);

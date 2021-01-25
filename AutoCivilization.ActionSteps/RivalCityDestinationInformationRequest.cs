@@ -24,14 +24,14 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             if (movingCaravan.CaravanDestinationType == CaravanDestinationType.RivalCity) return true;
             return false;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: we need players and colors
             //       currently hard wired!
@@ -47,7 +47,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited rival cities
         /// </summary>
         /// <param name="input">The code for the rival cities visited specified by the user</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             // TODO: what if the bot visited more than 1?
 

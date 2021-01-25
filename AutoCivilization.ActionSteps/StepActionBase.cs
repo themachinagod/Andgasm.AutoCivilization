@@ -14,14 +14,14 @@ namespace AutoCivilization.ActionSteps
         {
         }
 
-        public virtual bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public virtual bool ShouldExecuteAction(BotMoveState moveState)
         {
             return true;
         }
 
-        public abstract MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
+        public abstract MoveStepActionData ExecuteAction(BotMoveState moveState);
 
-        public virtual void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public virtual void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
         }
     }

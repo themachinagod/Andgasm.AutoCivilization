@@ -18,7 +18,7 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             var maxMoves = moveState.BaseCaravanMoves + moveState.TradeTokensAvailable[FocusType.Economy];
@@ -34,7 +34,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanSpacesMoved = Convert.ToInt32(input);

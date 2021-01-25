@@ -11,7 +11,7 @@ namespace AutoCivilization.FocusCardResolvers
         #region Fields
         internal Dictionary<int, IStepAction> _actionSteps { get; set; }
         internal int _currentStep { get; set; }
-        internal BotMoveStateCache _moveState { get; set; }
+        internal BotMoveState _moveState { get; set; }
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public virtual void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _moveState = new BotMoveStateCache();
+            _moveState = new BotMoveState();
         }
 
         public MoveStepActionData ProcessMoveStepRequest()

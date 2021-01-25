@@ -14,14 +14,14 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.InformationRequest;
         }
 
-        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
             return (totalTokensPlaced > 0) &&
                    (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: there will be a max limit here based on the number of natural wonders (hard wired to 2 for 2 player game)
             var preplaced = moveState.NaturalResourceTokensControlledThisTurn + moveState.NaturalWonderTokensControlledThisTurn;
@@ -36,7 +36,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with how many natural rsources were recieved due to placed control tokens
         /// </summary>
         /// <param name="input">The number of natural wonder tokens the bot controlled this turn</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             moveState.NaturalWonderTokensControlledThisTurn = Convert.ToInt32(input);
         }

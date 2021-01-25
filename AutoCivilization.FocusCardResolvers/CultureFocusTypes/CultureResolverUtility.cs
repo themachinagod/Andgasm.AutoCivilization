@@ -9,16 +9,16 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class CultureResolverUtility : ICultureResolverUtility
     {
-        public BotMoveStateCache CreateBasicCultureMoveState(BotGameStateCache botGameStateCache, int baseTokens)
+        public BotMoveState CreateBasicCultureMoveState(BotGameStateCache botGameStateCache, int baseTokens)
         {
-            var moveState = new BotMoveStateCache();
+            var moveState = new BotMoveState();
             moveState.ControlledNaturalWonders = new List<string>(botGameStateCache.ControlledNaturalWonders);
             moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateCache.TradeTokens);
             moveState.BaseCityControlTokensToBePlaced = baseTokens;
             return moveState;
         }
 
-        public void UpdateBaseCultureGameStateForMove(BotMoveStateCache movesState, BotGameStateCache botGameStateService)
+        public void UpdateBaseCultureGameStateForMove(BotMoveState movesState, BotGameStateCache botGameStateService)
         {
             var totalTokensPlacedThisTurn = movesState.CityControlTokensPlacedThisTurn + movesState.TerritroyControlTokensPlacedThisTurn;
             botGameStateService.ControlledSpaces += totalTokensPlacedThisTurn;
@@ -27,7 +27,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(movesState.TradeTokensAvailable);
         }
 
-        public string BuildGeneralisedCultureMoveSummary(string currentSummary, BotMoveStateCache movesState)
+        public string BuildGeneralisedCultureMoveSummary(string currentSummary, BotMoveState movesState)
         {
             StringBuilder sb = new StringBuilder(currentSummary);
             if (movesState.CityControlTokensPlacedThisTurn > 0) sb.Append($"I updated my game state to show that I placed {movesState.CityControlTokensPlacedThisTurn} control token(s) next to my cities on the board\n");

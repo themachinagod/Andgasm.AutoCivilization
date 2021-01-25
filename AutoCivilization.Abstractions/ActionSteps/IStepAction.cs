@@ -14,9 +14,9 @@ namespace AutoCivilization.Abstractions.ActionSteps
         int StepIndex { get; set; }
         OperationType OperationType { get; set; }
 
-        bool ShouldExecuteAction(BotMoveStateCache moveState);
-        MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
-        void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState);
+        bool ShouldExecuteAction(BotMoveState moveState);
+        MoveStepActionData ExecuteAction(BotMoveState moveState);
+        void UpdateMoveStateForUserResponse(string input, BotMoveState moveState);
     }
 
     public interface INoActionStep : IStepAction 

@@ -16,7 +16,7 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
+        public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             if (movingCaravan.CaravanDestinationType == CaravanDestinationType.RivalCity ||
@@ -24,7 +24,7 @@ namespace AutoCivilization.ActionSteps
             return false;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             return new MoveStepActionData($"Please remove my {caravanRef} trade caravan from the city and return it to my supply in preperation for its next journey",

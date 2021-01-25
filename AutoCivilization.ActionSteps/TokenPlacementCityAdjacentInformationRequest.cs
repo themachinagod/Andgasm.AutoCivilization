@@ -14,7 +14,7 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.InformationRequest;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var maxControlTokensToBePlaced = moveState.BaseCityControlTokensToBePlaced + moveState.TradeTokensAvailable[FocusType.Culture];
             var options = Array.ConvertAll(Enumerable.Range(0, maxControlTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
@@ -30,7 +30,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveStateCache moveState)
+        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
         {
             var cityControlTokensPlaced = Convert.ToInt32(input);
             var cultureTokensUsedThisTurn = cityControlTokensPlaced - moveState.BaseCityControlTokensToBePlaced;

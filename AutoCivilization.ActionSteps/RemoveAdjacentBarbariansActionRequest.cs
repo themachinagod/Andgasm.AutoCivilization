@@ -12,7 +12,7 @@ namespace AutoCivilization.ActionSteps
             OperationType = OperationType.InformationRequest;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             return new MoveStepActionData($"Please remove all barbarians from the board that are adjacent to my friendly space, I do not gain trade tokens for this",
                    new List<string>());

@@ -18,9 +18,9 @@ namespace AutoCivilization.FocusCardResolvers
             _technologyUpgradeResolver = technologyUpgradeResolver;
         }
 
-        public BotMoveStateCache CreateBasicScienceMoveState(BotGameStateCache botGameStateCache, int basePoints)
+        public BotMoveState CreateBasicScienceMoveState(BotGameStateCache botGameStateCache, int basePoints)
         {
-            var moveState = new BotMoveStateCache();
+            var moveState = new BotMoveState();
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
             moveState.StartingTechnologyLevel = botGameStateCache.TechnologyLevel;
             moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateCache.TradeTokens);
@@ -28,7 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
             return moveState;
         }
 
-        public TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotMoveStateCache moveState, BotGameStateCache botGameStateService)
+        public TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotMoveState moveState, BotGameStateCache botGameStateService)
         {
             var techIncrementPoints = moveState.BaseTechnologyIncrease + moveState.TradeTokensAvailable[FocusType.Science];
             var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(moveState.StartingTechnologyLevel, techIncrementPoints,
@@ -38,7 +38,7 @@ namespace AutoCivilization.FocusCardResolvers
             return techUpgradeResponse;
         }
 
-        public string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse upgradeResponse, BotMoveStateCache moveState)
+        public string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse upgradeResponse, BotMoveState moveState)
         {
             StringBuilder sb = new StringBuilder(currentSummary);
             var techIncrementPoints = moveState.BaseTechnologyIncrease + moveState.TradeTokensAvailable[FocusType.Science];

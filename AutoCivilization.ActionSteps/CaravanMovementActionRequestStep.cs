@@ -16,7 +16,7 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
+        public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: would e useful to show some detail on the priority based on move state
             //       e.g. if the bot has already visited all city states then we can remove that from option list
