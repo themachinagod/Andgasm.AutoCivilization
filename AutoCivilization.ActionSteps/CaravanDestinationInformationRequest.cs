@@ -1,7 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Console;
-using AutoCivilization.StateManagement;
 using System;
 using System.Collections.Generic;
 

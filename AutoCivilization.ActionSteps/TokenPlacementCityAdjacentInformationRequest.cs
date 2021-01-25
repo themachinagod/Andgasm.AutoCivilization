@@ -2,7 +2,6 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using System;
 using System.Linq;
-using AutoCivilization.StateManagement;
 using AutoCivilization.Console;
 
 namespace AutoCivilization.ActionSteps
