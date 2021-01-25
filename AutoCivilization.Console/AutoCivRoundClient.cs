@@ -7,7 +7,7 @@ namespace AutoCivilization.Console
 {
     public interface IAutoCivRoundClient
     {
-        void ExecuteRoundForBot(BotGameStateCache gameState);
+        void ExecuteRoundForBot(BotGameState gameState);
     }
 
     public class AutoCivRoundClient : IAutoCivRoundClient
@@ -28,7 +28,7 @@ namespace AutoCivilization.Console
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public void ExecuteRoundForBot(BotGameStateCache gameState)
+        public void ExecuteRoundForBot(BotGameState gameState)
         {
             // TODO: we can track the event dial which should move at the start of each of the bots turns (except first)
             //       certain events will require actions - trade tokens etc
@@ -49,7 +49,7 @@ namespace AutoCivilization.Console
             gameState.CurrentRoundNumber++;
         }
 
-        private void ExecutePrimaryMove(BotGameStateCache gameState)
+        private void ExecutePrimaryMove(BotGameState gameState)
         {
             using (var primaryMoveScope = _serviceScopeFactory.CreateScope())
             {
@@ -58,7 +58,7 @@ namespace AutoCivilization.Console
             }
         }
 
-        private void ExecuteSubMoves(BotGameStateCache gameState)
+        private void ExecuteSubMoves(BotGameState gameState)
         {
             if (_botRoundState.ShouldExecuteAdditionalFocusCard)
             {
@@ -71,14 +71,14 @@ namespace AutoCivilization.Console
             }
         }
 
-        private void ExecuteMoveForScope(IServiceScope scope, BotGameStateCache gameState, FocusCardModel focusCard)
+        private void ExecuteMoveForScope(IServiceScope scope, BotGameState gameState, FocusCardModel focusCard)
         {
             var scopedMoveContext = scope.ServiceProvider.GetRequiredService<IAutoCivMoveClient>();
             var focusCardMoveResolver = _focusCardResolverFactory.GetFocusCardMoveResolver(focusCard);
             scopedMoveContext.ExecuteMoveForResolver(gameState, focusCardMoveResolver);
         }
 
-        private void ResetFocusBarForNextMove(BotGameStateCache gameState)
+        private void ResetFocusBarForNextMove(BotGameState gameState)
         {
             gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResetFocusBarForNextMove(gameState.ActiveFocusBar);
         }
@@ -91,7 +91,7 @@ namespace AutoCivilization.Console
             System.Console.Clear();
         }
 
-        private void WriteConsoleRoundHeader(BotGameStateCache gameState)
+        private void WriteConsoleRoundHeader(BotGameState gameState)
         {
             System.Console.WriteLine();
             System.Console.WriteLine("#############################");

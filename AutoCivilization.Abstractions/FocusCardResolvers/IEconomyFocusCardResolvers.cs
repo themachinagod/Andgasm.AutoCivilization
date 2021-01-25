@@ -4,9 +4,9 @@ namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
     public interface IEconomyResolverUtility
     {
-        BotMoveState CreateBasicEconomyMoveState(BotGameStateCache botGameStateCache, int supportedCaravans, int baseMoves);
-        void UpdateBaseEconomyGameStateForMove(BotMoveState movesState, BotGameStateCache botGameStateService, int supportedCaravans);
-        string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameStateCache gameState, BotMoveState movesState);
+        BotMoveState CreateBasicEconomyMoveState(BotGameState botGameStateCache, int supportedCaravans, int baseMoves);
+        void UpdateBaseEconomyGameStateForMove(BotMoveState movesState, BotGameState botGameStateService, int supportedCaravans);
+        string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameState gameState, BotMoveState movesState);
     }
     public interface IEconomyLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {

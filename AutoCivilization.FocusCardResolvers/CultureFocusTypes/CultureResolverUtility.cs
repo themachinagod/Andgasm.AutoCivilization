@@ -9,7 +9,7 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class CultureResolverUtility : ICultureResolverUtility
     {
-        public BotMoveState CreateBasicCultureMoveState(BotGameStateCache botGameStateCache, int baseTokens)
+        public BotMoveState CreateBasicCultureMoveState(BotGameState botGameStateCache, int baseTokens)
         {
             var moveState = new BotMoveState();
             moveState.ControlledNaturalWonders = new List<string>(botGameStateCache.ControlledNaturalWonders);
@@ -18,7 +18,7 @@ namespace AutoCivilization.FocusCardResolvers
             return moveState;
         }
 
-        public void UpdateBaseCultureGameStateForMove(BotMoveState movesState, BotGameStateCache botGameStateService)
+        public void UpdateBaseCultureGameStateForMove(BotMoveState movesState, BotGameState botGameStateService)
         {
             var totalTokensPlacedThisTurn = movesState.CityControlTokensPlacedThisTurn + movesState.TerritroyControlTokensPlacedThisTurn;
             botGameStateService.ControlledSpaces += totalTokensPlacedThisTurn;

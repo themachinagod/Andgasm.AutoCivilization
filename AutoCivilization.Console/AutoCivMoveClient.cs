@@ -6,12 +6,12 @@ namespace AutoCivilization.Console
 {
     public interface IAutoCivMoveClient
     {
-        void ExecuteMoveForResolver(BotGameStateCache gameState, IFocusCardMoveResolver moveresolver);
+        void ExecuteMoveForResolver(BotGameState gameState, IFocusCardMoveResolver moveresolver);
     }
 
     public class AutoCivMoveClient : IAutoCivMoveClient
     {
-        public void ExecuteMoveForResolver(BotGameStateCache gameState, IFocusCardMoveResolver focusCardMoveResolver)
+        public void ExecuteMoveForResolver(BotGameState gameState, IFocusCardMoveResolver focusCardMoveResolver)
         {
             focusCardMoveResolver.PrimeMoveState(gameState);
             do

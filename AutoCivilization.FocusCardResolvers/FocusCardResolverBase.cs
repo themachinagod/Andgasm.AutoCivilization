@@ -34,7 +34,7 @@ namespace AutoCivilization.FocusCardResolvers
         }
         #endregion
 
-        public virtual void PrimeMoveState(BotGameStateCache botGameStateService)
+        public virtual void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = new BotMoveState();
         }
@@ -55,7 +55,7 @@ namespace AutoCivilization.FocusCardResolvers
             stepAction.UpdateMoveStateForUserResponse(response, _moveState);
         }
 
-        public virtual string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public virtual string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             return string.Empty;
         }

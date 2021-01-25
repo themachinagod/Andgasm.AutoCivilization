@@ -25,13 +25,13 @@ namespace AutoCivilization.FocusCardResolvers
             FocusLevel = FocusLevel.Lvl2;
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _scienceResolverUtility.CreateBasicScienceMoveState(botGameStateService, BaseTechIncreasePoints);
             _moveState.SmallestTradeTokenPileType = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(botGameStateService.ActiveFocusBar, botGameStateService.TradeTokens);
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _moveState.TradeTokensAvailable[_moveState.SmallestTradeTokenPileType] += 1;
             var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(_moveState, botGameStateService);

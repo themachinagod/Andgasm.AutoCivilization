@@ -9,9 +9,9 @@ namespace AutoCivilization.Abstractions
     //      for now we are living with the fact that the game state should only be mutated at the following points;
     //      FocusCardMoveResolvers : UpdateGameStateForMove() : update the game state from the move state
 
-    public class BotGameStateCache
+    public class BotGameState
     {
-        public BotGameStateCache(FocusBarModel focusBarModel, LeaderCardModel leaderCardModel)
+        public BotGameState(FocusBarModel focusBarModel, LeaderCardModel leaderCardModel)
         {
             GameId = Guid.NewGuid();
             ActiveFocusBar = focusBarModel;

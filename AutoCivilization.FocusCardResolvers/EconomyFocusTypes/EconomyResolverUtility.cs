@@ -10,7 +10,7 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class EconomyResolverUtility : IEconomyResolverUtility
     {
-        public BotMoveState CreateBasicEconomyMoveState(BotGameStateCache botGameStateCache, int supportedCaravans, int baseMoves)
+        public BotMoveState CreateBasicEconomyMoveState(BotGameState botGameStateCache, int supportedCaravans, int baseMoves)
         {
             var moveState = new BotMoveState();
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
@@ -26,7 +26,7 @@ namespace AutoCivilization.FocusCardResolvers
             return moveState;
         }
 
-        public void UpdateBaseEconomyGameStateForMove(BotMoveState movesState, BotGameStateCache botGameStateService, int supportedCaravans)
+        public void UpdateBaseEconomyGameStateForMove(BotMoveState movesState, BotGameState botGameStateService, int supportedCaravans)
         {
             var onRouteCaravans = 0;
             for (var tradecaravan = 0; tradecaravan < supportedCaravans; tradecaravan++)
@@ -56,7 +56,7 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(movesState.TradeTokensAvailable);
         }
 
-        public string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameStateCache gameState, BotMoveState movesState)
+        public string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameState gameState, BotMoveState movesState)
         {
             StringBuilder sb = new StringBuilder(currentSummary);
             sb.Append($"I updated my game state to show that I have {gameState.SupportedCaravanCount} trade caravans available to me in total\n");

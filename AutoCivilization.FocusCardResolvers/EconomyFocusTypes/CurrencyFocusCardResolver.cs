@@ -40,19 +40,19 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _economyResolverUtility.UpdateBaseEconomyGameStateForMove(_moveState, botGameStateService, SupportedCaravans);
             _currentStep = -1;
             return BuildMoveSummary(botGameStateService);
         }
 
-        private string BuildMoveSummary(BotGameStateCache gameState)
+        private string BuildMoveSummary(BotGameState gameState)
         {
             var summary = "To summarise my move I did the following;\n";
             summary += $"I asked you to remove all barbarians adjacent to my territory from the board;\n";

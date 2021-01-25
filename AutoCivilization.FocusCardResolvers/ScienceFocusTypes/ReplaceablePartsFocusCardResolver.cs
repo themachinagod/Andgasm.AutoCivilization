@@ -25,12 +25,12 @@ namespace AutoCivilization.FocusCardResolvers
             FocusLevel = FocusLevel.Lvl3;
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _scienceResolverUtility.CreateBasicScienceMoveState(botGameStateService, BaseTechIncreasePoints);
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             var freeUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_moveState.ActiveFocusBarForMove);
             var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(_moveState, botGameStateService);

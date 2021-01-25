@@ -4,8 +4,8 @@ namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
     public interface ICultureResolverUtility
     {
-        BotMoveState CreateBasicCultureMoveState(BotGameStateCache botGameStateCache, int baseTokens);
-        void UpdateBaseCultureGameStateForMove(BotMoveState movesState, BotGameStateCache botGameStateService);
+        BotMoveState CreateBasicCultureMoveState(BotGameState botGameStateCache, int baseTokens);
+        void UpdateBaseCultureGameStateForMove(BotMoveState movesState, BotGameState botGameStateService);
         string BuildGeneralisedCultureMoveSummary(string currentSummary, BotMoveState movesState);
     }
 

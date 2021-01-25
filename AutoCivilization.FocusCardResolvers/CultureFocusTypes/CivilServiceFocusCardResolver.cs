@@ -33,13 +33,13 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(5, resourcesControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
             _moveState.BaseTerritoryControlTokensToBePlaced = BaseTerritoryControlTokens;
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _cultureResolverUtility.UpdateBaseCultureGameStateForMove(_moveState, botGameStateService);
             _currentStep = -1;

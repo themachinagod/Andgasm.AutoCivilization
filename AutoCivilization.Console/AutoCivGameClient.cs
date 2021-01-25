@@ -6,7 +6,7 @@ namespace AutoCivilization.Console
 {   
     public interface IAutoCivGameClient 
     {
-        Task<BotGameStateCache> InitialiseNewGame();
+        Task<BotGameState> InitialiseNewGame();
     }
 
     public class AutoCivGameClient : IAutoCivGameClient
@@ -30,7 +30,7 @@ namespace AutoCivilization.Console
             _focusBarInitialiser = focusBarInitialiser;
         }
 
-        public async Task<BotGameStateCache> InitialiseNewGame()
+        public async Task<BotGameState> InitialiseNewGame()
         {
             // TODO: wonder card initialisation for bot
 
@@ -44,7 +44,7 @@ namespace AutoCivilization.Console
 
             var focusBar = _focusBarInitialiser.InitialiseFocusBarForBot();
             var chosenLeader = await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
-            var gameState = new BotGameStateCache(focusBar, chosenLeader);
+            var gameState = new BotGameState(focusBar, chosenLeader);
 
             WriteConsoleGameStart(gameState);
             return gameState;
@@ -59,7 +59,7 @@ namespace AutoCivilization.Console
         }
 
 
-        private void WriteConsoleGameStart(BotGameStateCache gameState)
+        private void WriteConsoleGameStart(BotGameState gameState)
         {
             System.Console.WriteLine($"Leader Selected: {gameState.ChosenLeaderCard.Name} : {gameState.ChosenLeaderCard.Nation}");
             System.Console.WriteLine($"Focus Bar Slot 1: {gameState.ActiveFocusBar.FocusSlot1.Name}");

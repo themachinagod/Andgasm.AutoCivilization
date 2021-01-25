@@ -28,12 +28,12 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(3, naturalWonderControlledInformationRequest);
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _cultureResolverUtility.UpdateBaseCultureGameStateForMove(_moveState, botGameStateService);
             _currentStep = -1;

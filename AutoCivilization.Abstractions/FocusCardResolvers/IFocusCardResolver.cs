@@ -21,7 +21,7 @@ namespace AutoCivilization.Abstractions
         /// Initialise the move state as required for the resolving of the card
         /// </summary>
         /// <param name="botGameStateService">The game state as per start of the move</param>
-        void PrimeMoveState(BotGameStateCache botGameStateService);
+        void PrimeMoveState(BotGameState botGameStateService);
 
         /// <summary>
         /// Initaite the next step if applicable for move state 
@@ -41,7 +41,7 @@ namespace AutoCivilization.Abstractions
         /// </summary>
         /// <param name="botGameStateService">The game state to update for move</param>
         /// <returns>A textual summary of what the bot did this move</returns>
-        string UpdateGameStateForMove(BotGameStateCache botGameStateService);
+        string UpdateGameStateForMove(BotGameState botGameStateService);
     }
 
     public class MoveStepActionData

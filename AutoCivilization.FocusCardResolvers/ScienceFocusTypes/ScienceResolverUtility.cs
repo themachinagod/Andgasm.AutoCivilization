@@ -18,7 +18,7 @@ namespace AutoCivilization.FocusCardResolvers
             _technologyUpgradeResolver = technologyUpgradeResolver;
         }
 
-        public BotMoveState CreateBasicScienceMoveState(BotGameStateCache botGameStateCache, int basePoints)
+        public BotMoveState CreateBasicScienceMoveState(BotGameState botGameStateCache, int basePoints)
         {
             var moveState = new BotMoveState();
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
@@ -28,7 +28,7 @@ namespace AutoCivilization.FocusCardResolvers
             return moveState;
         }
 
-        public TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotMoveState moveState, BotGameStateCache botGameStateService)
+        public TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotMoveState moveState, BotGameState botGameStateService)
         {
             var techIncrementPoints = moveState.BaseTechnologyIncrease + moveState.TradeTokensAvailable[FocusType.Science];
             var techUpgradeResponse = _technologyUpgradeResolver.ResolveTechnologyLevelUpdates(moveState.StartingTechnologyLevel, techIncrementPoints,

@@ -37,13 +37,13 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
-        public override void PrimeMoveState(BotGameStateCache botGameStateService)
+        public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
             _moveState.CanMoveOnWater = true;
         }
 
-        public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState botGameStateService)
         {
             _economyResolverUtility.UpdateBaseEconomyGameStateForMove(_moveState, botGameStateService, SupportedCaravans);
             botGameStateService.ControlledNaturalResources += 1;
@@ -51,7 +51,7 @@ namespace AutoCivilization.FocusCardResolvers
             return BuildMoveSummary(botGameStateService);
         }
 
-        private string BuildMoveSummary(BotGameStateCache gameState)
+        private string BuildMoveSummary(BotGameState gameState)
         {
             var summary = "To summarise my move I did the following;\n";
             summary += $"I updated my game state to show that I recieved 1 natural resource which I may use for future construction projects;\n";
