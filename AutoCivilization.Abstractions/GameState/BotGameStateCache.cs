@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AutoCivilization.Abstractions
 {
@@ -12,8 +13,10 @@ namespace AutoCivilization.Abstractions
     {
         public BotGameStateCache(FocusBarModel focusBarModel, LeaderCardModel leaderCardModel)
         {
+            GameId = Guid.NewGuid();
             ActiveFocusBar = focusBarModel;
             ChosenLeaderCard = leaderCardModel;
+            SupportedCaravanCount = 1;
 
             TradeTokens = new Dictionary<FocusType, int>();
             TradeTokens.Add(FocusType.Culture, 0);
@@ -27,20 +30,24 @@ namespace AutoCivilization.Abstractions
             ControlledNaturalWonders = new List<string>();
         }
 
-        public int GameId { get; set; } = 1001;
+        public Guid GameId { get; set; }
         public int CurrentRoundNumber { get; set; }
 
-        public Dictionary<FocusType, int> TradeTokens { get; set; }
-        public FocusBarModel ActiveFocusBar { get; set; }
         public LeaderCardModel ChosenLeaderCard { get; set; }
+        public FocusBarModel ActiveFocusBar { get; set; }
+        public Dictionary<FocusType, int> TradeTokens { get; set; }
+        
         public List<CityStateModel> VisitedCityStates { get; set; }
         public List<string> VisitedPlayerColors { get; set; }
-        public List<string> ControlledNaturalWonders { get; set; } = new List<string>();
+
+        // TODO: diplomacy cards for city states
+        //       diplomacy cards for rival cities
 
         public int ControlledSpaces { get; set; }
         public int ControlledNaturalResources { get; set; }
-
+        public List<string> ControlledNaturalWonders { get; set; } 
         public int TechnologyLevel { get; set; }
+
         public int SupportedCaravanCount { get; set; }
         public int CaravansOnRouteCount { get; set; }
     }
