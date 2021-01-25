@@ -22,7 +22,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var totalTokensPlacedThisTurn = movesState.CityControlTokensPlacedThisTurn + movesState.TerritroyControlTokensPlacedThisTurn;
             botGameStateService.ControlledSpaces += totalTokensPlacedThisTurn;
-            botGameStateService.ControlledNaturalResources += movesState.NaturalResourceTokensControlledThisTurn;
+            botGameStateService.ControlledNaturalResources += (movesState.NaturalResourceTokensControlledThisTurn + movesState.NaturalWonderTokensControlledThisTurn);
             botGameStateService.ControlledNaturalWonders = new List<string>(movesState.ControlledNaturalWonders);
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(movesState.TradeTokensAvailable);
         }

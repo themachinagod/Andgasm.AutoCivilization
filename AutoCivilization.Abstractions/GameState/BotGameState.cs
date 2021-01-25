@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.Abstractions
 {
-    // DBr: currently this guy is mutated during at the end of each move
+    // DBr: currently this guy is mutated at the end of each move
     //      this essentially provides a cache for the life time of the game it is initialised in
-    //      ideally we would find a better way than mutation due to the inherant risks
     //      for now we are living with the fact that the game state should only be mutated at the following points;
     //      FocusCardMoveResolvers : UpdateGameStateForMove() : update the game state from the move state
 

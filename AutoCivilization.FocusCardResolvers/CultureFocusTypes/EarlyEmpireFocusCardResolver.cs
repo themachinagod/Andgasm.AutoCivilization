@@ -24,8 +24,8 @@ namespace AutoCivilization.FocusCardResolvers
 
             _actionSteps.Add(0, placementInstructionRequest);
             _actionSteps.Add(1, placedInformationRequest);
-            _actionSteps.Add(2, resourcesControlledInformationRequest);
-            _actionSteps.Add(3, naturalWonderControlledInformationRequest);
+            _actionSteps.Add(2, naturalWonderControlledInformationRequest);
+            _actionSteps.Add(3, resourcesControlledInformationRequest);
         }
 
         public override void PrimeMoveState(BotGameState botGameStateService)
