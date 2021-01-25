@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutoCivilization.Console;
+using System.Collections.Generic;
 
 namespace AutoCivilization.Abstractions
 {
@@ -10,44 +11,5 @@ namespace AutoCivilization.Abstractions
     //      FocusCardMoveResolvers : PrimeMoveState() : initialise the move state from current game state
     //      StepActions : ProcessActionResponse() : process user supplied data to move state and any knockon effects
 
-    public interface IBotMoveStateCache
-    {
-        FocusBarModel ActiveFocusBarForMove { get; set; }
-        Dictionary<FocusType, int> TradeTokensAvailable { get; set; }
-        List<string> ControlledNaturalWonders { get; set; }
-
-        int CultureTokensUsedThisTurn { get; set; }
-
-        int BaseCityControlTokensToBePlaced { get; set; }
-        int BaseTerritoryControlTokensToBePlaced { get; set; }
-
-        int CityControlTokensPlacedThisTurn { get; set; }
-        int TerritroyControlTokensPlacedThisTurn { get; set; }
-
-        int NaturalWonderTokensControlledThisTurn { get; set; }
-        int NaturalResourceTokensControlledThisTurn { get; set; }
-
-        int StartingTechnologyLevel { get; set; }
-        int BaseTechnologyIncrease { get; set; }
-        int TechnologyLevelIncrease { get; set; }
-
-        FocusType SmallestTradeTokenPileType { get; set; }
-
-        bool CanMoveOnWater { get; set; }
-        int BaseCaravanMoves { get; set; }
-        int SupportedCaravanCount { get; set; }
-        int CurrentCaravanIdToMove { get; set; }
-
-        Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; }
-    }
-
-    public class TradeCaravanMoveState
-    {
-        public int EconomyTokensUsedThisTurn { get; set; }
-        public int CaravanSpacesMoved { get; set; }
-        public string CaravanRivalCityColorDestination { get; set; }
-        public CaravanDestinationType CaravanDestinationType { get; set; }
-        public CityStateModel CaravanCityStateDestination { get; set; }
-        public FocusType SmallestTradeTokenPileType { get; set; }
-    }
+    
 }

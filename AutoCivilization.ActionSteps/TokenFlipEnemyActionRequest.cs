@@ -1,17 +1,18 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
 using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
     public class TokenFlipEnemyActionRequestStep : StepActionBase, ITokenFlipEnemyActionRequestStep
     {
-        public TokenFlipEnemyActionRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenFlipEnemyActionRequestStep() : base()
         {
             OperationType = OperationType.ActionRequest;
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
             return new MoveStepActionData("For each rival control token adjacent to my friendly territory, flip that token to its unreinforced side. If that token was already unreinforced, remove it from the board instead.",
                    new List<string>());

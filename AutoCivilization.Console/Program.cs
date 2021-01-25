@@ -33,7 +33,6 @@ namespace AutoCivilization.Console
                     services.AddTransient<IAutoCivMoveClient, AutoCivMoveClient>();
 
                     // state services
-                    services.AddScoped<IBotMoveStateCache, BotMoveStateCache>();
                     services.AddScoped<IBotRoundStateCache, BotRoundStateCache>();
                     services.AddSingleton<IGlobalGameCache, GlobalGameCache>();
 

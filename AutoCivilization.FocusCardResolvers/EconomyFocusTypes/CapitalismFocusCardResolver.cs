@@ -12,24 +12,23 @@ namespace AutoCivilization.FocusCardResolvers
         private const int SupportedCaravans = 3;
         private const int BaseCaravanMoves = 6;
 
-        private readonly IBotRoundStateCache _botRoundStateCache;
         private readonly IEconomyResolverUtility _economyResolverUtility;
+        private readonly IBotRoundStateCache _botRoundStateCache;
 
-        public CapitalismFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                               IBotRoundStateCache botRoundState,
+        public CapitalismFocusCardMoveResolver(IBotRoundStateCache botRoundStateCache,
                                                IEconomyResolverUtility economyResolverUtility,
                                                ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                                ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                                ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
                                                IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
                                                ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
-                                               IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base(botMoveStateService)
+                                               IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base()
         {
+            _economyResolverUtility = economyResolverUtility;
+            _botRoundStateCache = botRoundStateCache;
+
             FocusType = FocusType.Economy;
             FocusLevel = FocusLevel.Lvl4;
-
-            _economyResolverUtility = economyResolverUtility;
-            _botRoundStateCache = botRoundState;
 
             var loopSeed = 0;
             for (var tradecaravan = 0; tradecaravan < SupportedCaravans; tradecaravan++)
@@ -46,15 +45,15 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _economyResolverUtility.PrimeBaseEconomyState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
-            _botMoveStateService.CanMoveOnWater = true;
+            _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
+            _moveState.CanMoveOnWater = true;
             _botRoundStateCache.ShouldExecuteAdditionalFocusCard = true;
-            _botRoundStateCache.AdditionalFocusTypeToExecuteOnFocusBar = _botMoveStateService.ActiveFocusBarForMove.FocusSlot4.Type;
+            _botRoundStateCache.AdditionalFocusTypeToExecuteOnFocusBar = _moveState.ActiveFocusBarForMove.FocusSlot4.Type;
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            _economyResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService, SupportedCaravans);
+            _economyResolverUtility.UpdateBaseEconomyGameStateForMove(_moveState, botGameStateService, SupportedCaravans);
             _currentStep = -1;
             return BuildMoveSummary(botGameStateService);
         }
@@ -62,7 +61,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(BotGameStateCache gameState)
         {
             var summary = "To summarise my move I did the following;\n";
-            summary = _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState);
+            summary = _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState, _moveState);
             summary += $"\nAs a result of executing this focus card, I will now resolve the card in my 4th focus bar slot without reseting it. Please press any key to execute this action now...\n";
             return summary;
         }

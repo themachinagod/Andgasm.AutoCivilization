@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoCivilization.Abstractions\AutoCivilization.Abstractions.csproj" />
+    <ProjectReference Include="..\AutoCivilization.StateManagement\AutoCivilization.StateManagement.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
+using AutoCivilization.StateManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +10,19 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementNaturalWonderControlledInformationRequestStep : StepActionBase, ITokenPlacementNaturalWonderControlledInformationRequestStep
     {
-        public TokenPlacementNaturalWonderControlledInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementNaturalWonderControlledInformationRequestStep() : base()
         {
             OperationType = OperationType.InformationRequest;
         }
 
-        public override bool ShouldExecuteAction()
+        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
         {
-            var totalTokensPlaced = _botMoveStateService.CityControlTokensPlacedThisTurn + _botMoveStateService.TerritroyControlTokensPlacedThisTurn;
+            var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
             return (totalTokensPlaced > 0) &&
-                   (_botMoveStateService.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
+                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
             // TODO: we need natural wonders for game
             //       currently hard wired!
@@ -35,27 +37,30 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with how natural wonders that were controlled this turn
         /// </summary>
         /// <param name="input">The code for the natural wonders visited specified by the user</param>
-        public override void ProcessActionResponse(string input)
+        /// <param name="moveState">The current move state to work from</param>
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
+            var updatedMoveState = moveState.Clone();
             switch (Convert.ToInt32(input))
             {
                 case 1:
-                    _botMoveStateService.ControlledNaturalWonders.Add("Mt. Everest");
-                    _botMoveStateService.NaturalWonderTokensControlledThisTurn = 1;
+                    updatedMoveState.ControlledNaturalWonders.Add("Mt. Everest");
+                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 2:
-                    _botMoveStateService.ControlledNaturalWonders.Add("Gran Mesa");
-                    _botMoveStateService.NaturalWonderTokensControlledThisTurn = 1;
+                    updatedMoveState.ControlledNaturalWonders.Add("Gran Mesa");
+                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 1;
                     break;
                 case 3:
-                    _botMoveStateService.ControlledNaturalWonders.Add("Gran Mesa");
-                    _botMoveStateService.ControlledNaturalWonders.Add("Mt. Everest");
-                    _botMoveStateService.NaturalWonderTokensControlledThisTurn = 2;
+                    updatedMoveState.ControlledNaturalWonders.Add("Gran Mesa");
+                    updatedMoveState.ControlledNaturalWonders.Add("Mt. Everest");
+                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 2;
                     break;
                 default:
-                    _botMoveStateService.NaturalWonderTokensControlledThisTurn = 0;
+                    updatedMoveState.NaturalWonderTokensControlledThisTurn = 0;
                     break;
             }
+            return updatedMoveState;
         }
     }
 }

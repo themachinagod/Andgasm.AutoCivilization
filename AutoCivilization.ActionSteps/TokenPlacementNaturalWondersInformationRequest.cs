@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
+using AutoCivilization.StateManagement;
 using System;
 using System.Linq;
 
@@ -7,23 +9,23 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementNaturalWonderCountInformationRequestStep : StepActionBase, ITokenPlacementNaturalWonderCountInformationRequestStep
     {
-        public TokenPlacementNaturalWonderCountInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementNaturalWonderCountInformationRequestStep() : base()
         {
             OperationType = OperationType.InformationRequest;
         }
 
-        public override bool ShouldExecuteAction()
+        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
         {
-            var totalTokensPlaced = _botMoveStateService.CityControlTokensPlacedThisTurn + _botMoveStateService.TerritroyControlTokensPlacedThisTurn;
+            var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
             return (totalTokensPlaced > 0) &&
-                   (_botMoveStateService.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
+                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
             // TODO: there will be a max limit here based on the number of natural wonders (hard wired to 2 for 2 player game)
-            var preplaced = _botMoveStateService.NaturalResourceTokensControlledThisTurn + _botMoveStateService.NaturalWonderTokensControlledThisTurn;
-            var maxTokensToBePlaced = (_botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.TradeTokensAvailable[FocusType.Culture]) - preplaced;
+            var preplaced = moveState.NaturalResourceTokensControlledThisTurn + moveState.NaturalWonderTokensControlledThisTurn;
+            var maxTokensToBePlaced = (moveState.BaseCityControlTokensToBePlaced + moveState.TradeTokensAvailable[FocusType.Culture]) - preplaced;
             maxTokensToBePlaced = maxTokensToBePlaced > 2 ? 2 : maxTokensToBePlaced;
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData("How many natural wonders did I manage to take control of on this turn?",
@@ -34,9 +36,11 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with how many natural rsources were recieved due to placed control tokens
         /// </summary>
         /// <param name="input">The number of natural wonder tokens the bot controlled this turn</param>
-        public override void ProcessActionResponse(string input)
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
-            _botMoveStateService.NaturalWonderTokensControlledThisTurn = Convert.ToInt32(input);
+            var updatedMoveState = moveState.Clone();
+            updatedMoveState.NaturalWonderTokensControlledThisTurn = Convert.ToInt32(input);
+            return updatedMoveState;
         }
     }
 }

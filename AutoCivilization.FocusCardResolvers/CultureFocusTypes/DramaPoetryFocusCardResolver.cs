@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Console;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -10,17 +11,16 @@ namespace AutoCivilization.FocusCardResolvers
 
         private readonly ICultureResolverUtility _cultureResolverUtility;
 
-        public DramaPoetryFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                                ICultureResolverUtility cultureResolverUtility,
+        public DramaPoetryFocusCardMoveResolver(ICultureResolverUtility cultureResolverUtility,
                                                 ITokenPlacementCityAdjacentActionRequestStep placementInstructionRequest,
                                                 ITokenPlacementCityAdjacentInformationRequestStep placedInformationRequest,
                                                 ITokenPlacementNaturalWonderControlledInformationRequestStep wondersControlledInformationRequest,
-                                                ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base(botMoveStateService)
+                                                ITokenPlacementNaturalResourcesInformationRequestStep resourcesControlledInformationRequest) : base()
         {
+            _cultureResolverUtility = cultureResolverUtility;
+
             FocusType = FocusType.Culture;
             FocusLevel = FocusLevel.Lvl2;
-
-            _cultureResolverUtility = cultureResolverUtility;
 
             _actionSteps.Add(0, placementInstructionRequest);
             _actionSteps.Add(1, placedInformationRequest);
@@ -30,12 +30,12 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _cultureResolverUtility.PrimeBaseCultureState(botGameStateService, BaseCityControlTokens);
+            _moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            _cultureResolverUtility.UpdateBaseCultureGameStateForMove(botGameStateService);
+            _cultureResolverUtility.UpdateBaseCultureGameStateForMove(_moveState, botGameStateService);
             _currentStep = -1;
             return BuildMoveSummary();
         }
@@ -43,7 +43,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary()
         {
             var summary = "To summarise my move I did the following;\n";
-            return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary);
+            return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
         }
     }
 }

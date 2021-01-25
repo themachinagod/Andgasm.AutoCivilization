@@ -1,30 +1,29 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
 using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
     public abstract class StepActionBase : IStepAction
     {
-        internal readonly IBotMoveStateCache _botMoveStateService;
-
         public int StepIndex { get; set; }
         public OperationType OperationType { get; set; }
 
-        public StepActionBase(IBotMoveStateCache botMoveStateService)
+        public StepActionBase()
         {
-            _botMoveStateService = botMoveStateService;
         }
 
-        public virtual bool ShouldExecuteAction()
+        public virtual bool ShouldExecuteAction(BotMoveStateCache moveState)
         {
             return true;
         }
 
-        public abstract MoveStepActionData ExecuteAction();
+        public abstract MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
 
-        public virtual void ProcessActionResponse(string input)
+        public virtual BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
+            return moveState;
         }
     }
 }

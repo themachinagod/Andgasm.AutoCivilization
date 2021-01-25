@@ -1,5 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
 using System;
 using System.Collections.Generic;
 
@@ -8,9 +9,10 @@ namespace AutoCivilization.FocusCardResolvers
     public abstract class FocusCardMoveResolverBase : IFocusCardMoveResolver
     {
         #region Fields
-        internal readonly IBotMoveStateCache _botMoveStateService;
         internal Dictionary<int, IStepAction> _actionSteps { get; set; }
         internal int _currentStep { get; set; }
+        internal BotMoveStateCache _moveState { get; set; }
+
         #endregion
 
         #region Properties
@@ -26,9 +28,8 @@ namespace AutoCivilization.FocusCardResolvers
         #endregion
 
         #region Ctor
-        public FocusCardMoveResolverBase(IBotMoveStateCache botMoveStateService)
+        public FocusCardMoveResolverBase()
         {
-            _botMoveStateService = botMoveStateService;
             _currentStep = -1;
             _actionSteps = new Dictionary<int, IStepAction>();
         }
@@ -36,14 +37,15 @@ namespace AutoCivilization.FocusCardResolvers
 
         public virtual void PrimeMoveState(BotGameStateCache botGameStateService)
         {
+            _moveState = new BotMoveStateCache();
         }
 
         public MoveStepActionData ProcessMoveStepRequest()
         {
             var stepAction = GetNextStep();
-            if (stepAction.ShouldExecuteAction())
+            if (stepAction.ShouldExecuteAction(_moveState))
             {
-                return stepAction.ExecuteAction();
+                return stepAction.ExecuteAction(_moveState);
             }
             return null;
         }
@@ -51,7 +53,7 @@ namespace AutoCivilization.FocusCardResolvers
         public void ProcessMoveStepResponse(string response)
         {
             var stepAction = _actionSteps[_currentStep];
-            stepAction.ProcessActionResponse(response);
+            _moveState = stepAction.ProcessActionResponse(response, _moveState);
         }
 
         public virtual string UpdateGameStateForMove(BotGameStateCache botGameStateService)

@@ -2,7 +2,6 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using AutoCivilization.Abstractions.TechnologyResolvers;
-using System.Collections.Generic;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -13,10 +12,9 @@ namespace AutoCivilization.FocusCardResolvers
         private readonly IScienceResolverUtility _scienceResolverUtility;
         private readonly ITechnologyUpgradeResolver _technologyUpgradeResolver;
 
-        public ReplaceablePartsCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                             INoActionStep noActionRequestActionRequest,
-                                             IScienceResolverUtility scienceResolverUtility,
-                                             ITechnologyUpgradeResolver technologyUpgradeResolver) : base(botMoveStateService)
+        public ReplaceablePartsCardMoveResolver(INoActionStep noActionRequestActionRequest,
+                                                IScienceResolverUtility scienceResolverUtility,
+                                                ITechnologyUpgradeResolver technologyUpgradeResolver) : base()
         {
             _scienceResolverUtility = scienceResolverUtility;
             _technologyUpgradeResolver = technologyUpgradeResolver;
@@ -29,13 +27,13 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _scienceResolverUtility.PrimeBaseScienceState(botGameStateService, BaseTechIncreasePoints);
+            _moveState = _scienceResolverUtility.CreateBasicScienceMoveState(botGameStateService, BaseTechIncreasePoints);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            var freeUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_botMoveStateService.ActiveFocusBarForMove);
-            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(botGameStateService);
+            var freeUpgradeResponse = _technologyUpgradeResolver.ResolveFreeTechnologyUpdate(_moveState.ActiveFocusBarForMove);
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(_moveState, botGameStateService);
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
             return BuildMoveSummary(freeUpgradeResponse, techUpgradeResponse);
@@ -48,7 +46,7 @@ namespace AutoCivilization.FocusCardResolvers
             {
                 summary += $"I received a free technology upgrade breakthrough allowing me to upgrade {freeTechUpgradeResponse.OldTechnology.Name} to {freeTechUpgradeResponse.NewTechnology.Name}\n";
             }
-            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, techLevelUpgradeResponse);
+            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, techLevelUpgradeResponse, _moveState);
         }
     }
 }

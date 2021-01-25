@@ -1,12 +1,13 @@
 ﻿using AutoCivilization.Abstractions.TechnologyResolvers;
+using AutoCivilization.Console;
 
 namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
     public interface IScienceResolverUtility
     {
-        void PrimeBaseScienceState(BotGameStateCache botGameStateCache, int basePoints);
-        TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotGameStateCache botGameStateService);
-        string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse techResponse);
+        BotMoveStateCache CreateBasicScienceMoveState(BotGameStateCache botGameStateCache, int basePoints);
+        TechnologyUpgradeResponse UpdateBaseScienceGameStateForMove(BotMoveStateCache moveState, BotGameStateCache botGameStateService);
+        string BuildGeneralisedScienceMoveSummary(string currentSummary, TechnologyUpgradeResponse upgradeResponse, BotMoveStateCache moveState);
     }
     public interface IScienceLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {

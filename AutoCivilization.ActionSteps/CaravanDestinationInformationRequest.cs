@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
+using AutoCivilization.StateManagement;
 using System;
 using System.Collections.Generic;
 
@@ -9,17 +11,16 @@ namespace AutoCivilization.ActionSteps
     {
         private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
 
-        public CaravanDestinationInformationRequestStep(IBotMoveStateCache botMoveStateService,
-                                                        IOrdinalSuffixResolver ordinalSuffixResolver) : base(botMoveStateService)
+        public CaravanDestinationInformationRequestStep(IOrdinalSuffixResolver ordinalSuffixResolver) : base()
         {
             OperationType = OperationType.InformationRequest;
 
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
-            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
+            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             return new MoveStepActionData($"Which type of destination did my {caravanRef} trade caravan arrive at?",
                    new List<string>() { "1. On Route", "2. City State", "3. Rival City" });
         }
@@ -28,9 +29,11 @@ namespace AutoCivilization.ActionSteps
         /// Update move state for a caravan to show what its destination result was
         /// </summary>
         /// <param name="input">The code for the destination result specified by the user</param>
-        public override void ProcessActionResponse(string input)
+        /// <param name="moveState">The current move state to work from</param>
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
-            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
+            var updatedMoveState = moveState.Clone();
+            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))
             {
                 case 1:
@@ -46,6 +49,7 @@ namespace AutoCivilization.ActionSteps
                     movingCaravan.CaravanDestinationType = CaravanDestinationType.OnRoute;
                     break;
             }
+            return updatedMoveState;
         }
     }
 }

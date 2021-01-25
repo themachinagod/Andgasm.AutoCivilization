@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
+using AutoCivilization.StateManagement;
 using System;
 using System.Linq;
 
@@ -7,14 +9,14 @@ namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementTerritoryAdjacentInformationRequest : StepActionBase, ITokenPlacementTerritoryAdjacentInformationRequest
     {
-        public TokenPlacementTerritoryAdjacentInformationRequest(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementTerritoryAdjacentInformationRequest() : base()
         {
             OperationType = OperationType.InformationRequest;
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
-            var maxControlTokensToBePlaced = _botMoveStateService.BaseTerritoryControlTokensToBePlaced + _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
+            var maxControlTokensToBePlaced = moveState.BaseTerritoryControlTokensToBePlaced + moveState.TradeTokensAvailable[FocusType.Culture];
             var options = Array.ConvertAll(Enumerable.Range(0, maxControlTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData("How many control tokens did you manage to place next to my friendly territory on the board?",
                    options);
@@ -26,13 +28,16 @@ namespace AutoCivilization.ActionSteps
         /// Update move state control tokens placed counter
         /// </summary>
         /// <param name="input">The number of control tokens placed next to friendly territory</param>
-        public override void ProcessActionResponse(string input)
+        /// /// <param name="moveState">The current move state to work from</param>
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
+            var updatedMoveState = moveState.Clone();
             var territoryControlTokensPlaced = Convert.ToInt32(input);
-            var cultureTokensUsedThisTurn = territoryControlTokensPlaced - _botMoveStateService.BaseTerritoryControlTokensToBePlaced;
-            _botMoveStateService.CultureTokensUsedThisTurn += (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
-            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] -= (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
-            _botMoveStateService.TerritroyControlTokensPlacedThisTurn = territoryControlTokensPlaced;
+            var cultureTokensUsedThisTurn = territoryControlTokensPlaced - updatedMoveState.BaseTerritoryControlTokensToBePlaced;
+            updatedMoveState.CultureTokensUsedThisTurn += (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
+            updatedMoveState.TradeTokensAvailable[FocusType.Culture] -= (cultureTokensUsedThisTurn < 0) ? 0 : cultureTokensUsedThisTurn;
+            updatedMoveState.TerritroyControlTokensPlacedThisTurn = territoryControlTokensPlaced;
+            return updatedMoveState;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutoCivilization.Console;
+using System.Collections.Generic;
 
 namespace AutoCivilization.Abstractions.ActionSteps
 {
@@ -13,9 +14,9 @@ namespace AutoCivilization.Abstractions.ActionSteps
         int StepIndex { get; set; }
         OperationType OperationType { get; set; }
 
-        bool ShouldExecuteAction();
-        MoveStepActionData ExecuteAction();
-        void ProcessActionResponse(string input);
+        bool ShouldExecuteAction(BotMoveStateCache moveState);
+        MoveStepActionData ExecuteAction(BotMoveStateCache moveState);
+        BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState);
     }
 
     public interface INoActionStep : IStepAction 

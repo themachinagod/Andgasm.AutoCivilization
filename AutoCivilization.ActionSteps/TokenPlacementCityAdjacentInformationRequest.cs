@@ -2,19 +2,21 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using System;
 using System.Linq;
+using AutoCivilization.StateManagement;
+using AutoCivilization.Console;
 
 namespace AutoCivilization.ActionSteps
 {
     public class TokenPlacementCityAdjacentInformationRequestStep : StepActionBase, ITokenPlacementCityAdjacentInformationRequestStep
     {
-        public TokenPlacementCityAdjacentInformationRequestStep(IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+        public TokenPlacementCityAdjacentInformationRequestStep() : base ()
         {
             OperationType = OperationType.InformationRequest;
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
-            var maxControlTokensToBePlaced = _botMoveStateService.BaseCityControlTokensToBePlaced + _botMoveStateService.TradeTokensAvailable[FocusType.Culture];
+            var maxControlTokensToBePlaced = moveState.BaseCityControlTokensToBePlaced + moveState.TradeTokensAvailable[FocusType.Culture];
             var options = Array.ConvertAll(Enumerable.Range(0, maxControlTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData("How many control tokens did you manage to place next to my cities on the board?",
                    options);
@@ -27,13 +29,16 @@ namespace AutoCivilization.ActionSteps
         /// Update move state control tokens placed counter
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
-        public override void ProcessActionResponse(string input)
+        /// <param name="moveState">The current move state to work from</param>
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
+            var updatedMoveState = moveState.Clone();
             var cityControlTokensPlaced = Convert.ToInt32(input);
-            var cultureTokensUsedThisTurn = cityControlTokensPlaced - _botMoveStateService.BaseCityControlTokensToBePlaced;
-            _botMoveStateService.CultureTokensUsedThisTurn = cultureTokensUsedThisTurn;
-            _botMoveStateService.TradeTokensAvailable[FocusType.Culture] -= cultureTokensUsedThisTurn;
-            _botMoveStateService.CityControlTokensPlacedThisTurn = cityControlTokensPlaced;
+            var cultureTokensUsedThisTurn = cityControlTokensPlaced - updatedMoveState.BaseCityControlTokensToBePlaced;
+            updatedMoveState.CultureTokensUsedThisTurn = cultureTokensUsedThisTurn;
+            updatedMoveState.TradeTokensAvailable[FocusType.Culture] -= cultureTokensUsedThisTurn;
+            updatedMoveState.CityControlTokensPlacedThisTurn = cityControlTokensPlaced;
+            return updatedMoveState;
         }
     }
 }

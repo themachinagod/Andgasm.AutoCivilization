@@ -11,14 +11,13 @@ namespace AutoCivilization.FocusCardResolvers
 
         private readonly IEconomyResolverUtility _economyResolverUtility;
 
-        public SteamPowerFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                               IEconomyResolverUtility economyResolverUtility,
+        public SteamPowerFocusCardMoveResolver(IEconomyResolverUtility economyResolverUtility,
                                                ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                                ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                                ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
                                                IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
                                                ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
-                                               IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base(botMoveStateService)
+                                               IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base()
         {
             FocusType = FocusType.Economy;
             FocusLevel = FocusLevel.Lvl3;
@@ -40,13 +39,13 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _economyResolverUtility.PrimeBaseEconomyState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
-            _botMoveStateService.CanMoveOnWater = true;
+            _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
+            _moveState.CanMoveOnWater = true;
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            _economyResolverUtility.UpdateBaseEconomyGameStateForMove(botGameStateService, SupportedCaravans);
+            _economyResolverUtility.UpdateBaseEconomyGameStateForMove(_moveState, botGameStateService, SupportedCaravans);
             botGameStateService.ControlledNaturalResources += 1;
             _currentStep = -1;
             return BuildMoveSummary(botGameStateService);
@@ -56,7 +55,7 @@ namespace AutoCivilization.FocusCardResolvers
         {
             var summary = "To summarise my move I did the following;\n";
             summary += $"I updated my game state to show that I recieved 1 natural resource which I may use for future construction projects;\n";
-            return _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState);
+            return _economyResolverUtility.BuildGeneralisedEconomyMoveSummary(summary, gameState, _moveState);
         }
     }
 }

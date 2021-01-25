@@ -11,9 +11,8 @@ namespace AutoCivilization.FocusCardResolvers
 
         private readonly IScienceResolverUtility _scienceResolverUtility;
         
-        public AstrologyFocusCardMoveResolver(IBotMoveStateCache botMoveStateService,
-                                             INoActionStep noActionRequestActionRequest,
-                                             IScienceResolverUtility scienceResolverUtility) : base(botMoveStateService)
+        public AstrologyFocusCardMoveResolver(INoActionStep noActionRequestActionRequest,
+                                              IScienceResolverUtility scienceResolverUtility) : base()
         {
             _scienceResolverUtility = scienceResolverUtility;
 
@@ -25,12 +24,12 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameStateCache botGameStateService)
         {
-            _scienceResolverUtility.PrimeBaseScienceState(botGameStateService, BaseTechIncreasePoints);
+            _moveState = _scienceResolverUtility.CreateBasicScienceMoveState(botGameStateService, BaseTechIncreasePoints);
         }
 
         public override string UpdateGameStateForMove(BotGameStateCache botGameStateService)
         {
-            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(botGameStateService);
+            var techUpgradeResponse = _scienceResolverUtility.UpdateBaseScienceGameStateForMove(_moveState, botGameStateService);
             botGameStateService.TradeTokens[FocusType.Science] = 0;
             _currentStep = -1;
             return BuildMoveSummary(techUpgradeResponse);
@@ -39,7 +38,7 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary(TechnologyUpgradeResponse upgradeResponse)
         {
             var summary = "To summarise my move I did the following;\n";
-            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, upgradeResponse);
+            return _scienceResolverUtility.BuildGeneralisedScienceMoveSummary(summary, upgradeResponse, _moveState);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
+using AutoCivilization.Console;
+using AutoCivilization.StateManagement;
 using System;
 using System.Linq;
 
@@ -13,8 +15,7 @@ namespace AutoCivilization.ActionSteps
         private const int BaseTradeTokensForCityStateVisit = 2;
 
         public CityStateDestinationInformationRequestStep(IGlobalGameCache globalGameCache,
-                                                          IOrdinalSuffixResolver ordinalSuffixResolver,
-                                                          IBotMoveStateCache botMoveStateService) : base(botMoveStateService)
+                                                          IOrdinalSuffixResolver ordinalSuffixResolver) : base()
         {
             OperationType = OperationType.InformationRequest;
 
@@ -22,20 +23,20 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
-        public override bool ShouldExecuteAction()
+        public override bool ShouldExecuteAction(BotMoveStateCache moveState)
         {
-            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
+            var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             if (movingCaravan.CaravanDestinationType == CaravanDestinationType.CityState) return true;
             return false;
         }
 
-        public override MoveStepActionData ExecuteAction()
+        public override MoveStepActionData ExecuteAction(BotMoveStateCache moveState)
         {
             // TODO: this lists all avilable city states - would be better if we can limit this list:
             //       to remove already visited city states
             //       to remove city states that are not in the current game
 
-            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(_botMoveStateService.CurrentCaravanIdToMove);
+            var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             var cityStates = _globalGameCache.CityStates.Select(x => $"{x.Id}. {x.Name}").ToList();
             return new MoveStepActionData($"Which city state did my {caravanRef} trade caravan arrive at?",
                    cityStates);
@@ -45,14 +46,15 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited city states
         /// </summary>
         /// <param name="input">The code for the city states visited specified by the user</param>
-        public override void ProcessActionResponse(string input)
+        public override BotMoveStateCache ProcessActionResponse(string input, BotMoveStateCache moveState)
         {
-
+            var updatedMoveState = moveState.Clone();
             var selectedid = Convert.ToInt32(input);
             var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);
-            var movingCaravan = _botMoveStateService.TradeCaravansAvailable[_botMoveStateService.CurrentCaravanIdToMove - 1];
+            var movingCaravan = updatedMoveState.TradeCaravansAvailable[updatedMoveState.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanCityStateDestination = citystate;
-            _botMoveStateService.TradeTokensAvailable[citystate.Type] += BaseTradeTokensForCityStateVisit;
+            updatedMoveState.TradeTokensAvailable[citystate.Type] += BaseTradeTokensForCityStateVisit;
+            return updatedMoveState;
         }
     }
 }

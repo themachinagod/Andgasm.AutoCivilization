@@ -1,10 +1,12 @@
-﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
+﻿using AutoCivilization.Console;
+
+namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
     public interface IEconomyResolverUtility
     {
-        void PrimeBaseEconomyState(BotGameStateCache botGameStateCache, int supportedCaravans, int baseMoves);
-        void UpdateBaseEconomyGameStateForMove(BotGameStateCache botGameStateService, int supportedCaravans);
-        string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameStateCache gameState);
+        BotMoveStateCache CreateBasicEconomyMoveState(BotGameStateCache botGameStateCache, int supportedCaravans, int baseMoves);
+        void UpdateBaseEconomyGameStateForMove(BotMoveStateCache movesState, BotGameStateCache botGameStateService, int supportedCaravans);
+        string BuildGeneralisedEconomyMoveSummary(string currentSummary, BotGameStateCache gameState, BotMoveStateCache movesState);
     }
     public interface IEconomyLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
