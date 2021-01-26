@@ -58,7 +58,7 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
-            _moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
+            _moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseProduction);
         }
 
         public override string UpdateGameStateForMove(BotGameState botGameStateService)

@@ -1,0 +1,152 @@
+[
+  {
+    "Name": "Great Lighthouse",
+    "Type": "Economy",
+    "Era":  "Ancient",
+    "Cost": 8
+  },
+  {
+    "Name": "Colossus",
+    "Type": "Economy",
+    "Era": "Ancient",
+    "Cost": 7
+  },
+  {
+    "Name": "Machu Picchu",
+    "Type": "Economy",
+    "Era": "Medievil",
+    "Cost": 10
+  },
+  {
+    "Name": "Big Ben",
+    "Type": "Economy",
+    "Era": "Medievil",
+    "Cost": 10
+  },
+  {
+    "Name": "Great Zimbabwe",
+    "Type": "Economy",
+    "Era": "Medievil",
+    "Cost": 9
+  },
+  {
+    "Name": "Estadio Do Maracana",
+    "Type": "Economy",
+    "Era": "Modern",
+    "Cost": 10
+  },
+  {
+    "Name": "Big Ben",
+    "Type": "Economy",
+    "Era": "Modern",
+    "Cost": 10
+  },
+  {
+    "Name": "Terracotta Army",
+    "Type": "Military",
+    "Era": "Ancient",
+    "Cost": 8
+  },
+  {
+    "Name": "Petra",
+    "Type": "Military",
+    "Era": "Ancient",
+    "Cost": 7
+  },
+  {
+    "Name": "Alhambra",
+    "Type": "Military",
+    "Era": "Medievil",
+    "Cost": 10
+  },
+  {
+    "Name": "Venetian Arsenal",
+    "Type": "Military",
+    "Era": "Medievil",
+    "Cost": 10
+  },
+  {
+    "Name": "Pentagon",
+    "Type": "Military",
+    "Era": "Modern",
+    "Cost": 12
+  },
+  {
+    "Name": "Ruhr Valley",
+    "Type": "Military",
+    "Era": "Modern",
+    "Cost": 11
+  },
+  {
+    "Name": "Hanging Gardens",
+    "Type": "Culture",
+    "Era": "Ancient",
+    "Cost": 8
+  },
+  {
+    "Name": "Stonehenge",
+    "Type": "Culture",
+    "Era": "Ancient",
+    "Cost": 7
+  },
+  {
+    "Name": "Chichen Itza",
+    "Type": "Culture",
+    "Era": "Medievil",
+    "Cost": 10
+  }
+  {
+    "Name": "Forbidden City",
+    "Type": "Culture",
+    "Era": "Medievil",
+    "Cost": 9
+  },
+  {
+    "Name": "Eifel Tower",
+    "Type": "Culture",
+    "Era": "Modern",
+    "Cost": 12
+  },
+  {
+    "Name": "Sydney Opera House",
+    "Type": "Culture",
+    "Era": "Modern",
+    "Cost": 10
+  },
+  {
+    "Name": "Oracle",
+    "Type": "Science",
+    "Era": "Ancient",
+    "Cost": 8
+  },
+  {
+    "Name": "Pyramids",
+    "Type": "Science",
+    "Era": "Ancient",
+    "Cost": 9
+  },
+  {
+    "Name": "Potala Palace",
+    "Type": "Science",
+    "Era": "Medievil",
+    "Cost": 10
+  },
+  {
+    "Name": "Porcelain Tower",
+    "Type": "Science",
+    "Era": "Medievil",
+    "Cost": 9
+  },
+  {
+    "Name": "Kremlin",
+    "Type": "Science",
+    "Era": "Modern",
+    "Cost": 11
+  },
+  {
+    "Name": "Oxford University",
+    "Type": "Science",
+    "Era": "Modern",
+    "Cost": 10
+  }
+]

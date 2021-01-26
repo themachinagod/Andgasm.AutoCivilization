@@ -12,5 +12,6 @@ namespace AutoCivilization.Console
     {
         public IReadOnlyCollection<FocusCardModel> FocusCardsDeck { get; set; }
         public IReadOnlyCollection<CityStateModel> CityStates { get; set; }
+        public IReadOnlyCollection<WonderCardModel> WonderCardsDeck { get; set; }
     }
 }

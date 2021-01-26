@@ -10,12 +10,14 @@ namespace AutoCivilization.Abstractions
 
     public class BotGameState
     {
-        public BotGameState(FocusBarModel focusBarModel, LeaderCardModel leaderCardModel)
+        public BotGameState(FocusBarModel focusBarModel, LeaderCardModel leaderCardModel, WonderCardDecksModel wonderCardDecksModel)
         {
             GameId = Guid.NewGuid();
             ActiveFocusBar = focusBarModel;
             ChosenLeaderCard = leaderCardModel;
+            WonderCardDecks = wonderCardDecksModel;
             SupportedCaravanCount = 1;
+            FriendlyCityCount = 1;
 
             TradeTokens = new Dictionary<FocusType, int>();
             TradeTokens.Add(FocusType.Culture, 0);
@@ -24,6 +26,7 @@ namespace AutoCivilization.Abstractions
             TradeTokens.Add(FocusType.Industry, 0);
             TradeTokens.Add(FocusType.Military, 0);
 
+            PurchasedWonders = new List<WonderCardModel>();
             VisitedCityStates = new List<CityStateModel>();
             VisitedPlayerColors = new List<string>();
             ControlledNaturalWonders = new List<string>();
@@ -34,14 +37,17 @@ namespace AutoCivilization.Abstractions
 
         public LeaderCardModel ChosenLeaderCard { get; set; }
         public FocusBarModel ActiveFocusBar { get; set; }
+        public WonderCardDecksModel WonderCardDecks { get; set; }
         public Dictionary<FocusType, int> TradeTokens { get; set; }
         
         public List<CityStateModel> VisitedCityStates { get; set; }
         public List<string> VisitedPlayerColors { get; set; }
+        public List<WonderCardModel> PurchasedWonders { get; set; }
 
         // TODO: diplomacy cards for city states
         //       diplomacy cards for rival cities
 
+        public int FriendlyCityCount { get; set; }
         public int ControlledSpaces { get; set; }
         public int ControlledNaturalResources { get; set; }
         public List<string> ControlledNaturalWonders { get; set; } 

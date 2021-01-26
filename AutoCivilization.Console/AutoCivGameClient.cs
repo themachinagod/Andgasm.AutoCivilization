@@ -11,40 +11,52 @@ namespace AutoCivilization.Console
 
     public class AutoCivGameClient : IAutoCivGameClient
     {
+        private const int PlayerCount = 2;
+
         private readonly IFocusCardDeckInitialiser _focusCardDeckInitialiser;
+        private readonly IWonderCardsDeckInitialiser _wonderCardDeckInitialiser;
         private readonly ILeaderCardInitialiser _leaderCardInitialiser;
         private readonly IFocusBarInitialiser _focusBarInitialiser;
+        private readonly IWonderCardDecksInitialiser _wonderCardDecksInitialiser;
         private readonly ICityStatesInitialiser _cityStateInitialiser;
         private readonly IGlobalGameCache _globalGameCache;
 
         public AutoCivGameClient(IGlobalGameCache globalGameCache,
                                  IFocusCardDeckInitialiser focusCardDeckInitialiser,
+                                 IWonderCardsDeckInitialiser wonderCardDeckInitialiser,
                                  ILeaderCardInitialiser leaderCardInitialiser,
                                  IFocusBarInitialiser focusBarInitialiser,
+                                 IWonderCardDecksInitialiser wonderCardDecksInitialiser,
                                  ICityStatesInitialiser cityStateInitialiser)
         {
             _globalGameCache = globalGameCache;
             _cityStateInitialiser = cityStateInitialiser;
             _focusCardDeckInitialiser = focusCardDeckInitialiser;
+            _wonderCardDeckInitialiser = wonderCardDeckInitialiser;
             _leaderCardInitialiser = leaderCardInitialiser;
             _focusBarInitialiser = focusBarInitialiser;
+            _wonderCardDecksInitialiser = wonderCardDecksInitialiser;
         }
 
         public async Task<BotGameState> InitialiseNewGame()
         {
-            // TODO: wonder card initialisation for bot
+            // TODO: hardwired for two player game
 
             WriteConsoleHeader();
 
-            var initialFocustCards = await _focusCardDeckInitialiser.InitialiseFocusCardsDeck();
-            _globalGameCache.FocusCardsDeck = initialFocustCards;
+            var initialFocusCards = await _focusCardDeckInitialiser.InitialiseFocusCardsDeck();
+            _globalGameCache.FocusCardsDeck = initialFocusCards;
+
+            var initialWonderCards = await _wonderCardDeckInitialiser.InitialiseWonderCardsDeck();
+            _globalGameCache.WonderCardsDeck = initialWonderCards;
 
             var initialCityStates = await _cityStateInitialiser.InitialiseCityStates();
             _globalGameCache.CityStates = initialCityStates;
 
             var focusBar = _focusBarInitialiser.InitialiseFocusBarForBot();
+            var wonderCards = _wonderCardDecksInitialiser.InitialiseWonderCardDecksForBot(PlayerCount);
             var chosenLeader = await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
-            var gameState = new BotGameState(focusBar, chosenLeader);
+            var gameState = new BotGameState(focusBar, chosenLeader, wonderCards);
 
             WriteConsoleGameStart(gameState);
             return gameState;
