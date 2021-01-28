@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.TechnologyResolvers;
 using AutoCivilization.Console;
 using System.Collections.Generic;
 using System.Text;
@@ -12,11 +13,15 @@ namespace AutoCivilization.FocusCardResolvers
         private const int BaseProduction = 8;
 
         private ICultureResolverUtility _cultureResolverUtility;
+        private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
-        public PotteryFocusCardMoveResolver(
-                                            IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep) : base()
+        public PotteryFocusCardMoveResolver(IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep,
+                                            ICityPlacementActionRequestStep cityPlacementActionRequestStep,
+                                            ICityPlacementInformationRequestStep cityPlacementInformationRequestStep,
+                                            IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver) : base()
         {
             //_cultureResolverUtility = cultureResolverUtility;
+            _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
 
             FocusType = FocusType.Industry;
             FocusLevel = FocusLevel.Lvl1;
@@ -50,12 +55,15 @@ namespace AutoCivilization.FocusCardResolvers
             //  ICityPlacementInformationRequestStep
 
             _actionSteps.Add(0, wonderPlacementCityActionRequestStep);
+            _actionSteps.Add(1, cityPlacementActionRequestStep);
+            _actionSteps.Add(2, cityPlacementInformationRequestStep);
         }
 
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
             //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseProduction);
             _moveState = new BotMoveState();
+            _moveState.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _moveState.ActiveWonderCardDecks = botGameStateService.WonderCardDecks;
             _moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateService.PurchasedWonders);
             _moveState.VisitedCityStates = new List<CityStateModel>(botGameStateService.VisitedCityStates);
@@ -76,11 +84,18 @@ namespace AutoCivilization.FocusCardResolvers
             botGameStateService.FriendlyCityCount += _moveState.FriendlyCitiesAddedThisTurn;
             botGameStateService.ControlledNaturalResources -= _moveState.NaturalResourcesSpentThisTurn;
 
+            FocusBarUpgradeResponse freeUpgrade = new FocusBarUpgradeResponse(false, _moveState.ActiveFocusBarForMove, _moveState.ActiveFocusBarForMove.ActiveFocusSlot, null);
+            if (!_moveState.HasPurchasedCityThisTurn && !_moveState.HasPurchasedWonderThisTurn)
+            {
+                freeUpgrade = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarSpecificTechnologyLevelUpgrade(_moveState.ActiveFocusBarForMove, FocusType.Industry);
+                botGameStateService.ActiveFocusBar = freeUpgrade.UpgradedFocusBar;
+            }
+
             _currentStep = -1;
-            return BuildMoveSummary();
+            return BuildMoveSummary(freeUpgrade);
         }
 
-        private string BuildMoveSummary()
+        private string BuildMoveSummary(FocusBarUpgradeResponse freeTechUpgradeResponse)
         {
             var summary = "To summarise my move I did the following;\n";
             StringBuilder sb = new StringBuilder(summary);
@@ -101,13 +116,13 @@ namespace AutoCivilization.FocusCardResolvers
                 if (_moveState.FriendlyCityCount <= _moveState.PurchasedWonders.Count) sb.Append($"I do not have enough friendly cities without existing wonder tokens\n");
                 else sb.Append($"I do not have enough production capacity to purchase any of the unlocked wonders\n");
             }
+            
+            if (_moveState.HasPurchasedCityThisTurn) sb.Append($"I updated my game state to show that I build 1 new city of which you placed on the board in a legal space\n");
 
-
-
-            // TOOD: show if city was managed to be placed
-
-            // TODO: if no wonder or city accomplished we need to replace the focus card - summarise this 
-
+            if (!_moveState.HasPurchasedCityThisTurn && !_moveState.HasPurchasedWonderThisTurn && freeTechUpgradeResponse.HasUpgraded)
+            {
+                sb.Append($"Becuase I did not manage to purchase a wonder or build a city on this turn, I received a free Industry technology upgrade allowing me to upgrade from { freeTechUpgradeResponse.OldTechnology.Name} to { freeTechUpgradeResponse.NewTechnology.Name}\n");
+            }
             return sb.ToString(); // _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
         }
     }

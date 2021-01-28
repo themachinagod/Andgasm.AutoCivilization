@@ -69,6 +69,8 @@ namespace AutoCivilization.Console
 
                     // industry action steps
                     services.AddTransient<IWonderPlacementCityActionRequestStep, WonderPlacementCityActionRequestStep>();
+                    services.AddTransient<ICityPlacementActionRequestStep, CityPlacementActionRequestStep>();
+                    services.AddTransient<ICityPlacementInformationRequestStep, CityPlacementInformationRequestStep>();
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();

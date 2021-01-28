@@ -33,6 +33,13 @@ namespace AutoCivilization.TechnologyResolvers
             return CreateUpgradedFocusBar(activeFocusBar, focusCardToUpgrade, upgradeFocusCard);
         }
 
+        public FocusBarUpgradeResponse RegenerateFocusBarSpecificTechnologyLevelUpgrade(FocusBarModel activeFocusBar, FocusType focusType)
+        {
+            var focusCardToUpgrade = activeFocusBar.ActiveFocusSlots.First(x => x.Value.Type == focusType).Value;
+            var upgradeFocusCard = GetUpgradeFocusCard(focusCardToUpgrade, focusCardToUpgrade.Level + 1);
+            return CreateUpgradedFocusBar(activeFocusBar, focusCardToUpgrade, upgradeFocusCard);
+        }
+
         private FocusLevel DetermineNextTechnologyLevelForFocusCard(FocusCardModel cardToInspect)
         {
             if (cardToInspect.Level != FocusLevel.Lvl4)

@@ -57,6 +57,7 @@ namespace AutoCivilization.ActionSteps
             // add purchased wonder to move state
             moveState.PurchasedWonders.Add(_wonderToPurchase);
             moveState.WonderPurchasedThisTurn = _wonderToPurchase;
+            moveState.HasPurchasedWonderThisTurn = true;
 
             // regenerate the wonder decks and unlocked cards accounting for purchased wonder
             var currentWonders = moveState.ActiveWonderCardDecks.AvailableWonderCardDecks.SelectMany(x => x.Value).ToList();

@@ -7,6 +7,7 @@ namespace AutoCivilization.Abstractions.TechnologyResolvers
     {
         FocusBarUpgradeResponse RegenerateFocusBarLowestTechnologyLevelUpgrade(FocusBarModel activeFocusBar, FocusLevel levelBarrierHit);
         FocusBarUpgradeResponse RegenerateFocusBarLowestTechnologyLevelUpgrade(FocusBarModel activeFocusBar);
+        FocusBarUpgradeResponse RegenerateFocusBarSpecificTechnologyLevelUpgrade(FocusBarModel activeFocusBar, FocusType focusType);
     }
 
     public class FocusBarUpgradeResponse
