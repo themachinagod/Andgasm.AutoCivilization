@@ -54,7 +54,7 @@ namespace AutoCivilization.Console
             _globalGameCache.CityStates = initialCityStates;
 
             var focusBar = _focusBarInitialiser.InitialiseFocusBarForBot();
-            var wonderCards = _wonderCardDecksInitialiser.InitialiseWonderCardDecksForBot(PlayerCount);
+            var wonderCards = _wonderCardDecksInitialiser.InitialiseDecksForBot(PlayerCount);
             var chosenLeader = await _leaderCardInitialiser.InitialiseRandomLeaderForBot();
             var gameState = new BotGameState(focusBar, chosenLeader, wonderCards);
 

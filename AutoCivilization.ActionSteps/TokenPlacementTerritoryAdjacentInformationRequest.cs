@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The number of control tokens placed next to friendly territory</param>
         /// /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
+        public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var territoryControlTokensPlaced = Convert.ToInt32(input);
             var cultureTokensUsedThisTurn = territoryControlTokensPlaced - moveState.BaseTerritoryControlTokensToBePlaced;

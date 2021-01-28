@@ -13,11 +13,19 @@ namespace AutoCivilization.Console
     public class BotMoveState
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
+        public WonderCardDecksModel ActiveWonderCardDecks { get; set; }
         public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();
         public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
         public List<string> ControlledNaturalWonders { get; set; }
+        public List<WonderCardModel> PurchasedWonders { get; set; }
+        public List<CityStateModel> VisitedCityStates { get; set; }
 
         public FocusType SmallestTradeTokenPileType { get; set; }
+
+        public int FriendlyCityCount { get; set; }
+        public int FriendlyCitiesAddedThisTurn { get; set; }
+        public bool HasPurchasedWonderThisTurn { get; set; }
+        public bool HasPurchasedCityThisTurn { get; set; }
 
         public int BaseCityControlTokensToBePlaced { get; set; }
         public int BaseTerritoryControlTokensToBePlaced { get; set; }
@@ -25,6 +33,9 @@ namespace AutoCivilization.Console
         public int CityControlTokensPlacedThisTurn { get; set; }
         public int TerritroyControlTokensPlacedThisTurn { get; set; }
 
+        public int BaseProductionPoints { get; set; }
+        public int NaturalResourcesToSpend { get; set; }
+        public int NaturalResourcesSpentThisTurn { get; set; }
         public int NaturalWonderTokensControlledThisTurn { get; set; }
         public int NaturalResourceTokensControlledThisTurn { get; set; }
 
@@ -37,6 +48,9 @@ namespace AutoCivilization.Console
         public int SupportedCaravanCount { get; set; }
         public int CurrentCaravanIdToMove { get; set; }
         public bool CanMoveOnWater { get; set; }
+        public int IndustryTokensUsedThisTurn { get; set; }
+        public WonderCardModel WonderPurchasedThisTurn { get; set; }
+        public int ComputedProductionCapacityForTurn { get; set; }
     }
 
     public class TradeCaravanMoveState

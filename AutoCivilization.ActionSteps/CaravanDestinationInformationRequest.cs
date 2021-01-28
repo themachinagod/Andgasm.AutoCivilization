@@ -29,7 +29,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the destination result specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
+        public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             switch (Convert.ToInt32(input))

@@ -37,7 +37,7 @@ namespace AutoCivilization.ActionSteps
         /// </summary>
         /// <param name="input">The code for the natural wonders visited specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
+        public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             switch (Convert.ToInt32(input))
             {

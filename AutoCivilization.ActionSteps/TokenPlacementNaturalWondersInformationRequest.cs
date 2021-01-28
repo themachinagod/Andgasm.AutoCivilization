@@ -36,7 +36,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with how many natural rsources were recieved due to placed control tokens
         /// </summary>
         /// <param name="input">The number of natural wonder tokens the bot controlled this turn</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
+        public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             moveState.NaturalWonderTokensControlledThisTurn = Convert.ToInt32(input);
         }

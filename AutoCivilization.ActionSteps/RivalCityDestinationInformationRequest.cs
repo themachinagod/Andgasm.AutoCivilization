@@ -45,7 +45,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state with visited rival cities
         /// </summary>
         /// <param name="input">The code for the rival cities visited specified by the user</param>
-        public override void UpdateMoveStateForUserResponse(string input, BotMoveState moveState)
+        public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             // TODO: what if the bot visited more than 1?
 

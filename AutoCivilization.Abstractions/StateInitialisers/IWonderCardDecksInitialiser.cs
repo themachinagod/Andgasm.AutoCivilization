@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoCivilization.Abstractions
 {
     public interface IWonderCardDecksInitialiser
     {
-        WonderCardDecksModel InitialiseWonderCardDecksForBot(int playerCount);
+        WonderCardDecksModel InitialiseDecksForBot(int playerCount);
+        WonderCardDecksModel RegenerateDeckForPurchasedWonder(IList<WonderCardModel> availableWonders, IDictionary<FocusType, WonderCardModel> unlockedWonders, WonderCardModel purchasedWonder);
     }
 }

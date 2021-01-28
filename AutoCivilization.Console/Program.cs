@@ -41,6 +41,8 @@ namespace AutoCivilization.Console
                     services.AddTransient<IFocusBarInitialiser, FocusBarInitialiser>();
                     services.AddTransient<ILeaderCardInitialiser, LeaderCardInitialiser>();
                     services.AddTransient<ICityStatesInitialiser, CityStatesInitialiser>();
+                    services.AddTransient<IWonderCardDecksInitialiser, WonderCardDecksInitialiser>();
+                    services.AddTransient<IWonderCardsDeckInitialiser, WonderCardsDeckInitialiser>();
 
                     // culture action steps
                     services.AddTransient<ITokenPlacementCityAdjacentActionRequestStep, TokenPlacementCityAdjacentActionRequestStep>();
@@ -65,6 +67,9 @@ namespace AutoCivilization.Console
                     services.AddTransient<IRemoveCaravanActionRequestStep, RemoveCaravanActionRequestStep>();
                     services.AddTransient<IRemoveAdjacentBarbariansActionRequestStep, RemoveAdjacentBarbariansActionRequestStep>();
 
+                    // industry action steps
+                    services.AddTransient<IWonderPlacementCityActionRequestStep, WonderPlacementCityActionRequestStep>();
+
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureResolverUtility, CultureResolverUtility>();
@@ -86,6 +91,10 @@ namespace AutoCivilization.Console
                     services.AddTransient<IEconomyLevel2FocusCardMoveResolver, CurrencyFocusCardMoveResolver>();
                     services.AddTransient<IEconomyLevel3FocusCardMoveResolver, SteamPowerFocusCardMoveResolver>();
                     services.AddTransient<IEconomyLevel4FocusCardMoveResolver, CapitalismFocusCardMoveResolver>();
+
+                    // industry focus resolvers
+                    //services.AddTransient<IIndustryResolverUtility, IndustryResolverUtility>();
+                    services.AddTransient<IIndustryLevel1FocusCardMoveResolver, PotteryFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();

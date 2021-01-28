@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoCivilization.Console
 {
-    public class WonderCardDeckInitialiser : IWonderCardsDeckInitialiser
+    public class WonderCardsDeckInitialiser : IWonderCardsDeckInitialiser
     {
         public async Task<IReadOnlyCollection<WonderCardModel>> InitialiseWonderCardsDeck()
         {

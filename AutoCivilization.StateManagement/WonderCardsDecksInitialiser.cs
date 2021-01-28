@@ -17,25 +17,69 @@ namespace AutoCivilization.Console
             _globalGameCache = globalGameCache;
         }
 
-        public WonderCardDecksModel InitialiseWonderCardDecksForBot(int playerCount)
+        public WonderCardDecksModel InitialiseDecksForBot(int playerCount)
         {
-            return InitialiseWonderCardDecks(playerCount);
+            // TODO: we should be suffling the order before grouping
+
+            var rawWonders = new List<WonderCardModel>( _globalGameCache.WonderCardsDeck);
+            RemoveWonderCardsForPlayerCount(rawWonders, 2);
+
+            var cultureWonder = GetActiveWonderForFocusType(rawWonders, FocusType.Culture);
+            var economyWonder = GetActiveWonderForFocusType(rawWonders, FocusType.Economy);
+            var scienceWonder = GetActiveWonderForFocusType(rawWonders, FocusType.Science);
+            var militaryWonder = GetActiveWonderForFocusType(rawWonders, FocusType.Military);
+
+            var activeWonders = new Dictionary<FocusType, WonderCardModel>();
+            activeWonders.Add(FocusType.Culture, cultureWonder);
+            activeWonders.Add(FocusType.Economy, economyWonder);
+            activeWonders.Add(FocusType.Science, scienceWonder);
+            activeWonders.Add(FocusType.Military, militaryWonder);
+
+            var wonderCardDecks = RegenerateDecks(rawWonders);
+            return new WonderCardDecksModel(new ReadOnlyDictionary<FocusType, ReadOnlyCollection<WonderCardModel>>(wonderCardDecks),
+                                            new ReadOnlyDictionary<FocusType, WonderCardModel>(activeWonders));
         }
 
-        private WonderCardDecksModel InitialiseWonderCardDecks(int playerCount)
+        public WonderCardDecksModel RegenerateDeckForPurchasedWonder(IList<WonderCardModel> availableWonders, 
+                                                                     IDictionary<FocusType, WonderCardModel> unlockedWonders, 
+                                                                     WonderCardModel purchasedWonder)
         {
-            var wonderDecksByType = _globalGameCache.WonderCardsDeck.GroupBy(x => x.Type);
-            var wonderCardDecks = new Dictionary<FocusType, List<WonderCardModel>>();
-            foreach(var wcg in wonderDecksByType)
+            var newActiveUnlockedWonder = GetActiveWonderForFocusType(availableWonders, purchasedWonder.Type);
+            var regeneratedUnlockedWonders = new Dictionary<FocusType, WonderCardModel>(unlockedWonders);
+            regeneratedUnlockedWonders.Remove(purchasedWonder.Type);
+            regeneratedUnlockedWonders.Add(purchasedWonder.Type, newActiveUnlockedWonder);
+
+            var regeneratedWonderDecks = RegenerateDecks(availableWonders);
+            return new WonderCardDecksModel(new ReadOnlyDictionary<FocusType, ReadOnlyCollection<WonderCardModel>>(regeneratedWonderDecks),
+                                            new ReadOnlyDictionary<FocusType, WonderCardModel>(regeneratedUnlockedWonders));
+        }
+
+        private static Dictionary<FocusType, ReadOnlyCollection<WonderCardModel>> RegenerateDecks(IList<WonderCardModel> currentWonders)
+        {
+            var wonderDecksByType = currentWonders.GroupBy(x => x.Type);
+            var wonderCardDecks = new Dictionary<FocusType, ReadOnlyCollection<WonderCardModel>>();
+            foreach (var wcg in wonderDecksByType)
             {
                 var type = wcg.Key;
                 var typeDeck = new List<WonderCardModel>();
                 typeDeck.AddRange(wcg);
-                RemoveWonderCardsForPlayerCount(typeDeck, playerCount);
-                wonderCardDecks.Add(type, typeDeck);
+                wonderCardDecks.Add(type, new ReadOnlyCollection<WonderCardModel>(typeDeck));
             }
-            return new WonderCardDecksModel(new ReadOnlyDictionary<FocusType, List<WonderCardModel>>(wonderCardDecks));
+            return wonderCardDecks;
         }
+
+        private WonderCardModel GetActiveWonderForFocusType(IList<WonderCardModel> activeWonderCards, FocusType type)
+        {
+            var cardsForType = activeWonderCards.Where(x => x.Type == type).ToList();
+            if (cardsForType.Count == 0) return null;
+
+            var earliestEra = cardsForType.Min(x => x.Era);
+            var cardsForTypeAndEra = cardsForType.Where(x => x.Era == earliestEra).ToList();
+
+            var randomCardOrdinal = _randomService.Next(cardsForTypeAndEra.Count - 1);
+            return cardsForTypeAndEra.ElementAt(randomCardOrdinal);
+        }
+
 
         private void RemoveWonderCardsForPlayerCount(List<WonderCardModel> typeDeck, int playerCount)
         {

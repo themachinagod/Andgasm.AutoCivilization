@@ -12,7 +12,7 @@
     {
     }
 
-    public interface IIndustryLevel4FocusCardResolver : IFocusCardMoveResolver
+    public interface IIndustryLevel4FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 }
