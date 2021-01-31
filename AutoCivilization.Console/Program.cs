@@ -48,7 +48,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<ITokenPlacementCityAdjacentActionRequestStep, TokenPlacementCityAdjacentActionRequestStep>();
                     services.AddTransient<ITokenPlacementTerritoryAdjacentActionRequestStep, TokenPlacementTerritoryAdjacentActionRequestStep>();
                     services.AddTransient<ITokenPlacementCityAdjacentInformationRequestStep, TokenPlacementCityAdjacentInformationRequestStep>();
-                    services.AddTransient<ITokenPlacementTerritoryAdjacentInformationRequest, TokenPlacementTerritoryAdjacentInformationRequest>();
+                    services.AddTransient<ITokenPlacementTerritoryAdjacentInformationRequest, TokenPlacementTerritoryAdjacentInformationRequestStep>();
                     services.AddTransient<ITokenPlacementNaturalWonderCountInformationRequestStep, TokenPlacementNaturalWonderCountInformationRequestStep>();
                     services.AddTransient<ITokenPlacementNaturalWonderControlledInformationRequestStep, TokenPlacementNaturalWonderInformationRequestStep>();
                     services.AddTransient<ITokenPlacementNaturalResourcesInformationRequestStep, TokenPlacementNaturalResourcesInformationRequestStep>();

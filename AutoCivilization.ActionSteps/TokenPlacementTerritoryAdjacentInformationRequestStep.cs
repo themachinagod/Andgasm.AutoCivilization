@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenPlacementTerritoryAdjacentInformationRequest : StepActionBase, ITokenPlacementTerritoryAdjacentInformationRequest
+    public class TokenPlacementTerritoryAdjacentInformationRequestStep : StepActionBase, ITokenPlacementTerritoryAdjacentInformationRequest
     {
-        public TokenPlacementTerritoryAdjacentInformationRequest() : base()
+        public TokenPlacementTerritoryAdjacentInformationRequestStep() : base()
         {
             OperationType = OperationType.InformationRequest;
         }
