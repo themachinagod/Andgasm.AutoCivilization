@@ -24,7 +24,7 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var preplaced = moveState.NaturalResourceTokensControlledThisTurn + moveState.NaturalWonderTokensControlledThisTurn;
-            var maxTokensToBePlaced = (moveState.BaseCityControlTokensToBePlaced + moveState.TradeTokensAvailable[FocusType.Culture]) - preplaced;
+            var maxTokensToBePlaced = (moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn) - preplaced;
             var options = Array.ConvertAll(Enumerable.Range(0, maxTokensToBePlaced + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData("How many natural resources did I manage to take control of this turn?",
                    options);

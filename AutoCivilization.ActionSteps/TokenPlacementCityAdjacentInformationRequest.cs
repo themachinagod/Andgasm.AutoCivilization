@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
         /// Update move state control tokens placed counter
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
-        /// <param name="moveState">The current move state to work from</param>
+        /// <param name="moveState">The current move state to work from & update</param>
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var cityControlTokensPlaced = Convert.ToInt32(input);

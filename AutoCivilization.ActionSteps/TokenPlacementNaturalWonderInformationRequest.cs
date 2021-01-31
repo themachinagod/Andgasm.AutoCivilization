@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class TokenPlacementNaturalWonderControlledInformationRequestStep : StepActionBase, ITokenPlacementNaturalWonderControlledInformationRequestStep
+    public class TokenPlacementNaturalWonderInformationRequestStep : StepActionBase, ITokenPlacementNaturalWonderControlledInformationRequestStep
     {
-        public TokenPlacementNaturalWonderControlledInformationRequestStep() : base()
+        public TokenPlacementNaturalWonderInformationRequestStep() : base()
         {
             OperationType = OperationType.InformationRequest;
         }
@@ -26,6 +26,8 @@ namespace AutoCivilization.ActionSteps
             // TODO: we need natural wonders for game
             //       currently hard wired!
             //       bit of a hack for multiple just now to avoid a request loop - fine for 2 just now
+            // TODO: review how we do this...
+            //       - allow multiple repsonses from the list (either in loop or delimited entry)
 
             var naturalWonders = new List<string> { "0. None", "1. Mt Everest", "2. Gran Mesa", "3. Both" };
             return new MoveStepActionData($"Which natural wonder(s) did I manage to take control of on this turn?",
@@ -33,12 +35,16 @@ namespace AutoCivilization.ActionSteps
         }
 
         /// <summary>
-        /// Update move state with how natural wonders that were controlled this turn
+        /// Update move state with which natural natural wonders were controlled this turn
         /// </summary>
         /// <param name="input">The code for the natural wonders visited specified by the user</param>
         /// <param name="moveState">The current move state to work from</param>
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
+            // TODO: we need natural wonders for game
+            //       currently hard wired!
+            //       bit of a hack for multiple just now to avoid a request loop - fine for 2 just now
+
             switch (Convert.ToInt32(input))
             {
                 case 1:
