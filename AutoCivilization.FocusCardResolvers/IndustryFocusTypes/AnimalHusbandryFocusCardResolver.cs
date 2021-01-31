@@ -5,25 +5,25 @@ using AutoCivilization.Abstractions.TechnologyResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class PotteryFocusCardMoveResolver : FocusCardMoveResolverBase, IIndustryLevel1FocusCardMoveResolver
+    public class AnimalHusbandryFocusCardMoveResolver : FocusCardMoveResolverBase, IIndustryLevel2FocusCardMoveResolver
     {
-        private const int BaseProduction = 5;
-        private const int BaseCityDistance = 2;
+        private const int BaseProduction = 6;
+        private const int BaseCityDistance = 3;
 
         private IIndustryResolverUtility _industryResolverUtiliity;
         private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
-        public PotteryFocusCardMoveResolver(IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep,
-                                            ICityPlacementActionRequestStep cityPlacementActionRequestStep,
-                                            ICityPlacementInformationRequestStep cityPlacementInformationRequestStep,
-                                            IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver,
-                                            IIndustryResolverUtility industryResolverUtility) : base()
+        public AnimalHusbandryFocusCardMoveResolver(IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep,
+                                                    ICityPlacementActionRequestStep cityPlacementActionRequestStep,
+                                                    ICityPlacementInformationRequestStep cityPlacementInformationRequestStep,
+                                                    IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver,
+                                                    IIndustryResolverUtility industryResolverUtility) : base()
         {
             _industryResolverUtiliity = industryResolverUtility;
             _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
 
             FocusType = FocusType.Industry;
-            FocusLevel = FocusLevel.Lvl1;
+            FocusLevel = FocusLevel.Lvl2;
 
             _actionSteps.Add(0, wonderPlacementCityActionRequestStep);
             _actionSteps.Add(1, cityPlacementActionRequestStep);

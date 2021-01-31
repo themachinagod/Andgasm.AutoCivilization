@@ -17,7 +17,7 @@ namespace AutoCivilization.FocusCardResolvers
             _focusBarTechnologyUpgradeResolver = technologyUpgradeResolver;
         }
 
-        public BotMoveState CreateBasicIndustryMoveState(BotGameState botGameStateCache, int baseProduction)
+        public BotMoveState CreateBasicIndustryMoveState(BotGameState botGameStateCache, int baseProduction, int baseDistance)
         {
             var moveState = new BotMoveState();
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
@@ -29,39 +29,42 @@ namespace AutoCivilization.FocusCardResolvers
             moveState.NaturalResourcesToSpend = botGameStateCache.ControlledNaturalResources;
             moveState.FriendlyCityCount = botGameStateCache.FriendlyCityCount;
             moveState.BaseProductionPoints = baseProduction;
+            moveState.BaseCityDistance = baseDistance;
             return moveState;
         }
 
-        public FocusBarUpgradeResponse UpdateBaseIndustryGameStateForMove(BotMoveState moveState, BotGameState botGameStateService)
+        public void UpdateBaseIndustryGameStateForMove(BotMoveState moveState, BotGameState botGameStateService)
         {
             botGameStateService.WonderCardDecks = moveState.ActiveWonderCardDecks;
             botGameStateService.PurchasedWonders = new List<WonderCardModel>(moveState.PurchasedWonders);
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(moveState.TradeTokensAvailable);
             botGameStateService.FriendlyCityCount += moveState.FriendlyCitiesAddedThisTurn;
             botGameStateService.ControlledNaturalResources -= moveState.NaturalResourcesSpentThisTurn;
-
-            FocusBarUpgradeResponse freeUpgrade = new FocusBarUpgradeResponse(false, moveState.ActiveFocusBarForMove, moveState.ActiveFocusBarForMove.ActiveFocusSlot, null);
-            if (!moveState.HasPurchasedCityThisTurn && !moveState.HasPurchasedWonderThisTurn)
-            {
-                freeUpgrade = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarSpecificTechnologyLevelUpgrade(moveState.ActiveFocusBarForMove, FocusType.Industry);
-                botGameStateService.ActiveFocusBar = freeUpgrade.UpgradedFocusBar;
-            }
-            return freeUpgrade;
         }
 
-        public string BuildGeneralisedIndustryMoveSummary(string currentSummary, BotMoveState movesState)
+        public string BuildGeneralisedIndustryMoveSummary(string currentSummary, BotMoveState moveState)
         {
             StringBuilder sb = new StringBuilder(currentSummary);
-            if (movesState.CityControlTokensPlacedThisTurn > 0) sb.Append($"I updated my game state to show that I placed {movesState.CityControlTokensPlacedThisTurn} control token(s) next to my cities on the board\n");
-            if (movesState.TerritroyControlTokensPlacedThisTurn > 0) sb.Append($"I updated my game state to show that I placed {movesState.TerritroyControlTokensPlacedThisTurn} control token(s) next to my friendly territory on the board\n");
-            if (movesState.CultureTokensUsedThisTurn > 0) sb.Append($"I updated my game state to show that I used {movesState.CultureTokensUsedThisTurn} culture trade token(s) I had available to me to facilitate this move\n");
-            if (movesState.CultureTokensUsedThisTurn < 0) sb.Append($"I updated my game state to show that I recieved {Math.Abs(movesState.CultureTokensUsedThisTurn)} culture trade token(s) for not using all my available control token placements which I may use in the future\n");
-            if (movesState.NaturalResourceTokensControlledThisTurn > 0) sb.Append($"I updated my game state to show that I controlled {movesState.NaturalResourceTokensControlledThisTurn} natural resources which I may use for future construction projects\n");
-            if (movesState.NaturalWonderTokensControlledThisTurn > 0)
+            if (moveState.WonderPurchasedThisTurn != null)
             {
-                sb.Append($"I updated my game state to show that I controlled the {string.Join(",", movesState.ControlledNaturalWonders)} natural wonder(s)\n");
-                sb.Append($"As a result of controlling natural wonders on this turn I have recieved {movesState.NaturalWonderTokensControlledThisTurn} natural resources that I may use for future construction projects\n");
+                sb.Append($"I updated my game state to show that I purchased the world wonder {moveState.WonderPurchasedThisTurn.Name}, the token of which you placed on my stongest free city\n");
+                sb.Append($"I facilitated this move with the following production capacity breakdown;\n");
+                sb.Append($"Pottery focus card base capacity: {moveState.BaseProductionPoints} production points\n");
+                sb.Append($"Industry diplomacy cards retained bonus: {moveState.VisitedCityStates.Count} held diplomacy cards worth {moveState.VisitedCityStates.Count} production points\n");
+                sb.Append($"Natural wonder resources retained bonus: {moveState.ControlledNaturalWonders.Count} held natural wonders worth {moveState.ControlledNaturalWonders.Count * 2} production points\n");
+                sb.Append($"Natural resources points : {moveState.NaturalResourcesToSpend} held worth {moveState.NaturalResourcesToSpend * 2} production points, of which we spent {moveState.NaturalResourcesSpentThisTurn} resources\n");
+                sb.Append($"Industry trade token points : {moveState.TradeTokensAvailable[FocusType.Industry]} held worth {moveState.TradeTokensAvailable[FocusType.Industry]} production points of which we spent {moveState.IndustryTokensUsedThisTurn} trade tokens\n");
+                sb.Append($"Total production capacity available before purchase: {moveState.ComputedProductionCapacityForTurn} production points\n");
             }
+            else
+            {
+                sb.Append($"I was unable to purchase a world wonder on this turn for the following reasons;\n");
+                if (moveState.FriendlyCityCount <= moveState.PurchasedWonders.Count) sb.Append($"I do not have enough friendly cities without existing wonder tokens\n");
+                else sb.Append($"I do not have enough production capacity to purchase any of the unlocked wonders\n");
+            }
+
+            if (moveState.HasPurchasedCityThisTurn) sb.Append($"I updated my game state to show that I build 1 new city of which you placed on the board in a legal space\n");
+
             return sb.ToString();
         }
     }

@@ -5,25 +5,25 @@ using AutoCivilization.Abstractions.TechnologyResolvers;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class PotteryFocusCardMoveResolver : FocusCardMoveResolverBase, IIndustryLevel1FocusCardMoveResolver
+    public class NationalismFocusCardMoveResolver : FocusCardMoveResolverBase, IIndustryLevel3FocusCardMoveResolver
     {
-        private const int BaseProduction = 5;
-        private const int BaseCityDistance = 2;
+        private const int BaseProduction = 7;
+        private const int BaseCityDistance = 4;
 
         private IIndustryResolverUtility _industryResolverUtiliity;
         private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
-        public PotteryFocusCardMoveResolver(IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep,
-                                            ICityPlacementActionRequestStep cityPlacementActionRequestStep,
-                                            ICityPlacementInformationRequestStep cityPlacementInformationRequestStep,
-                                            IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver,
-                                            IIndustryResolverUtility industryResolverUtility) : base()
+        public NationalismFocusCardMoveResolver(IWonderPlacementCityActionRequestStep wonderPlacementCityActionRequestStep,
+                                                ICityPlacementActionRequestStep cityPlacementActionRequestStep,
+                                                ICityPlacementInformationRequestStep cityPlacementInformationRequestStep,
+                                                IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver,
+                                                IIndustryResolverUtility industryResolverUtility) : base()
         {
             _industryResolverUtiliity = industryResolverUtility;
             _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
 
             FocusType = FocusType.Industry;
-            FocusLevel = FocusLevel.Lvl1;
+            FocusLevel = FocusLevel.Lvl3;
 
             _actionSteps.Add(0, wonderPlacementCityActionRequestStep);
             _actionSteps.Add(1, cityPlacementActionRequestStep);
@@ -33,6 +33,7 @@ namespace AutoCivilization.FocusCardResolvers
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
             _moveState = _industryResolverUtiliity.CreateBasicIndustryMoveState(botGameStateService, BaseProduction, BaseCityDistance);
+            _moveState.CanMoveOnWater = true;
         }
 
         public override string UpdateGameStateForMove(BotGameState botGameStateService)

@@ -49,8 +49,12 @@ namespace AutoCivilization.FocusCardResolvers
 
             _moveState = _economyResolverUtility.CreateBasicEconomyMoveState(botGameStateService, SupportedCaravans, BaseCaravanMoves);
             _moveState.CanMoveOnWater = true;
-            _botRoundStateCache.ShouldExecuteAdditionalFocusCard = true;
-            _botRoundStateCache.AdditionalFocusTypeToExecuteOnFocusBar = _moveState.ActiveFocusBarForMove.FocusSlot4.Type;
+            _botRoundStateCache.SubMoveConfigurations.Add(new SubMoveConfiguration()
+            {
+                AdditionalFocusTypeToExecuteOnFocusBar = _moveState.ActiveFocusBarForMove.FocusSlot4.Type,
+                ShouldResetSubFocusCard = false,
+                SubMoveExecutionPhase = SubMoveExecutionPhase.PrePrimaryReset
+            });
         }
 
         public override string UpdateGameStateForMove(BotGameState botGameStateService)

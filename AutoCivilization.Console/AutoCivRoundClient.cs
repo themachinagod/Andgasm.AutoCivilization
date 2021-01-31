@@ -43,8 +43,9 @@ namespace AutoCivilization.Console
 
             WriteConsoleRoundHeader(gameState);
             ExecutePrimaryMove(gameState);
-            ExecuteSubMoves(gameState);
+            ExecuteSubMoves(gameState, SubMoveExecutionPhase.PrePrimaryReset);
             ResetFocusBarForNextMove(gameState);
+            ExecuteSubMoves(gameState, SubMoveExecutionPhase.PostPrimaryReset);
             WriteConsoleAwaitingNextTurn();
             gameState.CurrentRoundNumber++;
         }
@@ -58,17 +59,25 @@ namespace AutoCivilization.Console
             }
         }
 
-        private void ExecuteSubMoves(BotGameState gameState)
+        private void ExecuteSubMoves(BotGameState gameState, SubMoveExecutionPhase phase)
         {
-            if (_botRoundState.ShouldExecuteAdditionalFocusCard)
+            // we have two types to handle here...
+            // we have one type that need to exexute BEFORE the primary card is reset - this one will NOT reset the secondary card (Capitalism)
+            // we have one type that needs to execute AFTER the primary card is reset - this one will reset the secondary card (Urbanization)
+
+            foreach(var phasesubmove in _botRoundState.SubMoveConfigurations.Where(x => x.SubMoveExecutionPhase == phase))
             {
                 System.Console.ReadKey();
                 using (var subMoveScope = _serviceScopeFactory.CreateScope())
                 {
-                    var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlots.First(x => x.Value.Type == _botRoundState.AdditionalFocusTypeToExecuteOnFocusBar).Value;
+                    var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlots.First(x => x.Value.Type == phasesubmove.AdditionalFocusTypeToExecuteOnFocusBar).Value;
                     ExecuteMoveForScope(subMoveScope, gameState, focusCardToExecute);
                 }
+
+                // TODO: phase reset secondary cards...
             }
+
+            
         }
 
         private void ExecuteMoveForScope(IServiceScope scope, BotGameState gameState, FocusCardModel focusCard)

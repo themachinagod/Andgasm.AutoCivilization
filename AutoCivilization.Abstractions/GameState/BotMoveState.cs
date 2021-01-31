@@ -51,6 +51,7 @@ namespace AutoCivilization.Console
         public int IndustryTokensUsedThisTurn { get; set; }
         public WonderCardModel WonderPurchasedThisTurn { get; set; }
         public int ComputedProductionCapacityForTurn { get; set; }
+        public int BaseCityDistance { get; set; }
     }
 
     public class TradeCaravanMoveState

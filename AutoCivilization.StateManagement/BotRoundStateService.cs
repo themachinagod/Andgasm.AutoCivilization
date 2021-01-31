@@ -5,7 +5,6 @@ namespace AutoCivilization.Console
 {
     public class BotRoundStateCache : IBotRoundStateCache
     {
-        public FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
-        public bool ShouldExecuteAdditionalFocusCard { get; set; }
+        public List<SubMoveConfiguration> SubMoveConfigurations { get; set; } = new List<SubMoveConfiguration>();
     }
 }

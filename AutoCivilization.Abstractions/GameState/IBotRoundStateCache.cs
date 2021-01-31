@@ -2,9 +2,21 @@
 
 namespace AutoCivilization.Abstractions
 {
+    public enum SubMoveExecutionPhase
+    {
+        PrePrimaryReset,
+        PostPrimaryReset
+    }
+
     public interface IBotRoundStateCache
     {
-        FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
-        bool ShouldExecuteAdditionalFocusCard { get; set; }
+        List<SubMoveConfiguration> SubMoveConfigurations { get; set; }
+    }
+
+    public class SubMoveConfiguration
+    {
+        public FocusType AdditionalFocusTypeToExecuteOnFocusBar { get; set; }
+        public SubMoveExecutionPhase SubMoveExecutionPhase { get; set; }
+        public bool ShouldResetSubFocusCard { get; set; }
     }
 }
