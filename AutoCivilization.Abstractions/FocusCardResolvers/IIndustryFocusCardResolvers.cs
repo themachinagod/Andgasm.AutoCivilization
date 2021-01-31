@@ -1,5 +1,15 @@
-﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
+﻿using AutoCivilization.Abstractions.TechnologyResolvers;
+using AutoCivilization.Console;
+
+namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
+    public interface IIndustryResolverUtility
+    {
+        BotMoveState CreateBasicIndustryMoveState(BotGameState botGameStateCache, int baseProduction);
+        FocusBarUpgradeResponse UpdateBaseIndustryGameStateForMove(BotMoveState movesState, BotGameState botGameStateService);
+        string BuildGeneralisedIndustryMoveSummary(string currentSummary, BotMoveState movesState);
+    }
+
     public interface IIndustryLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
