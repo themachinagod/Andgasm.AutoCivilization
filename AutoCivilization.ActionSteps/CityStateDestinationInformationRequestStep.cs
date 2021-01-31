@@ -32,8 +32,8 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: this lists all avilable city states - would be better if we can limit this list:
-            //       to remove already visited city states
             //       to remove city states that are not in the current game
+            //       currently hardwired for 2plyr prologue board!
 
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             var cityStates = _globalGameCache.CityStates.Select(x => $"{x.Id}. {x.Name}").ToList();
@@ -42,9 +42,10 @@ namespace AutoCivilization.ActionSteps
         }
 
         /// <summary>
-        /// Update move state with visited city states
+        /// Update move state with visited city state for the active caravan
         /// </summary>
         /// <param name="input">The code for the city states visited specified by the user</param>
+        /// <param name="moveState">The current move state to work from</param>
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var selectedid = Convert.ToInt32(input);

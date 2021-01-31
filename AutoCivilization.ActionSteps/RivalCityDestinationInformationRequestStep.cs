@@ -32,8 +32,7 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             // TODO: we need players and colors
-            //       currently hard wired!
-            // TODO: what if the bot visited more than 1?
+            //       currently hard wired
 
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             var playerColor = new List<string> { "1. Red", "2. Green", "3. Blue", "4. White" };

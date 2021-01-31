@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
             if (moveState.CurrentCaravanIdToMove < moveState.SupportedCaravanCount) moveState.CurrentCaravanIdToMove++;
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
             var maxSpacesMoved = moveState.BaseCaravanMoves + moveState.TradeTokensAvailable[FocusType.Economy];
-            var watertext = moveState.CanMoveOnWater ? "making use of water tiles where needed" : "avoiding water tiles";
+            var watertext = moveState.CanMoveOnWater ? "making use of water tiles where needed" : "avoiding the use of water tiles";
             return new MoveStepActionData($"Please move my {caravanRef} trade caravan {maxSpacesMoved} spaces toward its destination, taking the shortest path {watertext}, using the following destination priority rules:\nUnvisited City State\nRival City\nVisited City State",
                    new List<string>());
         }

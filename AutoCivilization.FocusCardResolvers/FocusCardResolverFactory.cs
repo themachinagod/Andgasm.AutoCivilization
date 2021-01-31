@@ -42,7 +42,7 @@ namespace AutoCivilization.Console
 
         public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
-            var applicableTypeResolvers = ResolveForFocusType(FocusType.Culture); // activeFocusCard.Type);
+            var applicableTypeResolvers = ResolveForFocusType(FocusType.Economy); // activeFocusCard.Type);
             var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl4); // activeFocusCard.Level);
             return applicableResolver;
         }

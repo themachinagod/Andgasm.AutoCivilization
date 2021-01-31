@@ -20,7 +20,8 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);
-            var maxMoves = moveState.BaseCaravanMoves + moveState.TradeTokensAvailable[FocusType.Economy];
+            var tradeTokensAtStartOfTurn = moveState.TradeTokensAvailable[FocusType.Economy] - moveState.TradeCaravansAvailable.Sum(x => x.Value.EconomyTokensUsedThisTurn);
+            var maxMoves = moveState.BaseCaravanMoves + tradeTokensAtStartOfTurn;
             var options = Array.ConvertAll(Enumerable.Range(0, maxMoves + 1).ToArray(), ele => ele.ToString());
             return new MoveStepActionData($"How many spaces did you manage to move my {caravanRef} trade caravan in total?",
                    options);
@@ -29,7 +30,6 @@ namespace AutoCivilization.ActionSteps
         /// <summary>
         /// Take in the number of spaces the user managed to move a trade caravan
         /// Update move state with how many culture tokens were used to facilitate placements
-        /// Update move state with how many culture tokens were recieved due to unused moves
         /// </summary>
         /// <param name="input">The number of control tokens placed next to cities</param>
         /// <param name="moveState">The current move state to work from</param>
@@ -38,19 +38,9 @@ namespace AutoCivilization.ActionSteps
             var movingCaravan = moveState.TradeCaravansAvailable[moveState.CurrentCaravanIdToMove - 1];
             movingCaravan.CaravanSpacesMoved = Convert.ToInt32(input);
 
-            var economyTokensUsedThisTurn = movingCaravan.CaravanSpacesMoved - moveState.BaseCaravanMoves;
-            movingCaravan.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;
-            if (economyTokensUsedThisTurn > 0)
-            {
-                // we should not gain tokens for unspent moves however the rules technically state:
-                // —The AP only spends trade tokens
-                //  from this card if doing so allows at least one of its caravans
-                //  to reach its destination when that caravan would not reach
-                //  the destination without the token
-                // currently we will always use tokens if they are available 
-                // above rule cannot be satisfied witout a further information request to the user
-                moveState.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
-            }
+            var economyTokensUsedThisTurn = Math.Max(0, movingCaravan.CaravanSpacesMoved - moveState.BaseCaravanMoves);
+            movingCaravan.EconomyTokensUsedThisTurn = economyTokensUsedThisTurn;    
+            moveState.TradeTokensAvailable[FocusType.Economy] -= economyTokensUsedThisTurn;
         }
     }
 }
