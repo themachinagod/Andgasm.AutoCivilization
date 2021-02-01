@@ -38,14 +38,23 @@ namespace AutoCivilization.Console
             //       currently we await any key to continue
             //       instead we should prompt if any player would like to interact with it
             //       options provided should be
-            //          - I wish to attach one of the bot cities
+            //          - I wish to attack one of the bot cities
+            //          - I have purchased a wonder, please update the unlocked cards
             //          - no, please proceed to the bots next move
 
+            // TODO: what if we get a chain of reruns and resets - not sure how this would propegate
+            //       e.g. capitalism - play it reset it and draw economy as next active (primary)
+            //            ubanization - play it reset it and draw culture as ruled (post -> will add new culture execute to round)
+            //            culture - play it reset it (post -> will this get picked up in that same loop even tho added after execution - i think it will exception with changed collection tbh)
+            //                      if it does not exception and does not fire in that loop - it will be missed!
+
             WriteConsoleRoundHeader(gameState);
+
             ExecutePrimaryMove(gameState);
-            ExecuteSubMoves(gameState, SubMoveExecutionPhase.PrePrimaryReset);
+            ExecuteSubMovesForResetPhase(gameState, SubMoveExecutionPhase.PrePrimaryReset);
             ResetFocusBarForNextMove(gameState);
-            ExecuteSubMoves(gameState, SubMoveExecutionPhase.PostPrimaryReset);
+            ExecuteSubMovesForResetPhase(gameState, SubMoveExecutionPhase.PostPrimaryReset);
+
             WriteConsoleAwaitingNextTurn();
             gameState.CurrentRoundNumber++;
         }
@@ -59,25 +68,22 @@ namespace AutoCivilization.Console
             }
         }
 
-        private void ExecuteSubMoves(BotGameState gameState, SubMoveExecutionPhase phase)
+        private void ExecuteSubMovesForResetPhase(BotGameState gameState, SubMoveExecutionPhase phase)
         {
-            // we have two types to handle here...
-            // we have one type that need to exexute BEFORE the primary card is reset - this one will NOT reset the secondary card (Capitalism)
-            // we have one type that needs to execute AFTER the primary card is reset - this one will reset the secondary card (Urbanization)
-
-            foreach(var phasesubmove in _botRoundState.SubMoveConfigurations.Where(x => x.SubMoveExecutionPhase == phase))
+            var subMovesForPhase = _botRoundState.SubMoveConfigurations.Where(x => x.SubMoveExecutionPhase == phase);
+            foreach (var phasesubmove in subMovesForPhase)
             {
                 System.Console.ReadKey();
                 using (var subMoveScope = _serviceScopeFactory.CreateScope())
                 {
-                    var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlots.First(x => x.Value.Type == phasesubmove.AdditionalFocusTypeToExecuteOnFocusBar).Value;
-                    ExecuteMoveForScope(subMoveScope, gameState, focusCardToExecute);
+                    var focusCardModel = gameState.ActiveFocusBar.ActiveFocusSlots.First(x => x.Value.Type == phasesubmove.AdditionalFocusTypeToExecuteOnFocusBar).Value;
+                    ExecuteMoveForScope(subMoveScope, gameState, focusCardModel);
+                    if (phasesubmove.ShouldResetSubFocusCard)
+                    {
+                        ResetFocusBarForSubMoveFocusType(gameState, focusCardModel.Type);
+                    }
                 }
-
-                // TODO: phase reset secondary cards...
-            }
-
-            
+            }            
         }
 
         private void ExecuteMoveForScope(IServiceScope scope, BotGameState gameState, FocusCardModel focusCard)
@@ -90,6 +96,11 @@ namespace AutoCivilization.Console
         private void ResetFocusBarForNextMove(BotGameState gameState)
         {
             gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResetFocusBarForNextMove(gameState.ActiveFocusBar);
+        }
+
+        private void ResetFocusBarForSubMoveFocusType(BotGameState gameState, FocusType type)
+        {
+            gameState.ActiveFocusBar = _focusBarEndOfMoveResolver.ResetFocusBarForSubMove(gameState.ActiveFocusBar, type);
         }
 
         private static void WriteConsoleAwaitingNextTurn()

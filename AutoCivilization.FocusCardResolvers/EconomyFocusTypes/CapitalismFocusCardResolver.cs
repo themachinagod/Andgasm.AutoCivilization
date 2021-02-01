@@ -53,7 +53,7 @@ namespace AutoCivilization.FocusCardResolvers
             {
                 AdditionalFocusTypeToExecuteOnFocusBar = _moveState.ActiveFocusBarForMove.FocusSlot4.Type,
                 ShouldResetSubFocusCard = false,
-                SubMoveExecutionPhase = SubMoveExecutionPhase.PrePrimaryReset
+                SubMoveExecutionPhase = SubMoveExecutionPhase.PostPrimaryReset
             });
         }
 

@@ -23,5 +23,33 @@ namespace AutoCivilization.TechnologyResolvers
             newFocusBar.Add(1, tmpSlot2);
             return new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBar));
         }
+
+        public FocusBarModel ResetFocusBarForSubMove(FocusBarModel activeFocusBar, FocusType focusType)
+        {
+            var slotIndexToReset = activeFocusBar.ActiveFocusSlots.First(x => x.Value.Type == focusType).Key;
+            if (slotIndexToReset == 0) return activeFocusBar;
+
+            var newFocusBar = new Dictionary<int, FocusCardModel>();
+            if (slotIndexToReset == 1)
+            {
+                var tmpSlot2 = activeFocusBar.FocusSlot1;
+                newFocusBar.Add(0, activeFocusBar.ActiveFocusSlots[slotIndexToReset]);
+                newFocusBar.Add(1, tmpSlot2);
+            }
+            else
+            {
+                var tmpSlot2 = activeFocusBar.FocusSlot1;
+                newFocusBar.Add(0, activeFocusBar.ActiveFocusSlots[slotIndexToReset]);
+
+                var slotPointer = 0;
+                for (int i = slotIndexToReset - 1; i > 1; i++)
+                {
+                    newFocusBar.Add(i, activeFocusBar.ActiveFocusSlots[i - 1]);
+                    slotPointer++;
+                }
+                newFocusBar.Add(1, tmpSlot2);
+            }
+            return new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBar));
+        }
     }
 }
