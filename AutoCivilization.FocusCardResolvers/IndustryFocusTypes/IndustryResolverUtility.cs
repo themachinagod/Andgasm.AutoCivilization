@@ -10,13 +10,6 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class IndustryResolverUtility : IIndustryResolverUtility
     {
-        private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
-
-        public IndustryResolverUtility(IFocusBarTechnologyUpgradeResolver technologyUpgradeResolver)
-        {
-            _focusBarTechnologyUpgradeResolver = technologyUpgradeResolver;
-        }
-
         public BotMoveState CreateBasicIndustryMoveState(BotGameState botGameStateCache, int baseProduction, int baseDistance)
         {
             var moveState = new BotMoveState();
@@ -49,7 +42,7 @@ namespace AutoCivilization.FocusCardResolvers
             {
                 sb.Append($"I updated my game state to show that I purchased the world wonder {moveState.WonderPurchasedThisTurn.Name}, the token of which you placed on my stongest free city\n");
                 sb.Append($"I facilitated this move with the following production capacity breakdown;\n");
-                sb.Append($"Pottery focus card base capacity: {moveState.BaseProductionPoints} production points\n");
+                sb.Append($"Focus card base capacity: {moveState.BaseProductionPoints} production points\n");
                 sb.Append($"Industry diplomacy cards retained bonus: {moveState.VisitedCityStates.Count} held diplomacy cards worth {moveState.VisitedCityStates.Count} production points\n");
                 sb.Append($"Natural wonder resources retained bonus: {moveState.ControlledNaturalWonders.Count} held natural wonders worth {moveState.ControlledNaturalWonders.Count * 2} production points\n");
                 sb.Append($"Natural resources points : {moveState.NaturalResourcesToSpend} held worth {moveState.NaturalResourcesToSpend * 2} production points, of which we spent {moveState.NaturalResourcesSpentThisTurn} resources\n");

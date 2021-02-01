@@ -70,8 +70,10 @@ namespace AutoCivilization.Console
 
         private void ExecuteSubMovesForResetPhase(BotGameState gameState, SubMoveExecutionPhase phase)
         {
+            // TODO:  the tolist just derefs the collection so when you add to it - it does not feature in this loop and is lost
+
             var subMovesForPhase = _botRoundState.SubMoveConfigurations.Where(x => x.SubMoveExecutionPhase == phase);
-            foreach (var phasesubmove in subMovesForPhase)
+            foreach (var phasesubmove in subMovesForPhase.ToList())
             {
                 System.Console.ReadKey();
                 using (var subMoveScope = _serviceScopeFactory.CreateScope())

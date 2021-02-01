@@ -22,28 +22,37 @@ namespace AutoCivilization.Console
                                         IEconomyLevel2FocusCardMoveResolver economyLevel2FocusCardResolver,
                                         IEconomyLevel3FocusCardMoveResolver economyLevel3FocusCardResolver,
                                         IEconomyLevel4FocusCardMoveResolver economyLevel4FocusCardResolver,
-                                        IIndustryLevel1FocusCardMoveResolver industryLevel1FocusCardResolver)
+                                        IIndustryLevel1FocusCardMoveResolver industryLevel1FocusCardResolver,
+                                        IIndustryLevel2FocusCardMoveResolver industryLevel2FocusCardResolver,
+                                        IIndustryLevel3FocusCardMoveResolver industryLevel3FocusCardResolver,
+                                        IIndustryLevel4FocusCardMoveResolver industryLevel4FocusCardResolver)
         {
             _resolvers = new List<IFocusCardMoveResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
             _resolvers.Add(cultureLevel2FocusCardResolver);
             _resolvers.Add(cultureLevel3FocusCardResolver);
             _resolvers.Add(cultureLevel4FocusCardResolver);
+
             _resolvers.Add(scienceLevel1FocusCardResolver);
             _resolvers.Add(scienceLevel2FocusCardResolver);
             _resolvers.Add(scienceLevel3FocusCardResolver);
             _resolvers.Add(scienceLevel4FocusCardResolver);
+
             _resolvers.Add(economyLevel1FocusCardResolver);
             _resolvers.Add(economyLevel2FocusCardResolver);
             _resolvers.Add(economyLevel3FocusCardResolver);
             _resolvers.Add(economyLevel4FocusCardResolver);
+
             _resolvers.Add(industryLevel1FocusCardResolver);
+            _resolvers.Add(industryLevel2FocusCardResolver);
+            _resolvers.Add(industryLevel3FocusCardResolver);
+            _resolvers.Add(industryLevel4FocusCardResolver);
         }
 
         public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
-            var applicableTypeResolvers = ResolveForFocusType(FocusType.Economy); // activeFocusCard.Type);
-            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl4); // activeFocusCard.Level);
+            var applicableTypeResolvers = ResolveForFocusType(activeFocusCard.Type);
+            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, activeFocusCard.Level);
             return applicableResolver;
         }
 

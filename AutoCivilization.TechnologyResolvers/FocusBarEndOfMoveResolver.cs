@@ -35,6 +35,9 @@ namespace AutoCivilization.TechnologyResolvers
                 var tmpSlot2 = activeFocusBar.FocusSlot1;
                 newFocusBar.Add(0, activeFocusBar.ActiveFocusSlots[slotIndexToReset]);
                 newFocusBar.Add(1, tmpSlot2);
+                newFocusBar.Add(2, activeFocusBar.ActiveFocusSlots[2]);
+                newFocusBar.Add(3, activeFocusBar.ActiveFocusSlots[3]);
+                newFocusBar.Add(4, activeFocusBar.ActiveFocusSlots[4]);
             }
             else
             {
@@ -42,12 +45,20 @@ namespace AutoCivilization.TechnologyResolvers
                 newFocusBar.Add(0, activeFocusBar.ActiveFocusSlots[slotIndexToReset]);
 
                 var slotPointer = 0;
-                for (int i = slotIndexToReset - 1; i > 1; i++)
+                for (int i = slotIndexToReset - 1; i > 1; i--)
                 {
                     newFocusBar.Add(i, activeFocusBar.ActiveFocusSlots[i - 1]);
                     slotPointer++;
                 }
                 newFocusBar.Add(1, tmpSlot2);
+
+                for (int i = slotIndexToReset; i < 5; i++)
+                {
+                    newFocusBar.Add(i, activeFocusBar.ActiveFocusSlots[i]);
+                    slotPointer++;
+                }
+
+                // TODO: we need to add the unaffected cards after slot index
             }
             return new FocusBarModel(new ReadOnlyDictionary<int, FocusCardModel>(newFocusBar));
         }

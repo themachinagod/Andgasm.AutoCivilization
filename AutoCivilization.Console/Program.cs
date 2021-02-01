@@ -95,8 +95,11 @@ namespace AutoCivilization.Console
                     services.AddTransient<IEconomyLevel4FocusCardMoveResolver, CapitalismFocusCardMoveResolver>();
 
                     // industry focus resolvers
-                    //services.AddTransient<IIndustryResolverUtility, IndustryResolverUtility>();
+                    services.AddTransient<IIndustryResolverUtility, IndustryResolverUtility>();
                     services.AddTransient<IIndustryLevel1FocusCardMoveResolver, PotteryFocusCardMoveResolver>();
+                    services.AddTransient<IIndustryLevel2FocusCardMoveResolver, AnimalHusbandryFocusCardMoveResolver>();
+                    services.AddTransient<IIndustryLevel3FocusCardMoveResolver, NationalismFocusCardMoveResolver>();
+                    services.AddTransient<IIndustryLevel4FocusCardMoveResolver, UrbanizationFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
