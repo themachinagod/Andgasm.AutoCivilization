@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.MiscResolvers;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoCivilization.Console
@@ -51,9 +52,7 @@ namespace AutoCivilization.Console
             WriteConsoleRoundHeader(gameState);
 
             ExecutePrimaryMove(gameState);
-            ExecuteSubMovesForResetPhase(gameState, SubMoveExecutionPhase.PrePrimaryReset);
-            ResetFocusBarForNextMove(gameState);
-            ExecuteSubMovesForResetPhase(gameState, SubMoveExecutionPhase.PostPrimaryReset);
+            ExecuteSubMoveChains(gameState);
 
             WriteConsoleAwaitingNextTurn();
             gameState.CurrentRoundNumber++;
@@ -65,15 +64,16 @@ namespace AutoCivilization.Console
             {
                 var focusCardToExecute = gameState.ActiveFocusBar.ActiveFocusSlot;
                 ExecuteMoveForScope(primaryMoveScope, gameState, focusCardToExecute);
+                ResetFocusBarForNextMove(gameState);
             }
         }
 
-        private void ExecuteSubMovesForResetPhase(BotGameState gameState, SubMoveExecutionPhase phase)
+        private void ExecuteSubMoveChains(BotGameState gameState)
         {
-            // TODO:  the tolist just derefs the collection so when you add to it - it does not feature in this loop and is lost
+            var unexecutedSubMoves = new List<SubMoveConfiguration>(_botRoundState.SubMoveConfigurations.Where(x => !x.HasCompletedExecution));
+            if (unexecutedSubMoves.Count() == 0) return;
 
-            var subMovesForPhase = _botRoundState.SubMoveConfigurations.Where(x => x.SubMoveExecutionPhase == phase);
-            foreach (var phasesubmove in subMovesForPhase.ToList())
+            foreach (var phasesubmove in unexecutedSubMoves.ToList())
             {
                 System.Console.ReadKey();
                 using (var subMoveScope = _serviceScopeFactory.CreateScope())
@@ -85,7 +85,8 @@ namespace AutoCivilization.Console
                         ResetFocusBarForSubMoveFocusType(gameState, focusCardModel.Type);
                     }
                 }
-            }            
+            }
+            ExecuteSubMoveChains(gameState);
         }
 
         private void ExecuteMoveForScope(IServiceScope scope, BotGameState gameState, FocusCardModel focusCard)

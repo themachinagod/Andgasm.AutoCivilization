@@ -9,4 +9,8 @@
     <ProjectReference Include="..\AutoCivilization.StateManagement\AutoCivilization.StateManagement.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Military\" />
+  </ItemGroup>
+
 </Project>
