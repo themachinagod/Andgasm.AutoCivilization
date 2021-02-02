@@ -17,6 +17,8 @@ namespace AutoCivilization.ActionSteps
             _ordinalSuffixResolver = ordinalSuffixResolver;
         }
 
+        // TODO: we only need to ask this if we had culture trade tokens available - so we can determine if they were used or not!
+
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             var caravanRef = _ordinalSuffixResolver.GetOrdinalSuffixWithInput(moveState.CurrentCaravanIdToMove);

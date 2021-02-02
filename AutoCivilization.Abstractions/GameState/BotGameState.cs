@@ -41,8 +41,11 @@ namespace AutoCivilization.Abstractions
         public Dictionary<FocusType, int> TradeTokens { get; set; }
         
         public List<CityStateModel> VisitedCityStates { get; set; }
+        public string VisitedCityStatesString { get { return VisitedCityStates.Count > 0 ? string.Join(",", VisitedCityStates) : "None"; } }
         public List<string> VisitedPlayerColors { get; set; }
+        public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(",", VisitedPlayerColors) : "None"; } }
         public List<WonderCardModel> PurchasedWonders { get; set; }
+        public string PurchasedWondersString { get { return PurchasedWonders.Count > 0 ? string.Join(",", PurchasedWonders) : "None"; } }
 
         // TODO: diplomacy cards for city states
         //       diplomacy cards for rival cities
@@ -50,7 +53,8 @@ namespace AutoCivilization.Abstractions
         public int FriendlyCityCount { get; set; }
         public int ControlledSpaces { get; set; }
         public int ControlledNaturalResources { get; set; }
-        public List<string> ControlledNaturalWonders { get; set; } 
+        public List<string> ControlledNaturalWonders { get; set; }
+        public string ControlledNaturalWondersString { get { return ControlledNaturalWonders.Count > 0 ? string.Join(",", ControlledNaturalWonders) : "None";  } }
         public int TechnologyLevel { get; set; }
 
         public int SupportedCaravanCount { get; set; }

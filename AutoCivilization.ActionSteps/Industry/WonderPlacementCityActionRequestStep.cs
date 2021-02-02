@@ -71,6 +71,10 @@ namespace AutoCivilization.ActionSteps
             //  4.Trade tokens on the industry card. (loss of tokens)
             // potential issue with step 3 - we dont check for this overrun
 
+            // TODO: cant be sure this is the vector but on simple loop through I saw the industry trade token count go to -6 which is obv a bug
+            //       i also saw that the system used trade tokens to purchase a wonder even though the base & diplomacy bonus were sufficient
+            //       need to reviw this and perhaps break into its own component
+
             var diplomacyPointsAvailable = moveState.VisitedCityStates.Count(x => x.Type == FocusType.Industry);
             var naturalWonderPointsAvailable = (moveState.ControlledNaturalWonders.Count * 2);
             var resourcePointsAvailable = (moveState.NaturalResourcesToSpend * 2);

@@ -1,7 +1,5 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
-using System;
-using System.Linq;
 using AutoCivilization.Console;
 using System.Collections.Generic;
 

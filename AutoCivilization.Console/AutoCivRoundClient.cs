@@ -117,32 +117,32 @@ namespace AutoCivilization.Console
         private void WriteConsoleRoundHeader(BotGameState gameState)
         {
             System.Console.WriteLine();
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine($"Game {gameState.GameId}");
-            System.Console.WriteLine($"Round {gameState.CurrentRoundNumber}");              
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine($"Friendly City Count: {gameState.FriendlyCityCount}");
-            System.Console.WriteLine($"Supported Trade Caravan Count: {gameState.SupportedCaravanCount}");
-            System.Console.WriteLine($"Trade Caravans on Route Count: {gameState.CaravansOnRouteCount}");
-            System.Console.WriteLine($"City State Diplomacy Cards: {string.Join(",", gameState.VisitedCityStates)}");
-            System.Console.WriteLine($"Rival Diplomacy Cards: {string.Join(",", gameState.VisitedPlayerColors)}");
-            System.Console.WriteLine($"Purchased World Wonders: { string.Join(",", gameState.PurchasedWonders.Select(x => x.Name))}");
-            System.Console.WriteLine($"Controlled Natural Wonders: { string.Join(",", gameState.ControlledNaturalWonders)}");
-            System.Console.WriteLine($"Controlled Natural Resource Count: {gameState.ControlledNaturalResources}");
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine($"Unlocked Culture Wonder: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Name} ({gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Era}) : {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Cost}");
-            System.Console.WriteLine($"Unlocked Economy Wonder: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Name} ({gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Era}) : {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Cost}");
-            System.Console.WriteLine($"Unlocked Science Wonder: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Name} ({gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Era}) : {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Cost}");
-            System.Console.WriteLine($"Unlocked Military Wonder: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Name} ({gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Era}) : {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Cost}");
-            System.Console.WriteLine("#############################");
-            System.Console.WriteLine($"Focus Bar Slot 1: {gameState.ActiveFocusBar.FocusSlot1.Name} ({gameState.ActiveFocusBar.FocusSlot1.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot1.Type]} tokens");
-            System.Console.WriteLine($"Focus Bar Slot 2: {gameState.ActiveFocusBar.FocusSlot2.Name} ({gameState.ActiveFocusBar.FocusSlot2.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot2.Type]} tokens");
-            System.Console.WriteLine($"Focus Bar Slot 3: {gameState.ActiveFocusBar.FocusSlot3.Name} ({gameState.ActiveFocusBar.FocusSlot3.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot3.Type]} tokens");
-            System.Console.WriteLine($"Focus Bar Slot 4: {gameState.ActiveFocusBar.FocusSlot4.Name} ({gameState.ActiveFocusBar.FocusSlot4.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot4.Type]} tokens");
-            System.Console.WriteLine($"Focus Bar Slot 5: {gameState.ActiveFocusBar.FocusSlot5.Name} ({gameState.ActiveFocusBar.FocusSlot5.Level}) : {gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot5.Type]} tokens");
-            System.Console.WriteLine("#############################");
+            System.Console.WriteLine("########################################################################################");
+            System.Console.WriteLine($"Game:\t\t{gameState.GameId}");
+            System.Console.WriteLine($"Round:\t\t{gameState.CurrentRoundNumber}");              
+            System.Console.WriteLine("########################################################################################");
+            System.Console.WriteLine($"Friendly City Count:\t\t\t{gameState.FriendlyCityCount}");
+            System.Console.WriteLine($"Supported Trade Caravan Count:\t\t{gameState.SupportedCaravanCount}");
+            System.Console.WriteLine($"Trade Caravans on Route Count:\t\t{gameState.CaravansOnRouteCount}");
+            System.Console.WriteLine($"Controlled Natural Resources:\t\t{gameState.ControlledNaturalResources}");
+            System.Console.WriteLine($"Controlled Natural Wonders:\t\t{gameState.ControlledNaturalWondersString}");
+            System.Console.WriteLine($"City State Diplomacy Cards:\t\t{gameState.VisitedCityStatesString}");
+            System.Console.WriteLine($"Rival Diplomacy Cards:\t\t\t{gameState.VisitedPlayerColorsString}");
+            System.Console.WriteLine($"Purchased World Wonders:\t\t{gameState.PurchasedWondersString}");
+            System.Console.WriteLine("########################################################################################");
+            System.Console.WriteLine($"Unlocked Culture Wonder:\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Name.PadRight(20, ' ')}\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Era.ToString().PadRight(10, ' ')}\tCosts: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Culture]?.Cost}");
+            System.Console.WriteLine($"Unlocked Economy Wonder:\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Name.PadRight(20, ' ')}\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Era.ToString().PadRight(10, ' ')}\tCosts: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Economy]?.Cost}");
+            System.Console.WriteLine($"Unlocked Science Wonder:\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Name.PadRight(20, ' ')}\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Era.ToString().PadRight(10, ' ')}\tCosts: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Science]?.Cost}");
+            System.Console.WriteLine($"Unlocked Military Wonder:\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Name.PadRight(20, ' ')}\t{gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Era.ToString().PadRight(10, ' ')}\tCosts: {gameState.WonderCardDecks.UnlockedWonderCards[FocusType.Military]?.Cost}");
+            System.Console.WriteLine("########################################################################################");
+            System.Console.WriteLine($"Focus Bar Slot 1:\t{gameState.ActiveFocusBar.FocusSlot1.Name.PadRight(20, ' ')} ({gameState.ActiveFocusBar.FocusSlot1.Level} {gameState.ActiveFocusBar.FocusSlot1.Type})\t{gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot1.Type]} trade tokens available");
+            System.Console.WriteLine($"Focus Bar Slot 2:\t{gameState.ActiveFocusBar.FocusSlot2.Name.PadRight(20, ' ')} ({gameState.ActiveFocusBar.FocusSlot2.Level} {gameState.ActiveFocusBar.FocusSlot2.Type})\t{gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot2.Type]} trade tokens available");
+            System.Console.WriteLine($"Focus Bar Slot 3:\t{gameState.ActiveFocusBar.FocusSlot3.Name.PadRight(20, ' ')} ({gameState.ActiveFocusBar.FocusSlot3.Level} {gameState.ActiveFocusBar.FocusSlot3.Type})\t{gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot3.Type]} trade tokens available");
+            System.Console.WriteLine($"Focus Bar Slot 4:\t{gameState.ActiveFocusBar.FocusSlot4.Name.PadRight(20, ' ')} ({gameState.ActiveFocusBar.FocusSlot4.Level} {gameState.ActiveFocusBar.FocusSlot4.Type})\t{gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot4.Type]} trade tokens available");
+            System.Console.WriteLine($"Focus Bar Slot 5:\t{gameState.ActiveFocusBar.FocusSlot5.Name.PadRight(20, ' ')} ({gameState.ActiveFocusBar.FocusSlot5.Level} {gameState.ActiveFocusBar.FocusSlot5.Type})\t{gameState.TradeTokens[gameState.ActiveFocusBar.FocusSlot5.Type]} trade tokens available");
+            System.Console.WriteLine("########################################################################################");
             System.Console.WriteLine($"Active Move Focus: {gameState.ActiveFocusBar.FocusSlot5.Name}");
-            System.Console.WriteLine("#############################");
+            System.Console.WriteLine("########################################################################################");
         }
     }
 }
