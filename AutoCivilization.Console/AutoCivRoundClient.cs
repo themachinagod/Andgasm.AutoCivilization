@@ -49,6 +49,7 @@ namespace AutoCivilization.Console
             //            culture - play it reset it (post -> will this get picked up in that same loop even tho added after execution - i think it will exception with changed collection tbh)
             //                      if it does not exception and does not fire in that loop - it will be missed!
 
+            // TODO: need to think about built wonders effects on avilable trade tokens (each wonder provides bonus token for use in a single move) for wonder type that matches resolved focus card
             WriteConsoleRoundHeader(gameState);
 
             ExecutePrimaryMove(gameState);

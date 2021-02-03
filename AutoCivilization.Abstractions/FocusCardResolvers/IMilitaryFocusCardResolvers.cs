@@ -1,18 +1,28 @@
-﻿namespace AutoCivilization.Abstractions.FocusCardResolvers
+﻿using AutoCivilization.Console;
+
+namespace AutoCivilization.Abstractions.FocusCardResolvers
 {
-    public interface IMilitaryLevel1FocusCardResolver : IFocusCardMoveResolver
+    public interface IMilitaryResolverUtility
+    {
+        BotMoveState CreateBasicMilitaryMoveState(BotGameState botGameStateCache, int baseRange, int basePower, int noOfAttacks);
+        void UpdateBaseMilitaryGameStateForMove(BotMoveState movesState, BotGameState botGameStateService, int attackIndex);
+        string BuildGeneralisedMilitaryMoveSummary(string currentSummary, BotGameState gameState, BotMoveState movesState);
+
+    }
+
+    public interface IMilitaryLevel1FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel2FocusCardResolver : IFocusCardMoveResolver
+    public interface IMilitaryLevel2FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel3FocusCardResolver : IFocusCardMoveResolver
+    public interface IMilitaryLevel3FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 
-    public interface IMilitaryLevel4FocusCardResolver : IFocusCardMoveResolver
+    public interface IMilitaryLevel4FocusCardMoveResolver : IFocusCardMoveResolver
     {
     }
 }

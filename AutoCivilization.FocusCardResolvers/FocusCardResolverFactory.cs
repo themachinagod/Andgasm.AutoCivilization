@@ -25,7 +25,8 @@ namespace AutoCivilization.Console
                                         IIndustryLevel1FocusCardMoveResolver industryLevel1FocusCardResolver,
                                         IIndustryLevel2FocusCardMoveResolver industryLevel2FocusCardResolver,
                                         IIndustryLevel3FocusCardMoveResolver industryLevel3FocusCardResolver,
-                                        IIndustryLevel4FocusCardMoveResolver industryLevel4FocusCardResolver)
+                                        IIndustryLevel4FocusCardMoveResolver industryLevel4FocusCardResolver, 
+                                        IMilitaryLevel1FocusCardMoveResolver militaryLevel1FocusCardResolver)
         {
             _resolvers = new List<IFocusCardMoveResolver>();
             _resolvers.Add(cultureLevel1FocusCardResolver);
@@ -47,12 +48,14 @@ namespace AutoCivilization.Console
             _resolvers.Add(industryLevel2FocusCardResolver);
             _resolvers.Add(industryLevel3FocusCardResolver);
             _resolvers.Add(industryLevel4FocusCardResolver);
+
+            _resolvers.Add(militaryLevel1FocusCardResolver);
         }
 
         public IFocusCardMoveResolver GetFocusCardMoveResolver(FocusCardModel activeFocusCard)
         {
-            var applicableTypeResolvers = ResolveForFocusType(activeFocusCard.Type);
-            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, activeFocusCard.Level);
+            var applicableTypeResolvers = ResolveForFocusType(FocusType.Military); // activeFocusCard.Type);
+            var applicableResolver = ResolveForFocusLevel(applicableTypeResolvers, FocusLevel.Lvl1); // activeFocusCard.Level);
             return applicableResolver;
         }
 

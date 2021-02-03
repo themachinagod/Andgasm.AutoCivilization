@@ -1,7 +1,6 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
-using AutoCivilization.Console;
 
 namespace AutoCivilization.FocusCardResolvers
 {

@@ -10,15 +10,25 @@ namespace AutoCivilization.Console
     //      - when resolving ProcessActionResponse() update the state instance properties
     //      doing the above keeps changes to the move state easy to track however we are not preventing the mutation of this object
 
+    public enum AttackTargetType
+    {
+        Barbarian,
+        RivalCity,
+        RivalCapitalCity,
+        CityState,
+        RivalControlToken
+    }
+
     public class BotMoveState
     {
         public FocusBarModel ActiveFocusBarForMove { get; set; }
         public WonderCardDecksModel ActiveWonderCardDecks { get; set; }
         public Dictionary<FocusType, int> TradeTokensAvailable { get; set; } = new Dictionary<FocusType, int>();
         public Dictionary<int, TradeCaravanMoveState> TradeCaravansAvailable { get; set; } = new Dictionary<int, TradeCaravanMoveState>();
-        public List<string> ControlledNaturalWonders { get; set; }
-        public List<WonderCardModel> PurchasedWonders { get; set; }
-        public List<CityStateModel> VisitedCityStates { get; set; }
+        public Dictionary<int, AttackTargetMoveState> AttacksAvailable { get; set; } = new Dictionary<int, AttackTargetMoveState>();
+        public List<string> ControlledNaturalWonders { get; set; } = new List<string>();
+        public List<WonderCardModel> PurchasedWonders { get; set; } = new List<WonderCardModel>();
+        public List<CityStateModel> VisitedCityStates { get; set; } = new List<CityStateModel>();
 
         public FocusType SmallestTradeTokenPileType { get; set; }
 
@@ -52,6 +62,11 @@ namespace AutoCivilization.Console
         public WonderCardModel WonderPurchasedThisTurn { get; set; }
         public int ComputedProductionCapacityForTurn { get; set; }
         public int BaseCityDistance { get; set; }
+
+        public int CurrentAttackMoveId { get; set; }
+        public int BaseAttackRange { get; set; }
+        public int BaseAttackPower { get; set; }
+        public int BaseMaxTargetPower { get; set; }
     }
 
     public class TradeCaravanMoveState
@@ -62,5 +77,16 @@ namespace AutoCivilization.Console
         public CaravanDestinationType CaravanDestinationType { get; set; }
         public CityStateModel CaravanCityStateDestination { get; set; }
         public FocusType SmallestTradeTokenPileType { get; set; }
+    }
+
+    public class AttackTargetMoveState
+    {
+        public bool IsTargetWithinRange { get; set; }
+        public AttackTargetType AttackTargetType { get; set; }
+        public int AttackTargetPowerWithoutTradeTokens { get; set; }
+        public int ComputedBotAttackPowerForTurn { get; set; }
+        public int TargetSpentMilitaryTradeTokensThisTurn { get; set; }
+        public int BotSpentMilitaryTradeTokensThisTurn { get; set; }
+        public bool BotIsWinning { get; set; }
     }
 }

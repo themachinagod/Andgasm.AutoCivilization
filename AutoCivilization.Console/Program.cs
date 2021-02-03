@@ -72,6 +72,18 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICityPlacementActionRequestStep, CityPlacementActionRequestStep>();
                     services.AddTransient<ICityPlacementInformationRequestStep, CityPlacementInformationRequestStep>();
 
+                    // military action steps
+                    services.AddTransient<IEnemyWithinAttackDistanceInformationRequestStep, EnemyWithinAttackDistanceInformationRequestStep>();
+                    services.AddTransient<IEnemyTypeToAttackInformationRequestStep, EnemyTypeToAttackInformationRequestStep>();
+                    services.AddTransient<IEnemyAttackPowerInformationRequestStep, EnemyAttackPowerInformationRequestStep>();
+                    services.AddTransient<IAttackPrimaryResultActionRequestStep, EnemyAttackPrimaryResultActionRequestStep>();
+                    services.AddTransient<IDefeatedBarbarianActionRequestStep, DefeatedBarbarianActionRequestStep>();
+                    services.AddTransient<IConquerCityStateActionRequestStep, ConquerCityStateActionRequestStep>();
+                    services.AddTransient<IDefeatedRivalControlTokenActionRequestStep, DefeatedRivalControlTokenActionRequestStep>();
+                    services.AddTransient<IDefeatedCapitalCityActionRequestStep, DefeatedCapitalCityActionRequestStep>();
+                    services.AddTransient<IConquerNonCapitalCityActionRequestStep, ConquerNonCapitalCityActionRequestStep>();
+                    services.AddTransient<IFailedAttackActionRequestStep, FailedAttackActionRequestStep>();
+
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureResolverUtility, CultureResolverUtility>();
@@ -100,6 +112,10 @@ namespace AutoCivilization.Console
                     services.AddTransient<IIndustryLevel2FocusCardMoveResolver, AnimalHusbandryFocusCardMoveResolver>();
                     services.AddTransient<IIndustryLevel3FocusCardMoveResolver, NationalismFocusCardMoveResolver>();
                     services.AddTransient<IIndustryLevel4FocusCardMoveResolver, UrbanizationFocusCardMoveResolver>();
+
+                    // military focus resolvers
+                    services.AddTransient<IMilitaryResolverUtility, MilitaryResolverUtility>();
+                    services.AddTransient<IMilitaryLevel1FocusCardMoveResolver, MasonryFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
