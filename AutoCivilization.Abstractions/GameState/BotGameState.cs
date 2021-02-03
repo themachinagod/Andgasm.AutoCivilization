@@ -27,7 +27,7 @@ namespace AutoCivilization.Abstractions
             TradeTokens.Add(FocusType.Military, 0);
 
             PurchasedWonders = new List<WonderCardModel>();
-            VisitedCityStates = new List<CityStateModel>();
+            CityStateDiplomacyCardsHeld = new List<CityStateModel>();
             VisitedPlayerColors = new List<string>();
             ControlledNaturalWonders = new List<string>();
         }
@@ -40,8 +40,8 @@ namespace AutoCivilization.Abstractions
         public WonderCardDecksModel WonderCardDecks { get; set; }
         public Dictionary<FocusType, int> TradeTokens { get; set; }
         
-        public List<CityStateModel> VisitedCityStates { get; set; }
-        public string VisitedCityStatesString { get { return VisitedCityStates.Count > 0 ? string.Join(", ", VisitedCityStates) : "None"; } }
+        public List<CityStateModel> CityStateDiplomacyCardsHeld { get; set; }
+        public string CityStateDiplomacyCardsHeldString { get { return CityStateDiplomacyCardsHeld.Count > 0 ? string.Join(", ", CityStateDiplomacyCardsHeld) : "None"; } }
         public List<string> VisitedPlayerColors { get; set; }
         public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(", ", VisitedPlayerColors) : "None"; } }
         public List<WonderCardModel> PurchasedWonders { get; set; }

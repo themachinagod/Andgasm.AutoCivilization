@@ -23,11 +23,13 @@ namespace AutoCivilization.ActionSteps
             // TODO: variance on the applicable types - currently hardwired for lvl 1 & 2
 
             return new MoveStepActionData($"What type of enemy unit will my attack be aimed at?",
-                   new List<string>() { "1. Barbarian", $"2. Rival player city with defense of {moveState.BaseMaxTargetPower}", "3. Rival control token" });
+                   new List<string>() { "1. Barbarian", $"2. Rival player city with defense of {moveState.BaseMaxTargetPower} or less", "3. Rival control token" });
         }
 
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
+            // TODO: variance on the applicable types - currently hardwired for lvl 1 & 2
+
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             switch (input)
             {
@@ -39,6 +41,12 @@ namespace AutoCivilization.ActionSteps
                     break;
                 case "3":
                     attckMove.AttackTargetType = AttackTargetType.RivalControlToken;
+                    break;
+                case "4":
+                    attckMove.AttackTargetType = AttackTargetType.CityState;
+                    break;
+                case "5":
+                    attckMove.AttackTargetType = AttackTargetType.RivalCapitalCity;
                     break;
             }
         }

@@ -30,7 +30,7 @@ namespace AutoCivilization.ActionSteps
 
             if (moveState.FriendlyCityCount <= moveState.PurchasedWonders.Count) return false;
 
-            var diplomacyPointsAvailable = moveState.VisitedCityStates.Count(x => x.Type == FocusType.Industry);
+            var diplomacyPointsAvailable = moveState.CityStatesDiplomacyCardsHeld.Count(x => x.Type == FocusType.Industry);
             var naturalWonderPointsAvailable = (moveState.ControlledNaturalWonders.Count * 2);
             var resourcePointsAvailable = (moveState.NaturalResourcesToSpend * 2);
             var tradeTokensAvailable = moveState.TradeTokensAvailable[FocusType.Industry];
@@ -75,7 +75,7 @@ namespace AutoCivilization.ActionSteps
             //       i also saw that the system used trade tokens to purchase a wonder even though the base & diplomacy bonus were sufficient
             //       need to reviw this and perhaps break into its own component
 
-            var diplomacyPointsAvailable = moveState.VisitedCityStates.Count(x => x.Type == FocusType.Industry);
+            var diplomacyPointsAvailable = moveState.CityStatesDiplomacyCardsHeld.Count(x => x.Type == FocusType.Industry);
             var naturalWonderPointsAvailable = (moveState.ControlledNaturalWonders.Count * 2);
             var resourcePointsAvailable = (moveState.NaturalResourcesToSpend * 2);
             var tradeTokensAvailable = moveState.TradeTokensAvailable[FocusType.Industry];

@@ -33,10 +33,10 @@ namespace AutoCivilization.FocusCardResolvers
                 var movingCaravan = movesState.TradeCaravansAvailable[tradecaravan];
                 if (movingCaravan.CaravanDestinationType == CaravanDestinationType.CityState)
                 {
-                    if (!botGameStateService.VisitedCityStates.Contains(movingCaravan.CaravanCityStateDestination))
+                    if (!botGameStateService.CityStateDiplomacyCardsHeld.Contains(movingCaravan.CaravanCityStateDestination))
                     {
                         // TODO: add city state diplomacy card to city state diplomancy cards collection (if not visited)
-                        botGameStateService.VisitedCityStates.Add(movingCaravan.CaravanCityStateDestination);
+                        botGameStateService.CityStateDiplomacyCardsHeld.Add(movingCaravan.CaravanCityStateDestination);
                     }
                 }
                 else if (movingCaravan.CaravanDestinationType == CaravanDestinationType.RivalCity)

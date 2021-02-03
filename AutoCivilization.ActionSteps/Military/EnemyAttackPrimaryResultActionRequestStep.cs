@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
         {
             var dieRoll = _randomService.Next(5) + 1;
             _computedBotPower = moveState.BaseAttackPower + dieRoll +
-                                   moveState.VisitedCityStates.Where(x => x.Type == FocusType.Military).Count() +
+                                   moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.PurchasedWonders.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.TradeTokensAvailable[FocusType.Military];
 

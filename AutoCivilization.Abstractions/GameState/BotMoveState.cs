@@ -28,7 +28,7 @@ namespace AutoCivilization.Console
         public Dictionary<int, AttackTargetMoveState> AttacksAvailable { get; set; } = new Dictionary<int, AttackTargetMoveState>();
         public List<string> ControlledNaturalWonders { get; set; } = new List<string>();
         public List<WonderCardModel> PurchasedWonders { get; set; } = new List<WonderCardModel>();
-        public List<CityStateModel> VisitedCityStates { get; set; } = new List<CityStateModel>();
+        public List<CityStateModel> CityStatesDiplomacyCardsHeld { get; set; } = new List<CityStateModel>();
 
         public FocusType SmallestTradeTokenPileType { get; set; }
 

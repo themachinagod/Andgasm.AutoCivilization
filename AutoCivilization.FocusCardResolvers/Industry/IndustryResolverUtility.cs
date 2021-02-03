@@ -16,7 +16,7 @@ namespace AutoCivilization.FocusCardResolvers
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
             moveState.ActiveWonderCardDecks = botGameStateCache.WonderCardDecks;
             moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateCache.PurchasedWonders);
-            moveState.VisitedCityStates = new List<CityStateModel>(botGameStateCache.VisitedCityStates);
+            moveState.CityStatesDiplomacyCardsHeld = new List<CityStateModel>(botGameStateCache.CityStateDiplomacyCardsHeld);
             moveState.ControlledNaturalWonders = new List<string>(botGameStateCache.ControlledNaturalWonders);
             moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateCache.TradeTokens);
             moveState.NaturalResourcesToSpend = botGameStateCache.ControlledNaturalResources;
@@ -43,7 +43,7 @@ namespace AutoCivilization.FocusCardResolvers
                 sb.Append($"I updated my game state to show that I purchased the world wonder {moveState.WonderPurchasedThisTurn.Name}, the token of which you placed on my stongest free city\n");
                 sb.Append($"I facilitated this move with the following production capacity breakdown;\n");
                 sb.Append($"Focus card base capacity: {moveState.BaseProductionPoints} production points\n");
-                sb.Append($"Industry diplomacy cards retained bonus: {moveState.VisitedCityStates.Count} held diplomacy cards worth {moveState.VisitedCityStates.Count} production points\n");
+                sb.Append($"Industry diplomacy cards retained bonus: {moveState.CityStatesDiplomacyCardsHeld.Count} held diplomacy cards worth {moveState.CityStatesDiplomacyCardsHeld.Count} production points\n");
                 sb.Append($"Natural wonder resources retained bonus: {moveState.ControlledNaturalWonders.Count} held natural wonders worth {moveState.ControlledNaturalWonders.Count * 2} production points\n");
                 sb.Append($"Natural resources points : {moveState.NaturalResourcesToSpend} held worth {moveState.NaturalResourcesToSpend * 2} production points, of which we spent {moveState.NaturalResourcesSpentThisTurn} resources\n");
                 sb.Append($"Industry trade token points : {moveState.TradeTokensAvailable[FocusType.Industry]} held worth {moveState.TradeTokensAvailable[FocusType.Industry]} production points of which we spent {moveState.IndustryTokensUsedThisTurn} trade tokens\n");

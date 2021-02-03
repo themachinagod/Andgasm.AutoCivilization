@@ -127,7 +127,7 @@ namespace AutoCivilization.Console
             System.Console.WriteLine($"Trade Caravans on Route Count:\t\t{gameState.CaravansOnRouteCount}");
             System.Console.WriteLine($"Controlled Natural Resources:\t\t{gameState.ControlledNaturalResources}");
             System.Console.WriteLine($"Controlled Natural Wonders:\t\t{gameState.ControlledNaturalWondersString}");
-            System.Console.WriteLine($"City State Diplomacy Cards:\t\t{gameState.VisitedCityStatesString}");
+            System.Console.WriteLine($"City State Diplomacy Cards:\t\t{gameState.CityStateDiplomacyCardsHeldString}");
             System.Console.WriteLine($"Rival Diplomacy Cards:\t\t\t{gameState.VisitedPlayerColorsString}");
             System.Console.WriteLine($"Purchased World Wonders:\t\t{gameState.PurchasedWondersString}");
             System.Console.WriteLine("########################################################################################");
