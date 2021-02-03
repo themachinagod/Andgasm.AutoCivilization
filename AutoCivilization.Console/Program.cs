@@ -83,6 +83,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<IDefeatedCapitalCityActionRequestStep, DefeatedCapitalCityActionRequestStep>();
                     services.AddTransient<IConquerNonCapitalCityActionRequestStep, ConquerNonCapitalCityActionRequestStep>();
                     services.AddTransient<IFailedAttackActionRequestStep, FailedAttackActionRequestStep>();
+                    services.AddTransient<ISupplementAttackPowerInformationRequestStep, SupplementAttackPowerInformationRequestStep>();
 
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();

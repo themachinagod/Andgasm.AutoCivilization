@@ -15,7 +15,7 @@ namespace AutoCivilization.ActionSteps
         public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
-            return !attckMove.BotIsWinning;
+            return attckMove.IsTargetWithinRange && !attckMove.BotIsWinning;
         }
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)

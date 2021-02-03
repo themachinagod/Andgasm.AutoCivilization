@@ -7,6 +7,7 @@ namespace AutoCivilization.ActionSteps
 {
     public class SupplementAttackPowerInformationRequestStep : StepActionBase, ISupplementAttackPowerInformationRequestStep
     {
+        private const int MaxTradeTokensHeld = 3;
         private int _powerDelta = 0;
 
         public SupplementAttackPowerInformationRequestStep() : base ()
@@ -19,9 +20,9 @@ namespace AutoCivilization.ActionSteps
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             _powerDelta = attckMove.ComputedBotAttackPowerForTurn - attckMove.AttackTargetPowerWithoutTradeTokens;
 
-            return attckMove.IsTargetWithinRange &&
-                   (attckMove.BotIsWinning &&
-                   attckMove.AttackTargetType == AttackTargetType.RivalCapitalCity || attckMove.AttackTargetType == AttackTargetType.RivalCity || attckMove.AttackTargetType == AttackTargetType.RivalControlToken);
+            var autoWin = _powerDelta <= MaxTradeTokensHeld;
+            var typeHoldsTokens = attckMove.AttackTargetType == AttackTargetType.RivalCapitalCity || attckMove.AttackTargetType == AttackTargetType.RivalCity || attckMove.AttackTargetType == AttackTargetType.RivalControlToken;
+            return attckMove.IsTargetWithinRange && attckMove.BotIsWinning && autoWin && typeHoldsTokens;
         }
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)

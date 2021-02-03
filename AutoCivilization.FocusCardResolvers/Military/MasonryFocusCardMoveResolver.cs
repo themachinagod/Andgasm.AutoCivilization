@@ -8,7 +8,7 @@ namespace AutoCivilization.FocusCardResolvers
 {
     public class MasonryFocusCardMoveResolver : FocusCardMoveResolverBase, IMilitaryLevel1FocusCardMoveResolver
     {
-        private const int BaseAttackPower = 7;
+        private const int BaseAttackPower = 5;
         private const int BaseAttackRange = 2;
         private const int BaseAttackCount = 2;
         private const int BaseMaxTargetPower = 4;
@@ -25,7 +25,8 @@ namespace AutoCivilization.FocusCardResolvers
                                             IDefeatedRivalControlTokenActionRequestStep defeatedRivalControlTokenActionRequestStep,
                                             IDefeatedCapitalCityActionRequestStep defeatedCapitalCityActionRequestStep,
                                             IConquerNonCapitalCityActionRequestStep conquerNonCapitalCityActionRequestStep,
-                                            IFailedAttackActionRequestStep failedAttackActionRequestStep) : base()
+                                            IFailedAttackActionRequestStep failedAttackActionRequestStep, 
+                                            ISupplementAttackPowerInformationRequestStep supplementAttackPowerInformationRequestStep) : base()
         {
             _cultureResolverUtility = cultureResolverUtility;
 
@@ -39,12 +40,13 @@ namespace AutoCivilization.FocusCardResolvers
             _actionSteps.Add(1, enemyTypeToAttackInformationRequestStep);
             _actionSteps.Add(2, enemyAttackPowerInformationRequestStep);
             _actionSteps.Add(3, attackPrimaryResultActionRequestStep);
-            _actionSteps.Add(4, defeatedBarbarianActionRequestStep);
-            _actionSteps.Add(5, conquerCityStateActionRequestStep);
-            _actionSteps.Add(6, defeatedRivalControlTokenActionRequestStep);
-            _actionSteps.Add(7, defeatedCapitalCityActionRequestStep);
-            _actionSteps.Add(8, conquerNonCapitalCityActionRequestStep);
-            _actionSteps.Add(9, failedAttackActionRequestStep);
+            _actionSteps.Add(4, supplementAttackPowerInformationRequestStep);
+            _actionSteps.Add(5, defeatedBarbarianActionRequestStep);
+            _actionSteps.Add(6, conquerCityStateActionRequestStep);
+            _actionSteps.Add(7, defeatedRivalControlTokenActionRequestStep);
+            _actionSteps.Add(8, defeatedCapitalCityActionRequestStep);
+            _actionSteps.Add(9, conquerNonCapitalCityActionRequestStep);
+            _actionSteps.Add(10, failedAttackActionRequestStep);
         }
 
         public override void PrimeMoveState(BotGameState botGameStateService)
