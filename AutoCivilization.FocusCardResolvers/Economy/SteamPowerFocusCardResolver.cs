@@ -16,8 +16,8 @@ namespace AutoCivilization.FocusCardResolvers
                                                ICaravanMovementActionRequestStep caravanMovementActionRequest,
                                                ICaravanMovementInformationRequestStep caravanMovementInformationRequest,
                                                ICaravanDestinationInformationRequestStep caravanDestinationInformationRequest,
-                                               IRivalCityDestinationInformationRequestStep rivalCityDestinationInformationRequest,
-                                               ICityStateDestinationInformationRequestStep cityStateDestinationInformationRequest,
+                                               IRivalCityCaravanDestinationInformationRequestStep rivalCityDestinationInformationRequest,
+                                               ICityStateCaravanDestinationInformationRequestStep cityStateDestinationInformationRequest,
                                                IRemoveCaravanActionRequestStep removeCaravanActionRequest) : base()
         {
             FocusType = FocusType.Economy;

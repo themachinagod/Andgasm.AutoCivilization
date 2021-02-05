@@ -28,14 +28,18 @@ namespace AutoCivilization.ActionSteps
             //       if so - we will add the world wonder to the bots move state and ask the defending rival to put the wonder card next to the bots player sheet
 
             // TODO: diplomacy cards impact??
+            //       when the bot attacks a rival city - any cards held by the bot for that city need to be returned!
 
             // TODO: we need to consider the fact that the city COULD have once been a city state that was conquered by a rival prior to this attack
             //       if this is the case we would need to conquer the city state which means transferring the city state token to bot in gamestate and physical board
             //       we would need to ask the user if this city was prev a city state at any point
 
+            // TODO: this prompt is a hack - doesnt belong here!!
+
+            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             return new MoveStepActionData($"My attack on the {attckMove.AttackTargetType} was successful, please replace the conquered city target with one of my own cities from the supply.",
-                   new List<string>() { });
+                   new List<string>() { prompt });
         }
 
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)

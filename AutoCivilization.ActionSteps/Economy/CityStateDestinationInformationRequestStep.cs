@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class CityStateDestinationInformationRequestStep : StepActionBase, ICityStateDestinationInformationRequestStep
+    public class CityStateCaravanDestinationInformationRequestStep : StepActionBase, ICityStateCaravanDestinationInformationRequestStep
     {
         private readonly IGlobalGameCache _globalGameCache;
         private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
 
         private const int BaseTradeTokensForCityStateVisit = 2;
 
-        public CityStateDestinationInformationRequestStep(IGlobalGameCache globalGameCache,
+        public CityStateCaravanDestinationInformationRequestStep(IGlobalGameCache globalGameCache,
                                                           IOrdinalSuffixResolver ordinalSuffixResolver) : base()
         {
             OperationType = OperationType.InformationRequest;

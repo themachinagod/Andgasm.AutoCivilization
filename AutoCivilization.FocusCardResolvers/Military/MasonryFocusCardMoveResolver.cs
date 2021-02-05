@@ -3,6 +3,8 @@ using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using AutoCivilization.Console;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace AutoCivilization.FocusCardResolvers
 {
@@ -21,7 +23,8 @@ namespace AutoCivilization.FocusCardResolvers
                                             IEnemyAttackPowerInformationRequestStep enemyAttackPowerInformationRequestStep,
                                             IAttackPrimaryResultActionRequestStep attackPrimaryResultActionRequestStep,
                                             IDefeatedBarbarianActionRequestStep defeatedBarbarianActionRequestStep,
-                                            IConquerCityStateActionRequestStep conquerCityStateActionRequestStep,
+                                            IConquerCityStateInformationRequestStep conquerCityStateActionRequestStep,
+                                            ITokenPlacementNaturalWonderControlledInformationRequestStep tokenPlacementNaturalWonderControlledInformationRequestStep,
                                             IDefeatedRivalControlTokenActionRequestStep defeatedRivalControlTokenActionRequestStep,
                                             IDefeatedCapitalCityActionRequestStep defeatedCapitalCityActionRequestStep,
                                             IConquerNonCapitalCityActionRequestStep conquerNonCapitalCityActionRequestStep,
@@ -33,20 +36,23 @@ namespace AutoCivilization.FocusCardResolvers
             FocusType = FocusType.Military;
             FocusLevel = FocusLevel.Lvl1;
 
-            // TODO: this is just supporting 1 single attack just now!!!
-
-
-			_actionSteps.Add(0, enemyWithinAttackDistanceInformationRequestStep);
-            _actionSteps.Add(1, enemyTypeToAttackInformationRequestStep);
-            _actionSteps.Add(2, enemyAttackPowerInformationRequestStep);
-            _actionSteps.Add(3, attackPrimaryResultActionRequestStep);
-            _actionSteps.Add(4, supplementAttackPowerInformationRequestStep);
-            _actionSteps.Add(5, defeatedBarbarianActionRequestStep);
-            _actionSteps.Add(6, conquerCityStateActionRequestStep);
-            _actionSteps.Add(7, defeatedRivalControlTokenActionRequestStep);
-            _actionSteps.Add(8, defeatedCapitalCityActionRequestStep);
-            _actionSteps.Add(9, conquerNonCapitalCityActionRequestStep);
-            _actionSteps.Add(10, failedAttackActionRequestStep);
+            var loopSeed = 0;
+            for (var attack = 0; attack < BaseAttackCount; attack++)
+            {
+                _actionSteps.Add(loopSeed, enemyWithinAttackDistanceInformationRequestStep);
+                _actionSteps.Add(loopSeed + 1, enemyTypeToAttackInformationRequestStep);
+                _actionSteps.Add(loopSeed + 2, enemyAttackPowerInformationRequestStep);
+                _actionSteps.Add(loopSeed + 3, attackPrimaryResultActionRequestStep);
+                _actionSteps.Add(loopSeed + 4, supplementAttackPowerInformationRequestStep);
+                _actionSteps.Add(loopSeed + 5, defeatedBarbarianActionRequestStep);
+                _actionSteps.Add(loopSeed + 6, conquerCityStateActionRequestStep);
+                _actionSteps.Add(loopSeed + 7, tokenPlacementNaturalWonderControlledInformationRequestStep);
+                _actionSteps.Add(loopSeed + 8, defeatedRivalControlTokenActionRequestStep);
+                _actionSteps.Add(loopSeed + 9, defeatedCapitalCityActionRequestStep);
+                _actionSteps.Add(loopSeed + 10, conquerNonCapitalCityActionRequestStep);
+                _actionSteps.Add(loopSeed + 11, failedAttackActionRequestStep);
+                loopSeed = _actionSteps.Count;
+            }
         }
 
         public override void PrimeMoveState(BotGameState botGameStateService)
@@ -58,6 +64,8 @@ namespace AutoCivilization.FocusCardResolvers
 
             _moveState.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
+            
+            _moveState.TradeTokensAvailable[FocusType.Military] += 2;
 
             //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
             for (int tc = 0; tc < BaseAttackCount; tc++)
@@ -76,8 +84,69 @@ namespace AutoCivilization.FocusCardResolvers
         private string BuildMoveSummary()
         {
             var summary = "To summarise my move I did the following;\n";
+            StringBuilder sb = new StringBuilder(summary);
+            sb.AppendLine($"I executed {_moveState.AttacksAvailable.Count} attacks againt enemy targets;");
+
+            var attackOrdinal = 1;
+            foreach (var attackmove in _moveState.AttacksAvailable)
+            {
+                // HACK: currently we dont know what natural wonder was acquired for a specific attack!!
+                sb.AppendLine();
+                if (attackmove.Value.IsTargetWithinRange)
+                {
+                    var winLoss = attackmove.Value.BotIsWinning ? "defeated" : "lost in battle to";
+                    sb.AppendLine($"Attack {attackOrdinal} : I {winLoss} a {attackmove.Value.AttackTargetType} as follows;");
+                    sb.AppendLine($"\tTarget total power: {attackmove.Value.AttackTargetPowerWithoutTradeTokens}");
+                    sb.AppendLine($"\tMy base power: {_moveState.BaseAttackPower}");
+                    sb.AppendLine($"\tMy dice roll: {attackmove.Value.DiceRollAttackPower}");
+                    sb.AppendLine($"\tMy wonder cards bonus: {_moveState.PurchasedWonders.Where(x => x.Type == FocusType.Military).Count()}");
+                    sb.AppendLine($"\tMy diplomacy cards bonus: {_moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count()}");
+                    sb.AppendLine($"\tMy military trade tokens: {_moveState.TradeTokensAvailable[FocusType.Military]}");
+
+                    if (attackmove.Value.BotIsWinning)
+                    {
+                        sb.AppendLine($"In order to win this battle I had to expend {attackmove.Value.BotSpentMilitaryTradeTokensThisTurn} military trade token(s)");
+
+                        if (attackmove.Value.AttackTargetType == AttackTargetType.Barbarian)
+                        {
+                            sb.AppendLine($"The barbarian was removed from the board");
+                            sb.AppendLine($"I recieved 1 trade token for this victory which I assigned to my {_moveState.SmallestTradeTokenPileType} focus slot");
+                        }
+                        if (attackmove.Value.AttackTargetType == AttackTargetType.RivalControlToken)
+                        {
+                            sb.AppendLine($"The rival control token was replaced with one of my own on the board");
+                            if (attackmove.Value.HasStolenNaturalWonder) sb.AppendLine($"As the battle took place on the { _moveState.ControlledNaturalWonders.LastOrDefault()} natural wonder that the defending rival controlled I have now taken control of this natural wonder token and any bnous it provides");
+                        }
+                        if (attackmove.Value.AttackTargetType == AttackTargetType.CityState)
+                        {
+                            sb.AppendLine($"The city state was replaced with one of my own cities on the board");
+                            sb.AppendLine($"The city state token was placed on my leadersheet and I will be able to utilise any bonuses it grants in the future");
+                            sb.AppendLine($"I have returned my diplomacy card for the city state and all players should have done the same");
+                        }
+                        if (attackmove.Value.AttackTargetType == AttackTargetType.RivalCity)
+                        {
+                            sb.AppendLine($"The rival city was replaced with one of my own cities on the board");
+                        }
+                        if (attackmove.Value.AttackTargetType == AttackTargetType.RivalCapitalCity)
+                        {
+                            sb.AppendLine($"I recieved 2 trade token for this victory which I assigned to my {_moveState.SmallestTradeTokenPileType} focus slot");
+                            sb.AppendLine($"The defeated rival also lost 2 trade tokens as a result their capital being sacked");
+                        }
+                    }
+                    else
+                    {
+                        sb.AppendLine($"As I lost this battle no military trade tokens were comitted to this attack");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine($"Attack {attackOrdinal} : There were no targets available for this attack, no action was taken");
+                }
+                attackOrdinal++;
+            }
+
             //return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
-            return summary;
+            return sb.ToString();
         }
     }
 }

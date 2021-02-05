@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoCivilization.Abstractions
 {
@@ -41,12 +42,14 @@ namespace AutoCivilization.Abstractions
         public Dictionary<FocusType, int> TradeTokens { get; set; }
         
         public List<CityStateModel> CityStateDiplomacyCardsHeld { get; set; }
-        public string CityStateDiplomacyCardsHeldString { get { return CityStateDiplomacyCardsHeld.Count > 0 ? string.Join(", ", CityStateDiplomacyCardsHeld) : "None"; } }
+        public string CityStateDiplomacyCardsHeldString { get { return CityStateDiplomacyCardsHeld.Count > 0 ? string.Join(", ", CityStateDiplomacyCardsHeld.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
+        public List<CityStateModel> ConqueredCityStateTokensHeld { get; set; }
+        public string ConqueredCityStateTokensHeldString { get { return ConqueredCityStateTokensHeld.Count > 0 ? string.Join(", ", ConqueredCityStateTokensHeld.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
         public List<string> VisitedPlayerColors { get; set; }
-        public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(", ", VisitedPlayerColors) : "None"; } }
+        public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(", ", VisitedPlayerColors) : "None"; } } // TODO: this will be insufficient for player diplomacy cards!!!
         public List<WonderCardModel> PurchasedWonders { get; set; }
         public string PurchasedWondersString { get { return PurchasedWonders.Count > 0 ? string.Join(", ", PurchasedWonders) : "None"; } }
-        public List<string> ControlledNaturalWonders { get; set; }
+        public List<string> ControlledNaturalWonders { get; set; } // TODO: perhaps we get more by storing the wonder model instead of just string!!
         public string ControlledNaturalWondersString { get { return ControlledNaturalWonders.Count > 0 ? string.Join(", ", ControlledNaturalWonders) : "None"; } }
 
         public int FriendlyCityCount { get; set; }

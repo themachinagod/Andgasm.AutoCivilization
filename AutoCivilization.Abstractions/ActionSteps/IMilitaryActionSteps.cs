@@ -7,7 +7,7 @@
     public interface IEnemyAttackPowerInformationRequestStep : IStepAction { }
     public interface IAttackPrimaryResultActionRequestStep : IStepAction { }
     public interface IDefeatedBarbarianActionRequestStep : IStepAction { }
-    public interface IConquerCityStateActionRequestStep : IStepAction { }
+    public interface IConquerCityStateInformationRequestStep : IStepAction { }
     public interface IDefeatedRivalControlTokenActionRequestStep : IStepAction { }
     public interface IDefeatedCapitalCityActionRequestStep : IStepAction { }
     public interface IConquerNonCapitalCityActionRequestStep : IStepAction { }

@@ -1,18 +1,18 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Console;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class ConquerCityStateActionRequestStep : StepActionBase, IConquerCityStateActionRequestStep
+    public class ConquerCityStateInformationRequestStep : StepActionBase, IConquerCityStateInformationRequestStep
     {
         private readonly IGlobalGameCache _globalGameCache;
 
-        public ConquerCityStateActionRequestStep(IGlobalGameCache globalGameCache) : base ()
+        public ConquerCityStateInformationRequestStep(IGlobalGameCache globalGameCache) : base ()
         {
-            OperationType = OperationType.ActionRequest;
+            OperationType = OperationType.InformationRequest;
 
             _globalGameCache = globalGameCache;
         }
@@ -25,23 +25,30 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            // TODO: we need to know which city state has been conquered in order to remove any diplomacy cards held
-            //       perhaps turn this into info request?
-
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             var cityStates = _globalGameCache.CityStates.Select(x => $"{x.Id}. {x.Name}").ToList();
-            return new MoveStepActionData($"My attack on the city state was successful, please replace the conquered city state target with one of my own cities from the supply and place the city state token next to my leadersheet\n All players MUST return diplomacy cards held for the defeated city state to the side of the board.\nNow tell me... what is the name of this city state I vanquished?",
+            return new MoveStepActionData($"My attack on the city state was successful, please take the following physical steps;\nReplace the conquered city state with one of my own cities from the supply\nRemove the city state token from the board and place it next to my leadersheet\nAll players MUST return diplomacy cards held for the defeated city state to the side of the board.\nNow tell me... what is the name of this city state I vanquished?",
                    cityStates);
         }
 
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
-            // TODO: process input as city state conquered
-            //       remove city state from visited states (dip cards)
-            // TODO: diplomacy cards impact - we need to remove diplomacy cards from the bot state (visitedcitystates)
-            //       if so we need to remove the diplomacy card from collection
+            // TODO: how does the bot lose the city state token after gaining it??
+            //       this can only happen when the city state is liberated or conquered by another player
+            //       we would have to process this on an attack by a rival 
+            //       during the round - a rival will initiate combat with bot - they will inform the bot that they are attacking a city state it conquered (specifically)
+            //       if the rival wins that battle - they will either decide to liberate it - or conquer it
+            //       either way the bot will have to give up the city state token either to the board or the rival player
+            //       at this point the gamestate will be updated to remove the city from the conquered city states
+
+            var selectedid = Convert.ToInt32(input);
+            var citystate = _globalGameCache.CityStates.First(x => x.Id == selectedid);
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
+            attckMove.TargetCityState = citystate;
+
+            moveState.CityStatesDiplomacyCardsHeld.Remove(citystate);
+            moveState.ConqueredCityStateTokensHeld.Add(citystate);
             moveState.FriendlyCitiesAddedThisTurn++;
             moveState.TradeTokensAvailable[FocusType.Military] -= attckMove.BotSpentMilitaryTradeTokensThisTurn;
         }

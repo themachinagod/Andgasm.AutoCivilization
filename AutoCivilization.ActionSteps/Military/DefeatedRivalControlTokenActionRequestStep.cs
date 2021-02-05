@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Console;
+using System;
 using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
@@ -20,21 +21,15 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            // TODO: we need to consider the fact that the control token may be on a natural wonder
-            //       if this is the case then we need to transfer the token to the new owner both in game state and on physical board!
-            //       this will require a question to the user - did the mighty battle take place on a natural wonder space?
-            //       this step will only be applicable if the target type is a rival control token
-            //       if so - we will need to ask the defeated user to place the natural wonder token on the bots playersheet
-            //               add natural wonder token to bots movestate
-
-            var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
-            return new MoveStepActionData($"My attack on the {attckMove.AttackTargetType} was successful, please replace the control token target with one of my own control tokens.",
-                   new List<string>() { });
+            return new MoveStepActionData($"My attack on the rival control token was successful and my territory has grown, please replace the rival control token on the game board with one of my own from the supply.\nTell me, did this mighty battle take place on a natural wonder space?",
+                   new List<string>() { "1. Yes", "2. No" });
         }
 
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
+            var stolenNaturalWonder = input == "1";
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
+            attckMove.HasStolenNaturalWonder = stolenNaturalWonder;
             moveState.CityControlTokensPlacedThisTurn++;
             moveState.TradeTokensAvailable[FocusType.Military] -= attckMove.BotSpentMilitaryTradeTokensThisTurn;
         }

@@ -12,6 +12,7 @@ namespace AutoCivilization.ActionSteps
         private readonly Random _randomService = new Random();
 
         private int _computedBotPower = 0;
+        private int _diceRollResult = 1;
 
         public EnemyAttackPrimaryResultActionRequestStep() : base ()
         {
@@ -26,22 +27,28 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            var dieRoll = _randomService.Next(5) + 1;
-            _computedBotPower = moveState.BaseAttackPower + dieRoll +
+            _diceRollResult = _randomService.Next(5) + 1;
+            _computedBotPower = moveState.BaseAttackPower + _diceRollResult +
                                    moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.PurchasedWonders.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.TradeTokensAvailable[FocusType.Military];
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             return new MoveStepActionData($"Currently the scales of battle are as follows;\nBot\t\t:\tAttacker\t:\tPower => {_computedBotPower}\nTarget\t\t:\tDefender\t:\tPower => {attckMove.AttackTargetPowerWithoutTradeTokens}",
-                   new List<string>() { "Press any key to proceed to the final stage of battle..." });
+                   new List<string>() {  });
         }
 
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
+            var botPowerLessTokens = _computedBotPower - moveState.TradeTokensAvailable[FocusType.Military];
+            var botTokensRequired = Math.Max(0, (attckMove.AttackTargetPowerWithoutTradeTokens + 1) - botPowerLessTokens);
+
+            attckMove.DiceRollAttackPower = _diceRollResult;
             attckMove.ComputedBotAttackPowerForTurn = _computedBotPower;
             attckMove.BotIsWinning = _computedBotPower > attckMove.AttackTargetPowerWithoutTradeTokens;
+
+            if (attckMove.BotIsWinning) attckMove.BotSpentMilitaryTradeTokensThisTurn = botTokensRequired;
         }
     }
 }

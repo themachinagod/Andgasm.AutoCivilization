@@ -29,6 +29,7 @@ namespace AutoCivilization.Console
         public List<string> ControlledNaturalWonders { get; set; } = new List<string>();
         public List<WonderCardModel> PurchasedWonders { get; set; } = new List<WonderCardModel>();
         public List<CityStateModel> CityStatesDiplomacyCardsHeld { get; set; } = new List<CityStateModel>();
+        public List<CityStateModel> ConqueredCityStateTokensHeld { get; set; } = new List<CityStateModel>();
 
         public FocusType SmallestTradeTokenPileType { get; set; }
 
@@ -42,6 +43,7 @@ namespace AutoCivilization.Console
 
         public int CityControlTokensPlacedThisTurn { get; set; }
         public int TerritroyControlTokensPlacedThisTurn { get; set; }
+        public bool HasStolenNaturalWonder { get; set; }
 
         public int BaseProductionPoints { get; set; }
         public int NaturalResourcesToSpend { get; set; }
@@ -87,6 +89,9 @@ namespace AutoCivilization.Console
         public int ComputedBotAttackPowerForTurn { get; set; }
         public int TargetSpentMilitaryTradeTokensThisTurn { get; set; }
         public int BotSpentMilitaryTradeTokensThisTurn { get; set; }
+        public CityStateModel TargetCityState { get; set; }
         public bool BotIsWinning { get; set; }
+        public int DiceRollAttackPower { get; set; }
+        public bool HasStolenNaturalWonder { get; set; }
     }
 }

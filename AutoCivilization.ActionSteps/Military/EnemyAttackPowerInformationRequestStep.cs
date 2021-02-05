@@ -42,11 +42,11 @@ namespace AutoCivilization.ActionSteps
             }
             else if (targetType == AttackTargetType.RivalCity || targetType == AttackTargetType.RivalCapitalCity)
             {
-                return "Please compute the rival cities attack power as follows;\nCurrent value of the terrain the city is built on multiplied by 2 (2-10)\nRoll a single dice to get the base power adjustment for combat (1-6)\nAdd any leadersheet bonuses\nAdd any military diplomacy bonuses\nAdd any military wonder bonuses\nAdd +1 fpr each adjacent reinforced control token\nDO NOT INCLUDE ANY AVAILABLE TRADE TOKENS YET";
+                return "Please compute the rival cities attack power as follows;\nCurrent value of the terrain the city is built on multiplied by 2 (2-10)\nRoll a single dice to get the base power adjustment for combat (1-6)\nAdd any leadersheet bonuses\nAdd any military diplomacy bonuses\nAdd any military wonder bonuses\nAdd +1 for each adjacent reinforced control token\nDO NOT INCLUDE ANY AVAILABLE TRADE TOKENS YET";
             }
             else if (targetType == AttackTargetType.RivalControlToken)
             {
-                return "Please compute the rival cities attack power as follows;\nCurrent value of the terrain the city is built on multiplied by 2 (2-10)\nRoll a single dice to get the base power adjustment for combat (1-6)\nAdd any leadersheet bonuses\nAdd any military diplomacy bonuses\nAdd any military wonder bonuses\nAdd +1 for each adjacent reinforced control token\nAdd +1 if the control token being attacked is reinforced\nDO NOT INCLUDE ANY AVAILABLE TRADE TOKENS YET";
+                return "Please compute the rival control tokens attack power as follows;\nCurrent value of the control tokens terrain (1-5)\nRoll a single dice to get the base power adjustment for combat (1-6)\nAdd any leadersheet bonuses\nAdd any military diplomacy bonuses\nAdd any military wonder bonuses\nAdd +1 for each adjacent reinforced control token\nAdd +1 if the control token being attacked is reinforced\nDO NOT INCLUDE ANY AVAILABLE TRADE TOKENS YET";
             }
             else if (targetType == AttackTargetType.CityState)
             {

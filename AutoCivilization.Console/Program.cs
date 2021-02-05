@@ -62,8 +62,8 @@ namespace AutoCivilization.Console
                     services.AddTransient<ICaravanDestinationInformationRequestStep, CaravanDestinationInformationRequestStep>();
                     services.AddTransient<ICaravanMovementActionRequestStep, CaravanMovementActionRequestStep>();
                     services.AddTransient<ICaravanMovementInformationRequestStep, CaravanMovementInformationRequestStep>();
-                    services.AddTransient<ICityStateDestinationInformationRequestStep, CityStateDestinationInformationRequestStep>();
-                    services.AddTransient<IRivalCityDestinationInformationRequestStep, RivalCityDestinationInformationRequestStep>();
+                    services.AddTransient<ICityStateCaravanDestinationInformationRequestStep, CityStateCaravanDestinationInformationRequestStep>();
+                    services.AddTransient<IRivalCityCaravanDestinationInformationRequestStep, RivalCityCaravanDestinationInformationRequestStep>();
                     services.AddTransient<IRemoveCaravanActionRequestStep, RemoveCaravanActionRequestStep>();
                     services.AddTransient<IRemoveAdjacentBarbariansActionRequestStep, RemoveAdjacentBarbariansActionRequestStep>();
 
@@ -78,7 +78,7 @@ namespace AutoCivilization.Console
                     services.AddTransient<IEnemyAttackPowerInformationRequestStep, EnemyAttackPowerInformationRequestStep>();
                     services.AddTransient<IAttackPrimaryResultActionRequestStep, EnemyAttackPrimaryResultActionRequestStep>();
                     services.AddTransient<IDefeatedBarbarianActionRequestStep, DefeatedBarbarianActionRequestStep>();
-                    services.AddTransient<IConquerCityStateActionRequestStep, ConquerCityStateActionRequestStep>();
+                    services.AddTransient<IConquerCityStateInformationRequestStep, ConquerCityStateInformationRequestStep>();
                     services.AddTransient<IDefeatedRivalControlTokenActionRequestStep, DefeatedRivalControlTokenActionRequestStep>();
                     services.AddTransient<IDefeatedCapitalCityActionRequestStep, DefeatedCapitalCityActionRequestStep>();
                     services.AddTransient<IConquerNonCapitalCityActionRequestStep, ConquerNonCapitalCityActionRequestStep>();

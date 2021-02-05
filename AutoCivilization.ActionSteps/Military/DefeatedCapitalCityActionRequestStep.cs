@@ -30,9 +30,14 @@ namespace AutoCivilization.ActionSteps
             //       if the bot does not have a city without a wonder - we will instead inform the user to remove the wonder token and cards from the game
 
             // TODO: diplomacy cards impact??
+            //       need to think about player dip cards some more - thebot should lose any it has for an attacked rival - but unlike city state dip cards - the bot is meant to gain specific bonus!
+
+            // TODO: the trade tokens the bot gets for defeating a rival capital city should come FROM the defeated user - i.e. they need to dicsrd two trade tokens (if they can)
+            //       i dont think we need to ask if they can cover it - essentially we will presume they can and pay the bot - even if they cant discard two tokens
+            //       this is in variance ot rules i think - as one would expect that the bot should only win what the defeated party has - but its a small gap for now
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
-            return new MoveStepActionData($"My attack on the {attckMove.AttackTargetType} was successful, as this is a capital city DO NOT replace the city on the board.",
+            return new MoveStepActionData($"My attack on the {attckMove.AttackTargetType} was successful, as this is a capital city DO NOT replace the city on the board. The defeated rival must return 2 trade tokens to the supply, to my gain...",
                    new List<string>() { });
         }
 

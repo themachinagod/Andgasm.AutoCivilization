@@ -6,14 +6,14 @@ using System.Collections.Generic;
 
 namespace AutoCivilization.ActionSteps
 {
-    public class RivalCityDestinationInformationRequestStep : StepActionBase, IRivalCityDestinationInformationRequestStep
+    public class RivalCityCaravanDestinationInformationRequestStep : StepActionBase, IRivalCityCaravanDestinationInformationRequestStep
     {
         private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
         private readonly IOrdinalSuffixResolver _ordinalSuffixResolver;
 
         private const int BaseTradeTokensForRivalCityVisit = 2;
 
-        public RivalCityDestinationInformationRequestStep(IOrdinalSuffixResolver ordinalSuffixResolver,
+        public RivalCityCaravanDestinationInformationRequestStep(IOrdinalSuffixResolver ordinalSuffixResolver,
                                                           ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver) : base()
         {
             OperationType = OperationType.InformationRequest;

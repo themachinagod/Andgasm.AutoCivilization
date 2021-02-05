@@ -17,8 +17,8 @@ namespace AutoCivilization.ActionSteps
         public override bool ShouldExecuteAction(BotMoveState moveState)
         {
             var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
-            return (totalTokensPlaced > 0) &&
-                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced);
+            return ((totalTokensPlaced > 0) &&
+                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced)) || moveState.HasStolenNaturalWonder;
         }
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
@@ -26,12 +26,12 @@ namespace AutoCivilization.ActionSteps
             // TODO: we need natural wonders for game
             //       currently hard wired!
             //       bit of a hack for multiple just now to avoid a request loop - fine for 2 just now
+
             // TODO: review how we do this...
             //       - allow multiple repsonses from the list (either in loop or delimited entry)
-            // TODO: we need to ask the user to remove the control token from the board
-
+            
             var naturalWonders = new List<string> { "0. None", "1. Mt Everest", "2. Gran Mesa", "3. Both" };
-            return new MoveStepActionData($"Which natural wonder(s) did I manage to take control of on this turn?",
+            return new MoveStepActionData($"Please remove the natural wonder token from the board and place it next to my leadersheet. What is the name(s) of the natural wonder(s) I managed to take control of on this turn?",
                    naturalWonders);
         }
 
