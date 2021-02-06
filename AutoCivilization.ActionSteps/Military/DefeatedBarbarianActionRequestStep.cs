@@ -26,7 +26,7 @@ namespace AutoCivilization.ActionSteps
         {
             // TODO: this prompt is a hack - doesnt belong here!!
 
-            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
+            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to my defensive reinforcements instructions" : "Press any key to advance to my next attack...";
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             return new MoveStepActionData($"My attack on the inferior {attckMove.AttackTargetType} was a complete success. As this barbarian unit has been vanquished, please remove it from the game board",
                    new List<string>() { prompt });

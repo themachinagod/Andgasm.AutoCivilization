@@ -86,7 +86,9 @@ namespace AutoCivilization.Console
                     services.AddTransient<ISupplementAttackPowerInformationRequestStep, SupplementAttackPowerInformationRequestStep>();
                     services.AddTransient<IConquerWorldWonderInformationRequestStep, ConquerWorldWonderInformationRequestStep>();
                     services.AddTransient<IConquerdNaturalWonderInformationRequestStep, ConquerdNaturalWonderInformationRequestStep>();
-                    
+                    services.AddTransient<IReinforceFriendlyControlTokensActionRequest, ReinforceFriendlyControlTokensActionRequest>();
+                    services.AddTransient<IReinforceFriendlyControlTokensInformationRequest, ReinforceFriendlyControlTokensInformationRequest>();
+
                     // culture focus card resolvers
                     services.AddTransient<IFocusCardResolverFactory, FocusCardResolverFactory>();
                     services.AddTransient<ICultureResolverUtility, CultureResolverUtility>();

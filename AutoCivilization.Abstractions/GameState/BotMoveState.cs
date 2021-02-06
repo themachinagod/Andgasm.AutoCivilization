@@ -70,6 +70,10 @@ namespace AutoCivilization.Console
         public int BaseAttackRange { get; set; }
         public int BaseAttackPower { get; set; }
         public int BaseMaxTargetPower { get; set; }
+
+        public int ControlTokensReinforcedThisTurn { get; set; }
+        public int BaseReinforcementCount { get; set; }
+        public int BaseReinforcementAttackCost { get; set; }
     }
 
     public class TradeCaravanMoveState

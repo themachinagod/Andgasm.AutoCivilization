@@ -29,7 +29,7 @@ namespace AutoCivilization.ActionSteps
 
             // TODO: this prompt is a hack - doesnt belong here!!
 
-            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
+            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to my defensive reinforcements instructions" : "Press any key to advance to my next attack...";
             return new MoveStepActionData($"My attack on the rivals capital city was successful and now they pay homage to my glorious kingdom\nAs this is a capital city DO NOT replace the city on the board\nThe defeated rival must return 2 trade tokens to the supply, to my gain...",
                    new List<string>() { prompt });
         }

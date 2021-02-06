@@ -22,7 +22,7 @@ namespace AutoCivilization.ActionSteps
         {
             // TODO: this prompt is a hack - doesnt belong here!!
 
-            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
+            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to my defensive reinforcements instructions" : "Press any key to advance to my next attack...";
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             return new MoveStepActionData($"Fortunatley for my enemies, the attack on the {attckMove.AttackTargetType} was a failure, no further action is required for this attack",
                    new List<string>() { prompt });

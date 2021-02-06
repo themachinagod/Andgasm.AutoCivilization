@@ -22,7 +22,7 @@ namespace AutoCivilization.ActionSteps
         {
             // TODO: this prompt is a hack - doesnt belong here!!
 
-            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
+            var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to my defensive reinforcements instructions" : "Press any key to advance to my next attack...";
             return new MoveStepActionData($"My attack on the rival control token was successful and my territory has grown, please replace the rival control token on the game board with one of my own from the supply",
                    new List<string>() { prompt });
         }

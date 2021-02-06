@@ -1,6 +1,7 @@
 ﻿using AutoCivilization.Abstractions;
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
+using AutoCivilization.Abstractions.TechnologyResolvers;
 using AutoCivilization.Console;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,14 @@ namespace AutoCivilization.FocusCardResolvers
         private const int BaseAttackRange = 2;
         private const int BaseAttackCount = 2;
         private const int BaseMaxTargetPower = 4;
+        private const int BaseReinforcementCount = 5;
+        private const int BaseReinforcementAttackCost = 3;
 
-        private IMilitaryResolverUtility _cultureResolverUtility;
+        private IMilitaryResolverUtility _militaryResolverUtility;
 
-        public MasonryFocusCardMoveResolver(IMilitaryResolverUtility cultureResolverUtility,
+        private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
+
+        public MasonryFocusCardMoveResolver(IMilitaryResolverUtility militaryResolverUtility,
                                             IEnemyWithinAttackDistanceInformationRequestStep enemyWithinAttackDistanceInformationRequestStep,
                                             IEnemyTypeToAttackInformationRequestStep enemyTypeToAttackInformationRequestStep,
                                             IEnemyAttackPowerInformationRequestStep enemyAttackPowerInformationRequestStep,
@@ -30,9 +35,13 @@ namespace AutoCivilization.FocusCardResolvers
                                             IConquerNonCapitalCityActionRequestStep conquerNonCapitalCityActionRequestStep,
                                             IConquerWorldWonderInformationRequestStep conquerWorldWonderInformationRequestStep,
                                             IFailedAttackActionRequestStep failedAttackActionRequestStep, 
-                                            ISupplementAttackPowerInformationRequestStep supplementAttackPowerInformationRequestStep) : base()
+                                            ISupplementAttackPowerInformationRequestStep supplementAttackPowerInformationRequestStep,
+                                            IReinforceFriendlyControlTokensActionRequest reinforceFriendlyControlTokensActionRequest,
+                                            IReinforceFriendlyControlTokensInformationRequest reinforceFriendlyControlTokensInformationRequest,
+                                            IFocusBarTechnologyUpgradeResolver focusBarTechnologyUpgradeResolver) : base()
         {
-            _cultureResolverUtility = cultureResolverUtility;
+            _militaryResolverUtility = militaryResolverUtility;
+            _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
 
             FocusType = FocusType.Military;
             FocusLevel = FocusLevel.Lvl1;
@@ -55,6 +64,9 @@ namespace AutoCivilization.FocusCardResolvers
                 _actionSteps.Add(loopSeed + 12, failedAttackActionRequestStep);
                 loopSeed = _actionSteps.Count;
             }
+
+            _actionSteps.Add(loopSeed, reinforceFriendlyControlTokensActionRequest);
+            _actionSteps.Add(loopSeed + 1, reinforceFriendlyControlTokensInformationRequest);
         }
 
         public override void PrimeMoveState(BotGameState botGameStateService)
@@ -65,6 +77,8 @@ namespace AutoCivilization.FocusCardResolvers
             _moveState.BaseAttackPower = BaseAttackPower;
             _moveState.BaseAttackRange = BaseAttackRange;
             _moveState.BaseMaxTargetPower = BaseMaxTargetPower;
+            _moveState.BaseReinforcementCount = BaseReinforcementCount;
+            _moveState.BaseReinforcementAttackCost = BaseReinforcementAttackCost;
 
             _moveState.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
@@ -100,6 +114,13 @@ namespace AutoCivilization.FocusCardResolvers
             gameState.FriendlyCityCount = _moveState.FriendlyCityCount;
             gameState.ControlledSpaces += _moveState.CityControlTokensPlacedThisTurn;
 
+            FocusBarUpgradeResponse freeUpgrade = new FocusBarUpgradeResponse(false, _moveState.ActiveFocusBarForMove, _moveState.ActiveFocusBarForMove.ActiveFocusSlot, null);
+            if (!_moveState.AttacksAvailable.All(x => !x.Value.IsTargetWithinRange) && _moveState.ControlTokensReinforcedThisTurn == 0)
+            {
+                freeUpgrade = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarSpecificTechnologyLevelUpgrade(_moveState.ActiveFocusBarForMove, FocusType.Military);
+                gameState.ActiveFocusBar = freeUpgrade.UpgradedFocusBar;
+            }
+
             _currentStep = -1;
             return BuildMoveSummary();
         }
@@ -108,6 +129,9 @@ namespace AutoCivilization.FocusCardResolvers
         {
             //return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
 
+            // TODO: summaerise reinforcements
+            //       summerise any techupgrade (if no action this turn)
+
             var summary = "To summarise my move I did the following;\n";
             StringBuilder sb = new StringBuilder(summary);
             sb.AppendLine($"I executed {_moveState.AttacksAvailable.Count} attacks againt enemy targets;");
@@ -115,6 +139,8 @@ namespace AutoCivilization.FocusCardResolvers
             foreach (var attackmove in _moveState.AttacksAvailable)
             {
                 // HACK: currently we dont know what natural wonder was acquired for a specific attack!!
+                // HACK: smallest pile issues!!
+
                 sb.AppendLine();
                 if (attackmove.Value.IsTargetWithinRange)
                 {
