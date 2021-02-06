@@ -152,6 +152,7 @@ namespace AutoCivilization.FocusCardResolvers
                     sb.AppendLine($"\tMy wonder cards bonus: {_moveState.BotPurchasedWonders.Where(x => x.Type == FocusType.Military).Count()}");
                     sb.AppendLine($"\tMy diplomacy cards bonus: {_moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count()}");
                     sb.AppendLine($"\tMy military trade tokens: {_moveState.TradeTokensAvailable[FocusType.Military]}");
+                    if (attackmove.Value.AttackTargetType == AttackTargetType.Barbarian) sb.AppendLine($"\tMy barbarian bonus: {_moveState.BaseBarbarianAttackBonus}");
 
                     if (attackmove.Value.BotIsWinning)
                     {

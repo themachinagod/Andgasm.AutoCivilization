@@ -18,7 +18,7 @@ namespace AutoCivilization.ActionSteps
         {
             var totalTokensPlaced = moveState.CityControlTokensPlacedThisTurn + moveState.TerritroyControlTokensPlacedThisTurn;
             return ((totalTokensPlaced > 0) &&
-                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced)) || moveState.HasStolenNaturalWonder;
+                   (moveState.NaturalResourceTokensControlledThisTurn < totalTokensPlaced));
         }
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)

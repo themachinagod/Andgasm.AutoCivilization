@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
             _diceRollResult = _randomService.Next(5) + 1;
-            _computedBotPower = moveState.BaseAttackPower + _diceRollResult +
+            _computedBotPower = moveState.BaseAttackPower + moveState.BaseBarbarianAttackBonus + _diceRollResult +
                                    moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.BotPurchasedWonders.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.TradeTokensAvailable[FocusType.Military];
