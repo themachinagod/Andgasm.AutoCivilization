@@ -1,149 +1,174 @@
 [
   {
+    "Id":  1,
     "Name": "Great Lighthouse",
     "Type": "Economy",
-    "Era":  "Ancient",
+    "Era": "Ancient",
     "Cost": 8
   },
   {
+    "Id": 2,
     "Name": "Colossus",
     "Type": "Economy",
     "Era": "Ancient",
     "Cost": 7
   },
   {
+    "Id": 3,
     "Name": "Machu Picchu",
     "Type": "Economy",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 4,
     "Name": "Big Ben",
     "Type": "Economy",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 5,
     "Name": "Great Zimbabwe",
     "Type": "Economy",
     "Era": "Medievil",
     "Cost": 9
   },
   {
+    "Id": 6,
     "Name": "Estadio Do Maracana",
     "Type": "Economy",
     "Era": "Modern",
     "Cost": 10
   },
   {
+    "Id": 7,
     "Name": "Big Ben",
     "Type": "Economy",
     "Era": "Modern",
     "Cost": 10
   },
   {
+    "Id": 8,
     "Name": "Terracotta Army",
     "Type": "Military",
     "Era": "Ancient",
     "Cost": 8
   },
   {
+    "Id": 9,
     "Name": "Petra",
     "Type": "Military",
     "Era": "Ancient",
     "Cost": 7
   },
   {
+    "Id": 10,
     "Name": "Alhambra",
     "Type": "Military",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 11,
     "Name": "Venetian Arsenal",
     "Type": "Military",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 12,
     "Name": "Pentagon",
     "Type": "Military",
     "Era": "Modern",
     "Cost": 12
   },
   {
+    "Id": 13,
     "Name": "Ruhr Valley",
     "Type": "Military",
     "Era": "Modern",
     "Cost": 11
   },
   {
+    "Id": 14,
     "Name": "Hanging Gardens",
     "Type": "Culture",
     "Era": "Ancient",
     "Cost": 8
   },
   {
+    "Id": 15,
     "Name": "Stonehenge",
     "Type": "Culture",
     "Era": "Ancient",
     "Cost": 7
   },
   {
+    "Id": 16,
     "Name": "Chichen Itza",
     "Type": "Culture",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 17,
     "Name": "Forbidden City",
     "Type": "Culture",
     "Era": "Medievil",
     "Cost": 9
   },
   {
+    "Id": 18,
     "Name": "Eifel Tower",
     "Type": "Culture",
     "Era": "Modern",
     "Cost": 12
   },
   {
+    "Id": 19,
     "Name": "Sydney Opera House",
     "Type": "Culture",
     "Era": "Modern",
     "Cost": 10
   },
   {
+    "Id": 20,
     "Name": "Oracle",
     "Type": "Science",
     "Era": "Ancient",
     "Cost": 8
   },
   {
+    "Id": 21,
     "Name": "Pyramids",
     "Type": "Science",
     "Era": "Ancient",
     "Cost": 9
   },
   {
+    "Id": 22,
     "Name": "Potala Palace",
     "Type": "Science",
     "Era": "Medievil",
     "Cost": 10
   },
   {
+    "Id": 23,
     "Name": "Porcelain Tower",
     "Type": "Science",
     "Era": "Medievil",
     "Cost": 9
   },
   {
+    "Id": 24,
     "Name": "Kremlin",
     "Type": "Science",
     "Era": "Modern",
     "Cost": 11
   },
   {
+    "Id": 25,
     "Name": "Oxford University",
     "Type": "Science",
     "Era": "Modern",

@@ -25,6 +25,9 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
+            // TODO: i think instrad of asking question here - we follow pattern for wonders and ask in a prev step
+            //       this way we can prompt next attack and summerise single rsult here
+
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             var cityStates = _globalGameCache.CityStates.Select(x => $"{x.Id}. {x.Name}").ToList();
             return new MoveStepActionData($"My attack on the city state was successful, please take the following physical steps;\nReplace the conquered city state with one of my own cities from the supply\nRemove the city state token from the board and place it next to my leadersheet\nAll players MUST return diplomacy cards held for the defeated city state to the side of the board.\nNow tell me... what is the name of this city state I vanquished?",

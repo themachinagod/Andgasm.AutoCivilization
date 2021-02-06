@@ -93,5 +93,6 @@ namespace AutoCivilization.Console
         public bool BotIsWinning { get; set; }
         public int DiceRollAttackPower { get; set; }
         public bool HasStolenNaturalWonder { get; set; }
+        public WonderCardModel ConqueredWonder { get; set; }
     }
 }

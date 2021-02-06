@@ -15,4 +15,6 @@
     public interface IReinforceFriendlyControlTokensInformationRequest : IStepAction { }
     public interface ISupplementAttackPowerInformationRequestStep : IStepAction { }
     public interface IFailedAttackActionRequestStep : IStepAction { }
+    public interface IConquerWorldWonderInformationRequestStep : IStepAction { }
+    public interface IConquerdNaturalWonderInformationRequestStep : IStepAction { }
 }

@@ -12,13 +12,15 @@
 
     public class WonderCardModel
     {
+        public int Id { get; set; }
         public FocusType Type { get; }
         public EraType Era { get; }
         public string Name { get; }
         public int Cost { get; }
 
-        public WonderCardModel(FocusType type, EraType era, string name, int cost)
+        public WonderCardModel(int id, FocusType type, EraType era, string name, int cost)
         {
+            Id = id;
             Type = type;
             Era = era;
             Name = name;

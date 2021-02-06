@@ -24,10 +24,11 @@ namespace AutoCivilization.FocusCardResolvers
                                             IAttackPrimaryResultActionRequestStep attackPrimaryResultActionRequestStep,
                                             IDefeatedBarbarianActionRequestStep defeatedBarbarianActionRequestStep,
                                             IConquerCityStateInformationRequestStep conquerCityStateActionRequestStep,
-                                            ITokenPlacementNaturalWonderControlledInformationRequestStep tokenPlacementNaturalWonderControlledInformationRequestStep,
+                                            IConquerdNaturalWonderInformationRequestStep conquerWorldNaturalInformationRequestStep,
                                             IDefeatedRivalControlTokenActionRequestStep defeatedRivalControlTokenActionRequestStep,
                                             IDefeatedCapitalCityActionRequestStep defeatedCapitalCityActionRequestStep,
                                             IConquerNonCapitalCityActionRequestStep conquerNonCapitalCityActionRequestStep,
+                                            IConquerWorldWonderInformationRequestStep conquerWorldWonderInformationRequestStep,
                                             IFailedAttackActionRequestStep failedAttackActionRequestStep, 
                                             ISupplementAttackPowerInformationRequestStep supplementAttackPowerInformationRequestStep) : base()
         {
@@ -44,13 +45,14 @@ namespace AutoCivilization.FocusCardResolvers
                 _actionSteps.Add(loopSeed + 2, enemyAttackPowerInformationRequestStep);
                 _actionSteps.Add(loopSeed + 3, attackPrimaryResultActionRequestStep);
                 _actionSteps.Add(loopSeed + 4, supplementAttackPowerInformationRequestStep);
-                _actionSteps.Add(loopSeed + 5, defeatedBarbarianActionRequestStep);
-                _actionSteps.Add(loopSeed + 6, conquerCityStateActionRequestStep);
-                _actionSteps.Add(loopSeed + 7, tokenPlacementNaturalWonderControlledInformationRequestStep);
-                _actionSteps.Add(loopSeed + 8, defeatedRivalControlTokenActionRequestStep);
-                _actionSteps.Add(loopSeed + 9, defeatedCapitalCityActionRequestStep);
-                _actionSteps.Add(loopSeed + 10, conquerNonCapitalCityActionRequestStep);
-                _actionSteps.Add(loopSeed + 11, failedAttackActionRequestStep);
+                _actionSteps.Add(loopSeed + 5, conquerWorldNaturalInformationRequestStep);
+                _actionSteps.Add(loopSeed + 6, conquerWorldWonderInformationRequestStep);
+                _actionSteps.Add(loopSeed + 7, defeatedBarbarianActionRequestStep);
+                _actionSteps.Add(loopSeed + 8, conquerCityStateActionRequestStep);
+                _actionSteps.Add(loopSeed + 9, defeatedRivalControlTokenActionRequestStep);
+                _actionSteps.Add(loopSeed + 10, defeatedCapitalCityActionRequestStep);
+                _actionSteps.Add(loopSeed + 11, conquerNonCapitalCityActionRequestStep);
+                _actionSteps.Add(loopSeed + 12, failedAttackActionRequestStep);
                 loopSeed = _actionSteps.Count;
             }
         }
@@ -64,7 +66,12 @@ namespace AutoCivilization.FocusCardResolvers
 
             _moveState.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
-            
+            _moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateService.PurchasedWonders);
+            _moveState.CityStatesDiplomacyCardsHeld = new List<CityStateModel>(botGameStateService.CityStateDiplomacyCardsHeld);
+            _moveState.ConqueredCityStateTokensHeld = new List<CityStateModel>(botGameStateService.ConqueredCityStateTokensHeld);
+
+            _moveState.FriendlyCityCount = botGameStateService.FriendlyCityCount;
+
             _moveState.TradeTokensAvailable[FocusType.Military] += 2;
 
             //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
@@ -115,7 +122,7 @@ namespace AutoCivilization.FocusCardResolvers
                         if (attackmove.Value.AttackTargetType == AttackTargetType.RivalControlToken)
                         {
                             sb.AppendLine($"The rival control token was replaced with one of my own on the board");
-                            if (attackmove.Value.HasStolenNaturalWonder) sb.AppendLine($"As the battle took place on the { _moveState.ControlledNaturalWonders.LastOrDefault()} natural wonder that the defending rival controlled I have now taken control of this natural wonder token and any bnous it provides");
+                            if (attackmove.Value.HasStolenNaturalWonder) sb.AppendLine($"As the battle took place on the { _moveState.ControlledNaturalWonders.LastOrDefault()} natural wonder, I have now taken control of this natural wonder token and any bnous it provides");
                         }
                         if (attackmove.Value.AttackTargetType == AttackTargetType.CityState)
                         {
@@ -126,9 +133,15 @@ namespace AutoCivilization.FocusCardResolvers
                         if (attackmove.Value.AttackTargetType == AttackTargetType.RivalCity)
                         {
                             sb.AppendLine($"The rival city was replaced with one of my own cities on the board");
+                            if (attackmove.Value.ConqueredWonder != null) sb.AppendLine($"As a result of this victory, I took control of the {attackmove.Value.ConqueredWonder.Name} world wonder and all of its bonuses");
                         }
                         if (attackmove.Value.AttackTargetType == AttackTargetType.RivalCapitalCity)
                         {
+                            if (attackmove.Value.ConqueredWonder != null)
+                            {
+                                sb.AppendLine($"As a result of this victory, I took control of the {attackmove.Value.ConqueredWonder.Name} world wonder and all of its bonuses");
+                                sb.AppendLine($"The wonder token was placed under my strongest free city");
+                            }
                             sb.AppendLine($"I recieved 2 trade token for this victory which I assigned to my {_moveState.SmallestTradeTokenPileType} focus slot");
                             sb.AppendLine($"The defeated rival also lost 2 trade tokens as a result their capital being sacked");
                         }

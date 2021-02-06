@@ -31,6 +31,7 @@ namespace AutoCivilization.Abstractions
             CityStateDiplomacyCardsHeld = new List<CityStateModel>();
             VisitedPlayerColors = new List<string>();
             ControlledNaturalWonders = new List<string>();
+            ConqueredCityStateTokensHeld = new List<CityStateModel>();
         }
 
         public Guid GameId { get; set; }

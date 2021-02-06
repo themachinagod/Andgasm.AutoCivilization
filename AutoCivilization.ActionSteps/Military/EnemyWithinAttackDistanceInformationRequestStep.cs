@@ -14,7 +14,10 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
+            // TODO: we could possibly merge this with the type step - add none option to type and it answers this question in one step
+
             // TODO: variance on the applicable types - currently hardwired for lvl 1 & 2
+
             if (moveState.CurrentAttackMoveId < moveState.AttacksAvailable.Count) moveState.CurrentAttackMoveId++;
             return new MoveStepActionData($"Is there any undefeated enemies of the following types within {moveState.BaseAttackRange} spaces of my friendly territory?\nBarbarian\nRival player city with defense of {moveState.BaseMaxTargetPower} or less\nRival control token",
                    new List<string>() { "1. Yes", "2. No" });

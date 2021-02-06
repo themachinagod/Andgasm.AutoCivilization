@@ -20,25 +20,18 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            // TODO: we need to consider the fact that the city may contain a world wonder
-            //       if this is the case then we need to transfer the world wonder to the new owner in both game state and the physical board
-            //       this will require a question to the user - what world wonder is associated with this city?
-            //       this step will only be applicable if the target is a rival city or rival capital city
-            //       in the future this will also only be applicable if the defending rival has purchase any wonders (we would know this if we asked who we were fighting for rival tokens, cities & also if we asked which user bought a specific wonder at round end time)
-            //       if so - we will add the world wonder to the bots move state and ask the defending rival to put the wonder card next to the bots player sheet
-
             // TODO: diplomacy cards impact??
             //       when the bot attacks a rival city - any cards held by the bot for that city need to be returned!
 
             // TODO: we need to consider the fact that the city COULD have once been a city state that was conquered by a rival prior to this attack
             //       if this is the case we would need to conquer the city state which means transferring the city state token to bot in gamestate and physical board
-            //       we would need to ask the user if this city was prev a city state at any point
+            //       we would need to ask the user if this city was prev a city state at any point (and if so what its name is)
 
             // TODO: this prompt is a hack - doesnt belong here!!
 
             var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
-            return new MoveStepActionData($"My attack on the {attckMove.AttackTargetType} was successful, please replace the conquered city target with one of my own cities from the supply.",
+            return new MoveStepActionData($"My attack on the rival city was a resounding success and the city is now under my control\nPlease replace the conquered city target with one of my own cities from the supply",
                    new List<string>() { prompt });
         }
 
