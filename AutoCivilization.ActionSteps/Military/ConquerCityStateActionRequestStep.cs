@@ -25,7 +25,7 @@ namespace AutoCivilization.ActionSteps
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            // TODO: i think instrad of asking question here - we follow pattern for wonders and ask in a prev step
+            // TODO: i think instead of asking question here - we follow pattern for wonders and ask in a prev step
             //       this way we can prompt next attack and summerise single rsult here
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];

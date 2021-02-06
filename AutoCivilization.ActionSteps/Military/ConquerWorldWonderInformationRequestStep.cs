@@ -21,16 +21,14 @@ namespace AutoCivilization.ActionSteps
         {
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];           
             return attckMove.BotIsWinning && (attckMove.AttackTargetType == AttackTargetType.RivalCity ||
-                (attckMove.AttackTargetType == AttackTargetType.RivalCapitalCity && moveState.FriendlyCityCount > moveState.PurchasedWonders.Count));
+                (attckMove.AttackTargetType == AttackTargetType.RivalCapitalCity && moveState.FriendlyCityCount > moveState.BotPurchasedWonders.Count));
         }
 
         public override MoveStepActionData ExecuteAction(BotMoveState moveState)
         {
-            // TODO: we need  a list of wonders - 
-            //       at first this will be all wonders
-            //       but as we imppl the round loop - when players want to purchase a wonder they will inform the bot - who will manage the wonder deck - this way we will know what wonders have been built
-            //       if no wonders have been built then this section is not reuqired
-            //       we only show a list of the already purchased wonders to select from
+            // TODO: we show all wonders just now 
+            //       this should only show the purchased wonders (less the wonders controlled by the bot)
+            //       as we impl the round loop - as users tell us they purchased an unlocked wonder - we will add that wonder to the purchased collection - this way we know what wonders are on the board at any time
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             var worldwonders = _globalGameCache.WonderCardsDeck.Select(x => $"{x.Id}. {x.Name}").ToList();
@@ -54,7 +52,7 @@ namespace AutoCivilization.ActionSteps
             var wonder = _globalGameCache.WonderCardsDeck.First(x => x.Id == selectedid);
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             attckMove.ConqueredWonder = wonder;
-            moveState.PurchasedWonders.Add(wonder);
+            moveState.BotPurchasedWonders.Add(wonder);
         }
     }
 }

@@ -59,6 +59,8 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
+            //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
+
             _moveState = new BotMoveState();
             _moveState.BaseAttackPower = BaseAttackPower;
             _moveState.BaseAttackRange = BaseAttackRange;
@@ -66,14 +68,14 @@ namespace AutoCivilization.FocusCardResolvers
 
             _moveState.ActiveFocusBarForMove = botGameStateService.ActiveFocusBar;
             _moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateService.TradeTokens);
-            _moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateService.PurchasedWonders);
+            _moveState.BotPurchasedWonders = new List<WonderCardModel>(botGameStateService.BotPurchasedWonders);
+            _moveState.AllPurchasedWonders = new List<WonderCardModel>(botGameStateService.BotPurchasedWonders);
             _moveState.CityStatesDiplomacyCardsHeld = new List<CityStateModel>(botGameStateService.CityStateDiplomacyCardsHeld);
             _moveState.ConqueredCityStateTokensHeld = new List<CityStateModel>(botGameStateService.ConqueredCityStateTokensHeld);
             _moveState.ControlledNaturalWonders = new List<string>(botGameStateService.ControlledNaturalWonders);
 
             _moveState.FriendlyCityCount = botGameStateService.FriendlyCityCount;
 
-            //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
             for (int tc = 0; tc < BaseAttackCount; tc++)
             {
                 _moveState.AttacksAvailable.Add(tc, new AttackTargetMoveState() );
@@ -83,13 +85,14 @@ namespace AutoCivilization.FocusCardResolvers
         public override string UpdateGameStateForMove(BotGameState gameState)
         {
             //_cultureResolverUtility.UpdateBaseCultureGameStateForMove(_moveState, botGameStateService);
+
             // TODO: 
             // something to do with visited player cities & diplomacy cards
-            // update focus bar
-            // update no of battles won/lost
+            // update focus bar if free upgrade (no wonder or city built)??
+            // update no of battles won/lost (some additional info) 
 
             gameState.TradeTokens = new Dictionary<FocusType, int>(_moveState.TradeTokensAvailable);
-            gameState.PurchasedWonders = new List<WonderCardModel>(_moveState.PurchasedWonders);
+            gameState.BotPurchasedWonders = new List<WonderCardModel>(_moveState.BotPurchasedWonders);
             gameState.ConqueredCityStateTokensHeld = new List<CityStateModel>(_moveState.ConqueredCityStateTokensHeld);
             gameState.CityStateDiplomacyCardsHeld = new List<CityStateModel>(_moveState.CityStatesDiplomacyCardsHeld);
             gameState.ControlledNaturalWonders = new List<string>(_moveState.ControlledNaturalWonders);
@@ -97,18 +100,17 @@ namespace AutoCivilization.FocusCardResolvers
             gameState.FriendlyCityCount = _moveState.FriendlyCityCount;
             gameState.ControlledSpaces += _moveState.CityControlTokensPlacedThisTurn;
 
-            // gameState.ActiveFocusBar = _moveState.ActiveFocusBarForMove;
-
             _currentStep = -1;
             return BuildMoveSummary();
         }
 
         private string BuildMoveSummary()
         {
+            //return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
+
             var summary = "To summarise my move I did the following;\n";
             StringBuilder sb = new StringBuilder(summary);
             sb.AppendLine($"I executed {_moveState.AttacksAvailable.Count} attacks againt enemy targets;");
-
             var attackOrdinal = 1;
             foreach (var attackmove in _moveState.AttacksAvailable)
             {
@@ -121,7 +123,7 @@ namespace AutoCivilization.FocusCardResolvers
                     sb.AppendLine($"\tTarget total power: {attackmove.Value.AttackTargetPowerWithoutTradeTokens}");
                     sb.AppendLine($"\tMy base power: {_moveState.BaseAttackPower}");
                     sb.AppendLine($"\tMy dice roll: {attackmove.Value.DiceRollAttackPower}");
-                    sb.AppendLine($"\tMy wonder cards bonus: {_moveState.PurchasedWonders.Where(x => x.Type == FocusType.Military).Count()}");
+                    sb.AppendLine($"\tMy wonder cards bonus: {_moveState.BotPurchasedWonders.Where(x => x.Type == FocusType.Military).Count()}");
                     sb.AppendLine($"\tMy diplomacy cards bonus: {_moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count()}");
                     sb.AppendLine($"\tMy military trade tokens: {_moveState.TradeTokensAvailable[FocusType.Military]}");
 
@@ -172,8 +174,6 @@ namespace AutoCivilization.FocusCardResolvers
                 }
                 attackOrdinal++;
             }
-
-            //return _cultureResolverUtility.BuildGeneralisedCultureMoveSummary(summary, _moveState);
             return sb.ToString();
         }
     }

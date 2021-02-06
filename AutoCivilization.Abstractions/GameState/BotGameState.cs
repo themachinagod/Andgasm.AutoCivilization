@@ -27,7 +27,8 @@ namespace AutoCivilization.Abstractions
             TradeTokens.Add(FocusType.Industry, 0);
             TradeTokens.Add(FocusType.Military, 0);
 
-            PurchasedWonders = new List<WonderCardModel>();
+            BotPurchasedWonders = new List<WonderCardModel>();
+            AllPurchasedWonders = new List<WonderCardModel>();
             CityStateDiplomacyCardsHeld = new List<CityStateModel>();
             VisitedPlayerColors = new List<string>();
             ControlledNaturalWonders = new List<string>();
@@ -48,8 +49,10 @@ namespace AutoCivilization.Abstractions
         public string ConqueredCityStateTokensHeldString { get { return ConqueredCityStateTokensHeld.Count > 0 ? string.Join(", ", ConqueredCityStateTokensHeld.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
         public List<string> VisitedPlayerColors { get; set; }
         public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(", ", VisitedPlayerColors) : "None"; } } // TODO: this will be insufficient for player diplomacy cards!!!
-        public List<WonderCardModel> PurchasedWonders { get; set; }
-        public string PurchasedWondersString { get { return PurchasedWonders.Count > 0 ? string.Join(", ", PurchasedWonders.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
+        public List<WonderCardModel> BotPurchasedWonders { get; set; }
+        public List<WonderCardModel> AllPurchasedWonders { get; private set; }
+
+        public string PurchasedWondersString { get { return BotPurchasedWonders.Count > 0 ? string.Join(", ", BotPurchasedWonders.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
         public List<string> ControlledNaturalWonders { get; set; } // TODO: perhaps we get more by storing the wonder model instead of just string!!
         public string ControlledNaturalWondersString { get { return ControlledNaturalWonders.Count > 0 ? string.Join(", ", ControlledNaturalWonders) : "None"; } }
 

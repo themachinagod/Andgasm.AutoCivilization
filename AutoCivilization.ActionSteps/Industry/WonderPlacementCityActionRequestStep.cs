@@ -28,7 +28,7 @@ namespace AutoCivilization.ActionSteps
             // we only want to ask the user to place a wonder token on city if the bot can afford to purchase one in first plce
             // we only want to ask the user to place a wonder token on city if we have a city that has no wonders 
 
-            if (moveState.FriendlyCityCount <= moveState.PurchasedWonders.Count) return false;
+            if (moveState.FriendlyCityCount <= moveState.BotPurchasedWonders.Count) return false;
 
             var diplomacyPointsAvailable = moveState.CityStatesDiplomacyCardsHeld.Count(x => x.Type == FocusType.Industry);
             var naturalWonderPointsAvailable = (moveState.ControlledNaturalWonders.Count * 2);
@@ -55,7 +55,8 @@ namespace AutoCivilization.ActionSteps
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             // add purchased wonder to move state
-            moveState.PurchasedWonders.Add(_wonderToPurchase);
+            moveState.BotPurchasedWonders.Add(_wonderToPurchase);
+            moveState.AllPurchasedWonders.Add(_wonderToPurchase);
             moveState.WonderPurchasedThisTurn = _wonderToPurchase;
             moveState.HasPurchasedWonderThisTurn = true;
 

@@ -15,7 +15,7 @@ namespace AutoCivilization.FocusCardResolvers
             var moveState = new BotMoveState();
             moveState.ActiveFocusBarForMove = botGameStateCache.ActiveFocusBar;
             moveState.ActiveWonderCardDecks = botGameStateCache.WonderCardDecks;
-            moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateCache.PurchasedWonders);
+            moveState.BotPurchasedWonders = new List<WonderCardModel>(botGameStateCache.BotPurchasedWonders);
             moveState.CityStatesDiplomacyCardsHeld = new List<CityStateModel>(botGameStateCache.CityStateDiplomacyCardsHeld);
             moveState.ControlledNaturalWonders = new List<string>(botGameStateCache.ControlledNaturalWonders);
             moveState.TradeTokensAvailable = new Dictionary<FocusType, int>(botGameStateCache.TradeTokens);
@@ -29,7 +29,7 @@ namespace AutoCivilization.FocusCardResolvers
         public void UpdateBaseIndustryGameStateForMove(BotMoveState moveState, BotGameState botGameStateService)
         {
             botGameStateService.WonderCardDecks = moveState.ActiveWonderCardDecks;
-            botGameStateService.PurchasedWonders = new List<WonderCardModel>(moveState.PurchasedWonders);
+            botGameStateService.BotPurchasedWonders = new List<WonderCardModel>(moveState.BotPurchasedWonders);
             botGameStateService.TradeTokens = new Dictionary<FocusType, int>(moveState.TradeTokensAvailable);
             botGameStateService.FriendlyCityCount += moveState.FriendlyCitiesAddedThisTurn;
             botGameStateService.ControlledNaturalResources -= moveState.NaturalResourcesSpentThisTurn;
@@ -52,7 +52,7 @@ namespace AutoCivilization.FocusCardResolvers
             else
             {
                 sb.Append($"I was unable to purchase a world wonder on this turn for the following reasons;\n");
-                if (moveState.FriendlyCityCount <= moveState.PurchasedWonders.Count) sb.Append($"I do not have enough friendly cities without existing wonder tokens\n");
+                if (moveState.FriendlyCityCount <= moveState.BotPurchasedWonders.Count) sb.Append($"I do not have enough friendly cities without existing wonder tokens\n");
                 else sb.Append($"I do not have enough production capacity to purchase any of the unlocked wonders\n");
             }
 

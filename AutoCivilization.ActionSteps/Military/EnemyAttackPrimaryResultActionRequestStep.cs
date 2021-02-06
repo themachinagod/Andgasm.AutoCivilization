@@ -30,7 +30,7 @@ namespace AutoCivilization.ActionSteps
             _diceRollResult = _randomService.Next(5) + 1;
             _computedBotPower = moveState.BaseAttackPower + _diceRollResult +
                                    moveState.CityStatesDiplomacyCardsHeld.Where(x => x.Type == FocusType.Military).Count() +
-                                   moveState.PurchasedWonders.Where(x => x.Type == FocusType.Military).Count() +
+                                   moveState.BotPurchasedWonders.Where(x => x.Type == FocusType.Military).Count() +
                                    moveState.TradeTokensAvailable[FocusType.Military];
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];

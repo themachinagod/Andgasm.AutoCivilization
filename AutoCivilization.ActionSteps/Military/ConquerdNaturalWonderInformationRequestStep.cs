@@ -28,8 +28,7 @@ namespace AutoCivilization.ActionSteps
         {
             // TODO: we need natural wonders for game
             //       currently hard wired!
-            //       bit of a hack for multiple just now to avoid a request loop - fine for 2 just now
-
+            
             var naturalWonders = new List<string> { "0. None", "1. Mt Everest", "2. Gran Mesa" };
             var prompt = "If there is a natural wonder on this city, the defated rival must relinquish the conquered natural wonder token and place it next to my leadersheet\n";
             return new MoveStepActionData(prompt +
@@ -41,7 +40,6 @@ namespace AutoCivilization.ActionSteps
         {
             // TODO: we need natural wonders for game
             //       currently hard wired!
-            //       bit of a hack for multiple just now to avoid a request loop - fine for 2 just now
 
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             switch (Convert.ToInt32(input))
