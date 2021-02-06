@@ -2,24 +2,28 @@
 using AutoCivilization.Abstractions.ActionSteps;
 using AutoCivilization.Abstractions.FocusCardResolvers;
 using AutoCivilization.Abstractions.TechnologyResolvers;
+using AutoCivilization.Console;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace AutoCivilization.FocusCardResolvers
 {
-    public class MasonryFocusCardMoveResolver : FocusCardMoveResolverBase, IMilitaryLevel1FocusCardMoveResolver
+    public class FlightFocusCardMoveResolver : FocusCardMoveResolverBase, IMilitaryLevel4FocusCardMoveResolver
     {
-        private const int BaseAttackPower = 5;
-        private const int BaseAttackRange = 2;
+        private const int BaseAttackPower = 8;
+        private const int BaseAttackRange = 5;
         private const int BaseAttackCount = 2;
-        private const int BaseMaxTargetPower = 4;
+        private const int BaseMaxTargetPower = 10;
         private const int BaseReinforcementCount = 5;
-        private const int BaseReinforcementAttackCost = 3;
+        private const int BaseReinforcementAttackCost = 1;
+        private const int BaseBarbarianAttackBonus = 2;
 
         private IMilitaryResolverUtility _militaryResolverUtility;
 
         private readonly IFocusBarTechnologyUpgradeResolver _focusBarTechnologyUpgradeResolver;
 
-        public MasonryFocusCardMoveResolver(IMilitaryResolverUtility militaryResolverUtility,
+        public FlightFocusCardMoveResolver(IMilitaryResolverUtility militaryResolverUtility,
                                             IEnemyWithinAttackDistanceInformationRequestStep enemyWithinAttackDistanceInformationRequestStep,
                                             IEnemyTypeToAttackInformationRequestStep enemyTypeToAttackInformationRequestStep,
                                             IEnemyAttackPowerInformationRequestStep enemyAttackPowerInformationRequestStep,
@@ -41,7 +45,7 @@ namespace AutoCivilization.FocusCardResolvers
             _focusBarTechnologyUpgradeResolver = focusBarTechnologyUpgradeResolver;
 
             FocusType = FocusType.Military;
-            FocusLevel = FocusLevel.Lvl1;
+            FocusLevel = FocusLevel.Lvl4;
 
             var loopSeed = 0;
             for (var attack = 0; attack < BaseAttackCount; attack++)
@@ -68,25 +72,19 @@ namespace AutoCivilization.FocusCardResolvers
 
         public override void PrimeMoveState(BotGameState botGameStateService)
         {
-            _moveState = _militaryResolverUtility.CreateBasicMilitaryMoveState(botGameStateService, BaseAttackRange, BaseAttackPower, BaseMaxTargetPower, BaseAttackCount, BaseReinforcementCount, BaseReinforcementAttackCost, 0);
+            _moveState = _militaryResolverUtility.CreateBasicMilitaryMoveState(botGameStateService, BaseAttackRange, BaseAttackPower, BaseMaxTargetPower, BaseAttackCount, BaseReinforcementCount, BaseReinforcementAttackCost, BaseBarbarianAttackBonus);
+            _moveState.CanMoveOnWater = true;
         }
 
         public override string UpdateGameStateForMove(BotGameState gameState)
         {
             _militaryResolverUtility.UpdateBaseMilitaryGameStateForMove(_moveState, gameState, _moveState.CurrentAttackMoveId);
 
-            FocusBarUpgradeResponse freeUpgrade = new FocusBarUpgradeResponse(false, _moveState.ActiveFocusBarForMove, _moveState.ActiveFocusBarForMove.ActiveFocusSlot, null);
-            if (!_moveState.AttacksAvailable.All(x => !x.Value.IsTargetWithinRange) && _moveState.ControlTokensReinforcedThisTurn == 0)
-            {
-                freeUpgrade = _focusBarTechnologyUpgradeResolver.RegenerateFocusBarSpecificTechnologyLevelUpgrade(_moveState.ActiveFocusBarForMove, FocusType.Military);
-                gameState.ActiveFocusBar = freeUpgrade.UpgradedFocusBar;
-            }
-
             _currentStep = -1;
-            return BuildMoveSummary(freeUpgrade);
+            return BuildMoveSummary();
         }
 
-        private string BuildMoveSummary(FocusBarUpgradeResponse upgrade)
+        private string BuildMoveSummary()
         {
             // TODO: summaerise reinforcements
             //       summerise any techupgrade (if no action this turn)
@@ -96,4 +94,3 @@ namespace AutoCivilization.FocusCardResolvers
         }
     }
 }
-

@@ -121,6 +121,9 @@ namespace AutoCivilization.Console
                     // military focus resolvers
                     services.AddTransient<IMilitaryResolverUtility, MilitaryResolverUtility>();
                     services.AddTransient<IMilitaryLevel1FocusCardMoveResolver, MasonryFocusCardMoveResolver>();
+                    services.AddTransient<IMilitaryLevel2FocusCardMoveResolver, IronWorkingFocusCardMoveResolver>();
+                    services.AddTransient<IMilitaryLevel3FocusCardMoveResolver, MassProductionFocusCardMoveResolver>();
+                    services.AddTransient<IMilitaryLevel4FocusCardMoveResolver, FlightFocusCardMoveResolver>();
 
                     // technology resolvers
                     services.AddTransient<ITechnologyUpgradeResolver, TechnologyUpgradeResolver>();
