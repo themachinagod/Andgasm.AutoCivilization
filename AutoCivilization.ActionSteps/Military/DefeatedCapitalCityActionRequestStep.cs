@@ -7,9 +7,13 @@ namespace AutoCivilization.ActionSteps
 {
     public class DefeatedCapitalCityActionRequestStep : StepActionBase, IDefeatedCapitalCityActionRequestStep
     {
-        public DefeatedCapitalCityActionRequestStep() : base ()
+        private readonly ISmallestTradeTokenPileResolver _smallestTradeTokenPileResolver;
+
+        public DefeatedCapitalCityActionRequestStep(ISmallestTradeTokenPileResolver smallestTradeTokenPileResolver) : base ()
         {
             OperationType = OperationType.ActionRequest;
+
+            _smallestTradeTokenPileResolver = smallestTradeTokenPileResolver;
         }
 
         public override bool ShouldExecuteAction(BotMoveState moveState)
@@ -33,6 +37,8 @@ namespace AutoCivilization.ActionSteps
         public override void UpdateMoveStateForStep(string input, BotMoveState moveState)
         {
             var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
+            var smallestpile = _smallestTradeTokenPileResolver.ResolveSmallestTokenPile(moveState.ActiveFocusBarForMove, moveState.TradeTokensAvailable);
+            moveState.SmallestTradeTokenPileType = smallestpile;
             moveState.TradeTokensAvailable[moveState.SmallestTradeTokenPileType] += 2;
             moveState.TradeTokensAvailable[FocusType.Military] -= attckMove.BotSpentMilitaryTradeTokensThisTurn;
         }
