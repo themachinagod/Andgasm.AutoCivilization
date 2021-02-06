@@ -30,7 +30,6 @@ namespace AutoCivilization.ActionSteps
             // TODO: this prompt is a hack - doesnt belong here!!
 
             var prompt = (moveState.CurrentAttackMoveId == moveState.AttacksAvailable.Count) ? "Press any key to proceed to a summary of all my attacks" : "Press any key to advance to my next attack...";
-            var attckMove = moveState.AttacksAvailable[moveState.CurrentAttackMoveId - 1];
             return new MoveStepActionData($"My attack on the rival city was a resounding success and the city is now under my control\nPlease replace the conquered city target with one of my own cities from the supply",
                    new List<string>() { prompt });
         }

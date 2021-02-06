@@ -69,10 +69,9 @@ namespace AutoCivilization.FocusCardResolvers
             _moveState.PurchasedWonders = new List<WonderCardModel>(botGameStateService.PurchasedWonders);
             _moveState.CityStatesDiplomacyCardsHeld = new List<CityStateModel>(botGameStateService.CityStateDiplomacyCardsHeld);
             _moveState.ConqueredCityStateTokensHeld = new List<CityStateModel>(botGameStateService.ConqueredCityStateTokensHeld);
+            _moveState.ControlledNaturalWonders = new List<string>(botGameStateService.ControlledNaturalWonders);
 
             _moveState.FriendlyCityCount = botGameStateService.FriendlyCityCount;
-
-            _moveState.TradeTokensAvailable[FocusType.Military] += 2;
 
             //_moveState = _cultureResolverUtility.CreateBasicCultureMoveState(botGameStateService, BaseCityControlTokens);
             for (int tc = 0; tc < BaseAttackCount; tc++)
@@ -81,9 +80,25 @@ namespace AutoCivilization.FocusCardResolvers
             }
         }
 
-        public override string UpdateGameStateForMove(BotGameState botGameStateService)
+        public override string UpdateGameStateForMove(BotGameState gameState)
         {
             //_cultureResolverUtility.UpdateBaseCultureGameStateForMove(_moveState, botGameStateService);
+            // TODO: 
+            // something to do with visited player cities & diplomacy cards
+            // update focus bar
+            // update no of battles won/lost
+
+            gameState.TradeTokens = new Dictionary<FocusType, int>(_moveState.TradeTokensAvailable);
+            gameState.PurchasedWonders = new List<WonderCardModel>(_moveState.PurchasedWonders);
+            gameState.ConqueredCityStateTokensHeld = new List<CityStateModel>(_moveState.ConqueredCityStateTokensHeld);
+            gameState.CityStateDiplomacyCardsHeld = new List<CityStateModel>(_moveState.CityStatesDiplomacyCardsHeld);
+            gameState.ControlledNaturalWonders = new List<string>(_moveState.ControlledNaturalWonders);
+
+            gameState.FriendlyCityCount = _moveState.FriendlyCityCount;
+            gameState.ControlledSpaces += _moveState.CityControlTokensPlacedThisTurn;
+
+            // gameState.ActiveFocusBar = _moveState.ActiveFocusBarForMove;
+
             _currentStep = -1;
             return BuildMoveSummary();
         }

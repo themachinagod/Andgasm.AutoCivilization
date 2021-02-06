@@ -49,7 +49,7 @@ namespace AutoCivilization.Abstractions
         public List<string> VisitedPlayerColors { get; set; }
         public string VisitedPlayerColorsString { get { return VisitedPlayerColors.Count > 0 ? string.Join(", ", VisitedPlayerColors) : "None"; } } // TODO: this will be insufficient for player diplomacy cards!!!
         public List<WonderCardModel> PurchasedWonders { get; set; }
-        public string PurchasedWondersString { get { return PurchasedWonders.Count > 0 ? string.Join(", ", PurchasedWonders) : "None"; } }
+        public string PurchasedWondersString { get { return PurchasedWonders.Count > 0 ? string.Join(", ", PurchasedWonders.Select(x => $"{x.Name} ({x.Type})")) : "None"; } }
         public List<string> ControlledNaturalWonders { get; set; } // TODO: perhaps we get more by storing the wonder model instead of just string!!
         public string ControlledNaturalWondersString { get { return ControlledNaturalWonders.Count > 0 ? string.Join(", ", ControlledNaturalWonders) : "None"; } }
 
